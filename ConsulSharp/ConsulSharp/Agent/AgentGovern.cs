@@ -12,14 +12,14 @@ namespace ConsulSharp
     /// <summary>
     /// Service Govern
     /// </summary>
-    public class AgentGovern: Govern
-    {        
+    public class AgentGovern : Govern
+    {
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="baseAddress">Base Address</param>
-        public AgentGovern(string baseAddress = "http://localhost:8500"):base(baseAddress)
-        {       
+        public AgentGovern(string baseAddress = "http://localhost:8500") : base(baseAddress)
+        {
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> ReloadAgent()
         {
-            return await Put("", $"/v1/agent/reload");           
+            return await Put("", $"/v1/agent/reload");
         }
         /// <summary>
         /// enable maintenance mode
@@ -63,9 +63,26 @@ namespace ConsulSharp
         /// <returns></returns>
         public async Task<Metrics> ViewMetrics()
         {
-            return await Get<Metrics>("/v1/metrics");
+            return await Get<Metrics>("/v1/agent/metrics");
         }
-
+        /// <summary>
+        /// stream logs
+        /// </summary>
+        /// <returns></returns>
+        public async Task StreamLogs()
+        {         
+            var client = new HttpClient();
+            client.BaseAddress = new Uri($"{_baseAddress}");        
+            var stream = await client.GetStreamAsync("/v1/agent/monitor");
+            while (stream.CanRead)
+            {
+                var bytes = new byte[1024];
+                var result = await stream.ReadAsync(bytes, 0, bytes.Length);                
+                WritLog?.Invoke(Encoding.Default.GetString(bytes).Trim('\0'));
+            }
+        }
+        public event WriteLogHandle  WritLog;
+        public delegate void WriteLogHandle(string log);
 
         #region register and deregister service
         /// <summary>

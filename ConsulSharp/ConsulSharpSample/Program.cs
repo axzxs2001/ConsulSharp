@@ -220,7 +220,7 @@ namespace ConsulSharpSample
         {
             while (true)
             {
-                Console.WriteLine("1、注册服务  2、注销服务 3、查看成员  按e退出");
+                Console.WriteLine("1、注册服务  2、注销服务  3、查看成员  4、日志    按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -232,20 +232,37 @@ namespace ConsulSharpSample
                     case "3":
                         QueryMembers();
                         break;
+                    case "4":
+                        StreamLog();
+                        break;
                     case "e":
                         return;
                 }
             }
         }
         /// <summary>
+        /// 查询日志
+        /// </summary>
+        private static void StreamLog()
+        {
+            var agentGovern = new AgentGovern();
+            agentGovern.WritLog += delegate(string log)
+            {
+                Console.WriteLine(log);
+            };         
+            agentGovern.StreamLogs().GetAwaiter().GetResult();           
+        }
+
+      
+
+        /// <summary>
         /// 查询成员
         /// </summary>
         private static void QueryMembers()
         {
             var agentGovern = new AgentGovern();
-            foreach (var member in agentGovern.CatalogNodes().GetAwaiter().GetResult())
+            foreach (var member in agentGovern.Members().GetAwaiter().GetResult())
             {
-
                 Console.WriteLine($"Name:{member.Name} 地址:{member.Addr}:{member.Port}");
             }
         }

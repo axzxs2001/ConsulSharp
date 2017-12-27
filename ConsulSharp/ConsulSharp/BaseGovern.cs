@@ -90,6 +90,21 @@ namespace ConsulSharp
 
 
 
+        /// <summary>
+        /// call url back json
+        /// </summary>
+        /// <param name="url">request url</param>
+        /// <param name="dataCenter">datacenter</param>
+        /// <returns></returns>
+       // protected async Task<string> GetStream(string url, string dataCenter = null)
+       // {
+           // var client = new HttpClient();
+           // client.BaseAddress = new Uri($"{_baseAddress}{(!string.IsNullOrEmpty(dataCenter) ? $"?dc={dataCenter}" : "")}");
+           //// var response = await client.GetAsync(url);
+           // var stream = await client.GetStreamAsync(url);
+           // return await response.Content.ReadAsStringAsync();
+       // }
+
         #endregion
 
 
