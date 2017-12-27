@@ -1,5 +1,5 @@
 # ConsulSharp
-A set of apis to access the API in c #
+A set of c# API to call the consul HTTP API!
 
 consul http api:https://www.consul.io/api/index.html
 
