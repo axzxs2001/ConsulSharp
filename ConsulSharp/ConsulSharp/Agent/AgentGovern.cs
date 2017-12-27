@@ -81,6 +81,64 @@ namespace ConsulSharp
                 WritLog?.Invoke(Encoding.Default.GetString(bytes).Trim('\0'));
             }
         }
+        /// <summary>
+        /// join agent
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> JoinAgent(JoinAgent joinAgent)
+        {
+            return await Put(joinAgent, $"/v1/agent/join");
+        }
+
+        /// <summary>
+        /// graceful leave and shutdown
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> GracefulLeaveAndShutdown()
+        {
+            return await Put("", $"/v1/agent/leave");
+        }
+        /// <summary>
+        /// force leave and shutdown
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> ForceLeaveAndShutdown()
+        {
+            return await Put("", $"/v1/agent/force-leave");
+        }
+
+        /// <summary>
+        /// force leave and shutdown acl_token
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> UpdateACLToken(UpdateToken token)
+        {
+            return await Put(token, $"/v1/agent/acl_token");
+        }
+        /// <summary>
+        /// force leave and shutdown acl_agent_token
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> UpdateACLAgentToken(UpdateToken token)
+        {
+            return await Put(token, $"/v1/agent/acl_agent_token");
+        }
+        /// <summary>
+        /// force leave and shutdown acl_agent_master_token
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> UpdateACLAgentMasterToken(UpdateToken token)
+        {
+            return await Put(token, $"/v1/agent/acl_agent_master_token");
+        }
+        /// <summary>
+        /// force leave and shutdown acl_replication_token
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> UpdateACLReplicationToken(UpdateToken token)
+        {
+            return await Put(token, $"/v1/agent/acl_replication_token");
+        }
         public event WriteLogHandle  WritLog;
         public delegate void WriteLogHandle(string log);
 
