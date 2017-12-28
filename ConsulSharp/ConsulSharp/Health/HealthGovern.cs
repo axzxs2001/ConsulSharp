@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ConsulSharp
 {
     /// <summary>
-    /// Service Govern
+    /// Health Govern
     /// </summary>
     public class HealthGovern: Govern
     {
