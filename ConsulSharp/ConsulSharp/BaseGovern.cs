@@ -27,7 +27,7 @@ namespace ConsulSharp
         }
         #region base method
         /// <summary>
-        /// base call method
+        /// get
         /// </summary>
         /// <typeparam name="T">back type</typeparam>
         /// <param name="url">request url</param>
@@ -58,7 +58,7 @@ namespace ConsulSharp
         }
 
         /// <summary>
-        /// call url back json
+        /// get
         /// </summary>
         /// <param name="url">request url</param>
         /// <param name="dataCenter">datacenter</param>
@@ -72,11 +72,11 @@ namespace ConsulSharp
         }
 
         /// <summary>
-        /// register
+        /// put
         /// </summary>
         /// <typeparam name="T">register type</typeparam>
         /// <param name="entity">register entity</param>
-        /// <param name="url">register url</param>
+        /// <param name="url">put url</param>
         /// <returns></returns>
         protected async Task<(bool result, string backJson)> Put<T>(T entity, string url)
         {
@@ -89,7 +89,21 @@ namespace ConsulSharp
             var backJson = await response.Content.ReadAsStringAsync();
             return (result: response.StatusCode == System.Net.HttpStatusCode.OK, backJson: backJson);
         }
-        
+
+        /// <summary>
+        /// put with parmeter and back parmeter
+        /// </summary>
+        /// <typeparam name="T">in parmeter</typeparam>
+        /// <typeparam name="W">out parmeter</typeparam>
+        /// <param name="entity">in entity</param>
+        /// <param name="url">put url</param>
+        /// <returns></returns>
+        protected async Task<(bool result, W backEntity)> Put<T, W>(T entity, string url)
+        {
+            var backResult = await Put(entity, url);
+            var backEntity = JsonConvert.DeserializeObject<W>(backResult.backJson);
+            return (backResult.result, backEntity);
+        }
 
         #endregion
 

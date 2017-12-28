@@ -56,9 +56,7 @@ namespace ConsulSharp
         /// <param name="dc">datacenter</param>
         public async Task<(bool result, LANCoordinatesParmeter lanCoordinates)> UpdateLANCoordinatesForANode(string dc)
         {
-            var backResult = await Put(dc, $"/coordinate/update");
-            var backLanCoordinates = JsonConvert.DeserializeObject<LANCoordinatesParmeter>(backResult.backJson);
-            return (result: backResult.result, lanCoordinates: backLanCoordinates);
+            return await Put<string, LANCoordinatesParmeter>(dc, $"/coordinate/update");           
         }
     }
 }
