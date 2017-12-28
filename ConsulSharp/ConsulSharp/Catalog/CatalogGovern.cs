@@ -31,7 +31,7 @@ namespace ConsulSharp
         /// <param name="service">service</param>
         public async Task<(bool result, string backJson)> RegisterCatalog(CatalogEntity catalog)
         {
-            return await Put(catalog, $"/v1/catalog/register");
+            return await Put(catalog, $"/catalog/register");
         }
         /// <summary>
         /// deregister service
@@ -40,7 +40,7 @@ namespace ConsulSharp
         /// <param name="deregisterEntity">deregister entity</param>
         public async Task<(bool result, string backJson)> DeregisterCatalog(DeCatalogEntity deregisterEntity)
         {
-            return await Put(deregisterEntity, $"/v1/catalog/deregister");
+            return await Put(deregisterEntity, $"/catalog/deregister");
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace ConsulSharp
         /// <returns></returns>
         public async Task<string[]> CatalogDatacenters()
         {
-            var json = await Get("/v1/catalog/datacenters");
+            var json = await Get("/catalog/datacenters");
             if (!string.IsNullOrEmpty(json))
             {
                 try
@@ -78,7 +78,7 @@ namespace ConsulSharp
         /// <returns></returns>
         public async Task<HealthCatalogNode[]> CatalogNodes()
         {
-            return await Get<HealthCatalogNode[]>("/v1/catalog/nodes");
+            return await Get<HealthCatalogNode[]>("/catalog/nodes");
         }
         /// <summary>
         /// get catalog node by name
@@ -86,7 +86,7 @@ namespace ConsulSharp
         /// <returns></returns>
         public async Task<CatalogNode> CatalogNodeByName(string nodeName)
         {
-            return await Get<CatalogNode>($"/v1/catalog/node/{nodeName}");
+            return await Get<CatalogNode>($"/catalog/node/{nodeName}");
         }
         /// <summary>
         /// get catalog services
@@ -97,7 +97,7 @@ namespace ConsulSharp
         public async Task<Dictionary<string, string[]>> CatalogServices(string dataCenter = null)
         {
 
-            var json = await Get("/v1/catalog/services", dataCenter);
+            var json = await Get("/catalog/services", dataCenter);
             if (!string.IsNullOrEmpty(json))
             {
                 try
@@ -134,7 +134,7 @@ namespace ConsulSharp
         /// <returns></returns>
         public async Task<CatalogService[]> CatalogServiceByName(string serviceName, string dataCenter = null)
         {
-            return await Get<CatalogService[]>($"/v1/catalog/service/{serviceName}", dataCenter);
+            return await Get<CatalogService[]>($"/catalog/service/{serviceName}", dataCenter);
         }
         #endregion   
 

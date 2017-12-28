@@ -14,6 +14,8 @@ namespace ConsulSharp
     /// </summary>
     public class Govern
     {
+        readonly string urlPrefix = "v1";
+
         protected string _baseAddress;
         /// <summary>
         /// ctor
@@ -35,7 +37,7 @@ namespace ConsulSharp
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri($"{_baseAddress}{(!string.IsNullOrEmpty(dataCenter) ? $"?dc={dataCenter}" : "")}");
-            var response = await client.GetAsync(url);
+            var response = await client.GetAsync($"/{urlPrefix}/{url}");
             var json = await response.Content.ReadAsStringAsync();
             if (!string.IsNullOrEmpty(json))
             {
@@ -65,7 +67,7 @@ namespace ConsulSharp
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri($"{_baseAddress}{(!string.IsNullOrEmpty(dataCenter) ? $"?dc={dataCenter}" : "")}");
-            var response = await client.GetAsync(url);
+            var response = await client.GetAsync($"/{urlPrefix}/{url}");
             return await response.Content.ReadAsStringAsync();
         }
 
@@ -83,27 +85,11 @@ namespace ConsulSharp
             var json = JsonConvert.SerializeObject(entity);
             var stream = new MemoryStream(Encoding.Default.GetBytes(json));
             var content = new StreamContent(stream);
-            var response = await client.PutAsync(url, content);
+            var response = await client.PutAsync($"/{urlPrefix}/{url}", content);
             var backJson = await response.Content.ReadAsStringAsync();
             return (result: response.StatusCode == System.Net.HttpStatusCode.OK, backJson: backJson);
         }
-
-
-
-        /// <summary>
-        /// call url back json
-        /// </summary>
-        /// <param name="url">request url</param>
-        /// <param name="dataCenter">datacenter</param>
-        /// <returns></returns>
-       // protected async Task<string> GetStream(string url, string dataCenter = null)
-       // {
-           // var client = new HttpClient();
-           // client.BaseAddress = new Uri($"{_baseAddress}{(!string.IsNullOrEmpty(dataCenter) ? $"?dc={dataCenter}" : "")}");
-           //// var response = await client.GetAsync(url);
-           // var stream = await client.GetStreamAsync(url);
-           // return await response.Content.ReadAsStringAsync();
-       // }
+        
 
         #endregion
 

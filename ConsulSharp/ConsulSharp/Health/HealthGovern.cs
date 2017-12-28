@@ -34,7 +34,7 @@ namespace ConsulSharp
         /// <returns></returns>
         public async Task<QueryHealthService[]> HealthServiceByName(string serviceName, string dataCenter = null)
         {
-            return await Get<QueryHealthService[]>($"/v1/health/service/{serviceName}", dataCenter);
+            return await Get<QueryHealthService[]>($"/health/service/{serviceName}", dataCenter);
         }
 
         #endregion

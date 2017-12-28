@@ -32,7 +32,7 @@ namespace ConsulSharp
         /// <param name="id">id</param>
         public async Task<(bool result, string backJson)> BootstrapACLs(string id)
         {
-            return await Put("", $"/v1/acl/bootstrap/{id}");
+            return await Put("", $"/acl/bootstrap/{id}");
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace ConsulSharp
         /// <param name="aclToken">acl token</param>
         public async Task<(bool result, string backJson)> CreateACLToken(ACLToken aclToken)
         {
-            return await Put(aclToken, $"/v1/acl/create");
+            return await Put(aclToken, $"/acl/create");
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace ConsulSharp
         /// <param name="aclToken">acl token</param>
         public async Task<(bool result, string backJson)> UpdateACLToken(ACLToken aclToken)
         {
-            return await Put(aclToken, $"/v1/acl/update");
+            return await Put(aclToken, $"/acl/update");
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace ConsulSharp
         /// <param name="id">id</param>
         public async Task<(bool result, string backJson)> DeleteACLToken(string id)
         {
-            return await Put("", $"/v1/acl/destroy/{id}");
+            return await Put("", $"/acl/destroy/{id}");
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<ReadACLToken[]> ReadACLToken(string id)
         {
-            return await Get<ReadACLToken[]>($"/v1/acl/info/{id}");
+            return await Get<ReadACLToken[]>($"/acl/info/{id}");
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> CloneACLToken(string id)
         {
-            return await Put("", $"/v1/acl/clone/{id}");
+            return await Put("", $"/acl/clone/{id}");
         }
 
         /// <summary>
@@ -89,16 +89,17 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<ReadACLToken[]> ListACLs()
         {
-            return await Get<ReadACLToken[]>($"/v1/acl/list");
+            return await Get<ReadACLToken[]>($"/acl/list");
         }
 
         /// <summary>
         /// Check ACL Replication
-        /// </summary>
-        /// <returns></returns>    
-        public async Task<ACLReplication> CheckACLReplication()
+        /// </summary> 
+        /// <param name="datacenter">datacenter</param>
+        /// <returns></returns>
+        public async Task<ACLReplication> CheckACLReplication(string datacenter)
         {
-            return await Get<ACLReplication>($"/v1/acl/replication");
+            return await Get<ACLReplication>($"/acl/replication/{datacenter}");
         }
 
         

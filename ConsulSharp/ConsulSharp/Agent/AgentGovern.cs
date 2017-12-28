@@ -30,7 +30,7 @@ namespace ConsulSharp
         /// <returns></returns>
         public async Task<Member[]> Members()
         {
-            return await Get<Member[]>("/v1/agent/members");
+            return await Get<Member[]>("/agent/members");
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace ConsulSharp
         /// <returns></returns>
         public async Task<Configuration> Configuration()
         {
-            return await Get<Configuration>("/v1/agent/self");
+            return await Get<Configuration>("/agent/self");
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> ReloadAgent()
         {
-            return await Put("", $"/v1/agent/reload");
+            return await Put("", $"/agent/reload");
         }
         /// <summary>
         /// enable maintenance mode
@@ -56,7 +56,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> EnableMaintenanceMode(MaintenanceMode maintenanceMode)
         {
-            return await Put(maintenanceMode, $"/v1/agent/maintenance");
+            return await Put(maintenanceMode, $"/agent/maintenance");
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace ConsulSharp
         /// <returns></returns>
         public async Task<Metrics> ViewMetrics()
         {
-            return await Get<Metrics>("/v1/agent/metrics");
+            return await Get<Metrics>("/agent/metrics");
         }
         /// <summary>
         /// stream logs
@@ -75,7 +75,7 @@ namespace ConsulSharp
         {         
             var client = new HttpClient();
             client.BaseAddress = new Uri($"{_baseAddress}");        
-            var stream = await client.GetStreamAsync("/v1/agent/monitor");
+            var stream = await client.GetStreamAsync("/agent/monitor");
             while (stream.CanRead)
             {
                 var bytes = new byte[1024];
@@ -89,7 +89,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> JoinAgent(JoinAgent joinAgent)
         {
-            return await Put(joinAgent, $"/v1/agent/join");
+            return await Put(joinAgent, $"/agent/join");
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> GracefulLeaveAndShutdown()
         {
-            return await Put("", $"/v1/agent/leave");
+            return await Put("", $"/agent/leave");
         }
         /// <summary>
         /// force leave and shutdown
@@ -106,7 +106,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> ForceLeaveAndShutdown()
         {
-            return await Put("", $"/v1/agent/force-leave");
+            return await Put("", $"/agent/force-leave");
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> UpdateACLToken(UpdateToken token)
         {
-            return await Put(token, $"/v1/agent/acl_token");
+            return await Put(token, $"/agent/acl_token");
         }
         /// <summary>
         /// force leave and shutdown acl_agent_token
@@ -123,7 +123,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> UpdateACLAgentToken(UpdateToken token)
         {
-            return await Put(token, $"/v1/agent/acl_agent_token");
+            return await Put(token, $"/agent/acl_agent_token");
         }
         /// <summary>
         /// force leave and shutdown acl_agent_master_token
@@ -131,7 +131,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> UpdateACLAgentMasterToken(UpdateToken token)
         {
-            return await Put(token, $"/v1/agent/acl_agent_master_token");
+            return await Put(token, $"/agent/acl_agent_master_token");
         }
         /// <summary>
         /// force leave and shutdown acl_replication_token
@@ -139,7 +139,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> UpdateACLReplicationToken(UpdateToken token)
         {
-            return await Put(token, $"/v1/agent/acl_replication_token");
+            return await Put(token, $"/agent/acl_replication_token");
         }
         public event WriteLogHandle  WritLog;
         public delegate void WriteLogHandle(string log);
@@ -153,7 +153,7 @@ namespace ConsulSharp
         /// <returns></returns>
         public async Task<QueryCheck> ListChecks()
         {
-            return await Get<QueryCheck>("/v1/agent/checks");
+            return await Get<QueryCheck>("/agent/checks");
         }
         /// <summary>
         /// register check
@@ -161,7 +161,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> RegisterCheck(RegisterCheck check)
         {
-            return await Put(check, $"/v1/agent/check/register");
+            return await Put(check, $"/agent/check/register");
         }
         /// <summary>
         /// deregister check
@@ -169,7 +169,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> DeregisterCheck(string  checkID)
         {
-            return await Put("", $"/v1/agent/check/deregister/{checkID}");
+            return await Put("", $"/agent/check/deregister/{checkID}");
         }
         /// <summary>
         /// TTL check pass
@@ -177,7 +177,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckPass(TTLCheckOpt checkPass)
         {
-            return await Put(checkPass, $"/v1/agent/check/pass");
+            return await Put(checkPass, $"/agent/check/pass");
         }
         /// <summary>
         /// TTL check warn
@@ -185,7 +185,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckWarn(TTLCheckOpt checkPass)
         {
-            return await Put(checkPass, $"/v1/agent/check/warn");
+            return await Put(checkPass, $"/agent/check/warn");
         }
         /// <summary>
         /// TTL check fail
@@ -193,7 +193,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckFail(TTLCheckOpt checkPass)
         {
-            return await Put(checkPass, $"/v1/agent/check/fail");
+            return await Put(checkPass, $"/agent/check/fail");
         }
         /// <summary>
         /// TTL check update
@@ -201,7 +201,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckUpdate(TTLCheckUpdate checkUpdate)
         {
-            return await Put(checkUpdate, $"/v1/agent/check/update");
+            return await Put(checkUpdate, $"/agent/check/update");
         }
         #endregion
 
@@ -212,7 +212,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<Dictionary<string, ListService>> ListServices(TTLCheckOpt checkPass)
         {
-            return await Get<Dictionary<string,ListService>>($"/v1/agent/services");
+            return await Get<Dictionary<string,ListService>>($"/agent/services");
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace ConsulSharp
         /// <param name="service">service</param>
         public async Task<(bool result, string backJson)> RegisterServices(Service service)
         {
-            return await Put(service, $"/v1/agent/service/register");
+            return await Put(service, $"/agent/service/register");
         }
         /// <summary>
         /// deregister service
@@ -231,10 +231,10 @@ namespace ConsulSharp
         /// <param name="serviceID">service ID</param>
         public async Task<(bool result, string backJson)> DeregisterServices(string serviceID)
         {
-            return await Put("", $"/v1/agent/service/deregister/{ serviceID}");
+            return await Put("", $"/agent/service/deregister/{ serviceID}");
             //var client = new HttpClient();
             //client.BaseAddress = new Uri(_baseAddress);
-            //var response = await client.PutAsync($"/v1/agent/service/deregister/" + serviceID, null);
+            //var response = await client.PutAsync($"/agent/service/deregister/" + serviceID, null);
             //var backJson = await response.Content.ReadAsStringAsync();
             //return (result: response.StatusCode == System.Net.HttpStatusCode.OK, backJson: backJson);
         }
