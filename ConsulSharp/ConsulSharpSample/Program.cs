@@ -273,7 +273,7 @@ namespace ConsulSharpSample
         private static void UnRegisterService()
         {
             var serviceGovern = new AgentGovern();
-            var result = serviceGovern.UnRegisterServices("newservice001").GetAwaiter().GetResult();
+            var result = serviceGovern.DeregisterServices("newservice001").GetAwaiter().GetResult();
             Console.WriteLine(result.backJson);
             Console.WriteLine(result.result);
 

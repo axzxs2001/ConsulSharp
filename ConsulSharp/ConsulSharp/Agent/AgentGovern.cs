@@ -205,7 +205,16 @@ namespace ConsulSharp
         }
         #endregion
 
-        #region register and deregister service
+        #region service
+        /// <summary>
+        /// List Services
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<Dictionary<string, ListService>> ListServices(TTLCheckOpt checkPass)
+        {
+            return await Get<Dictionary<string,ListService>>($"/v1/agent/services");
+        }
+
         /// <summary>
         /// register service
         /// </summary>
@@ -220,7 +229,7 @@ namespace ConsulSharp
         /// </summary>
         /// <returns></returns>
         /// <param name="serviceID">service ID</param>
-        public async Task<(bool result, string backJson)> UnRegisterServices(string serviceID)
+        public async Task<(bool result, string backJson)> DeregisterServices(string serviceID)
         {
             return await Put("", $"/v1/agent/service/deregister/{ serviceID}");
             //var client = new HttpClient();
