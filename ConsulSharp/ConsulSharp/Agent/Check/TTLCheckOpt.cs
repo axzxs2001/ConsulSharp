@@ -5,19 +5,18 @@ using System.Text;
 namespace ConsulSharp
 {
     /// <summary>
-    /// ttl check
+    /// ttl check pass,warn,fail
     /// </summary>
-    public class TTLCheck : Check
+    public class TTLCheckOpt
     {
         /// <summary>
-        /// ttl
+        /// check id
         /// </summary>
-        public string Ttl
-        { get; set; }
+        public string Check_ID { get; set; }
+
         /// <summary>
-        /// notes
+        /// note
         /// </summary>
-        public string Notes
-        { get; set; }
+        public string Note { get; set; }
     }
 }

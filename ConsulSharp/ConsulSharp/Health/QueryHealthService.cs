@@ -20,6 +20,6 @@ namespace ConsulSharp.Health
         /// <summary>
         /// Checks
         /// </summary>
-        public HealthCheck[] Checks { get; set; }
+        public QueryCheck[] Checks { get; set; }
     }
 }

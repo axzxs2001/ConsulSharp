@@ -5,9 +5,9 @@ using System.Text;
 namespace ConsulSharp
 {
     /// <summary>
-    /// Health Check
+    /// Health Check,List Checks
     /// </summary>
-    public class HealthCheck
+    public class QueryCheck
     {
         /// <summary>
         /// Node Name

@@ -22,6 +22,8 @@ namespace ConsulSharp
         {
         }
 
+        #region Agent
+
         /// <summary>
         /// get agent members
         /// </summary>
@@ -141,6 +143,67 @@ namespace ConsulSharp
         }
         public event WriteLogHandle  WritLog;
         public delegate void WriteLogHandle(string log);
+
+        #endregion
+
+        #region Check
+        /// <summary>
+        /// view metrics
+        /// </summary>
+        /// <returns></returns>
+        public async Task<QueryCheck> ListChecks()
+        {
+            return await Get<QueryCheck>("/v1/agent/checks");
+        }
+        /// <summary>
+        /// register check
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> RegisterCheck(RegisterCheck check)
+        {
+            return await Put(check, $"/v1/agent/check/register");
+        }
+        /// <summary>
+        /// deregister check
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> DeregisterCheck(string  checkID)
+        {
+            return await Put("", $"/v1/agent/check/deregister/{checkID}");
+        }
+        /// <summary>
+        /// TTL check pass
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> TTLCheckPass(TTLCheckOpt checkPass)
+        {
+            return await Put(checkPass, $"/v1/agent/check/pass");
+        }
+        /// <summary>
+        /// TTL check warn
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> TTLCheckWarn(TTLCheckOpt checkPass)
+        {
+            return await Put(checkPass, $"/v1/agent/check/warn");
+        }
+        /// <summary>
+        /// TTL check fail
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> TTLCheckFail(TTLCheckOpt checkPass)
+        {
+            return await Put(checkPass, $"/v1/agent/check/fail");
+        }
+        /// <summary>
+        /// TTL check update
+        /// </summary>
+        /// <returns></returns>    
+        public async Task<(bool result, string backJson)> TTLCheckUpdate(TTLCheckUpdate checkUpdate)
+        {
+            return await Put(checkUpdate, $"/v1/agent/check/update");
+        }
+        #endregion
 
         #region register and deregister service
         /// <summary>
