@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ConsulSharp
+{
     /// <summary>
     /// register Check
     /// </summary>

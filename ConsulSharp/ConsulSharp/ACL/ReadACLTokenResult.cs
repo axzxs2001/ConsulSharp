@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsulSharp
+namespace ConsulSharp.ACL
 {
     /// <summary>
     /// Read ACL Token
     /// </summary>
-    public class ReadACLToken : ACLToken
+    public class ReadACLTokenResult : ACLTokenParmeter
     {
         /// <summary>
         /// Create Index

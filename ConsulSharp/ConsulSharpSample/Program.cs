@@ -46,7 +46,7 @@ namespace ConsulSharpSample
 
                         break;
                     case "2":
-                        QueryHealthServicesByName();
+                    
                         break;
                     case "e":
                         return;
@@ -55,24 +55,6 @@ namespace ConsulSharpSample
         }
 
 
-        /// <summary>
-        /// 按名称查询健康的服务 
-        /// </summary>
-        private static void QueryHealthServicesByName()
-        {
-            Console.WriteLine("请输入服务名称：");
-            var serviceName = Console.ReadLine();
-            var serviceGovern = new HealthGovern();
-            foreach (var healthService in serviceGovern.HealthServiceByName(serviceName: serviceName).GetAwaiter().GetResult())
-            {
-                Console.WriteLine($"服务名称：{healthService.Service.Service} {healthService.Service.Address}:{healthService.Service.Port}");
-
-                foreach (var check in healthService.Checks)
-                {
-                    Console.WriteLine($"   CheckID:{check.CheckID}  状态：{check.Status} {check.Output}");
-                }
-            }
-        }
         #endregion
         #region Catalog管理
         /// <summary>
