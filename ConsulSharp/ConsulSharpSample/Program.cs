@@ -2,7 +2,7 @@
 using System.Text;
 using ConsulSharp;
 using ConsulSharp.ACL;
-
+using ConsulSharp.Event;
 namespace ConsulSharpSample
 {
     class Program
@@ -11,7 +11,7 @@ namespace ConsulSharpSample
         {
             while (true)
             {
-                Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL 按e退出");
+                Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL  5、Event  按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -26,12 +26,64 @@ namespace ConsulSharpSample
                     case "4":
                         ACLManage();
                         break;
+                    case "5":
+                        EventManage();
+                        break;
                     case "e":
                         return;
                 }
             }
         }
-
+        #region Event
+        static void EventManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、Fire Event  2、List Events   按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        FireEvent();
+                        break;
+                    case "2":
+                        ListEvents();
+                        break;
+                    case "e":
+                        return;
+                }
+            }
+        }
+        static void FireEvent()
+        {
+            try
+            {
+                var eve = new EventGovern();
+                var result = eve.FireEvent(new FireEventParmeter { Name = "deploy", DC = "dc1", Node = "", Service = "" }).GetAwaiter().GetResult();
+                Console.WriteLine(result.result);
+                Console.WriteLine(EntityToString(result.fireEvent));
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine($"错误:{exc.Message}");
+            }
+        }
+        static void ListEvents()
+        {
+            try
+            {
+                var eve = new EventGovern();
+                var result = eve.EventList(new ListEventParmeter { Name = "deploy" }).GetAwaiter().GetResult();
+                foreach (var env in result)
+                {
+                    Console.WriteLine(EntityToString(env));
+                }
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine($"错误:{exc.Message}");
+            }
+        }
+        #endregion
         #region ACL
         static void ACLManage()
         {
@@ -360,7 +412,7 @@ namespace ConsulSharpSample
 
         static string EntityToString(object obj)
         {
-            var content = new StringBuilder("类型="+obj.GetType().Name+"\r\n");
+            var content = new StringBuilder("类型=" + obj.GetType().Name + "\r\n");
             foreach (var pro in obj.GetType().GetProperties())
             {
                 content.AppendLine($"{pro.Name}:{pro.GetValue(obj, null)}");

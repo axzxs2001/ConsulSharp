@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsulSharp
+namespace ConsulSharp.Event
 {
     /// <summary>
     /// List Event
@@ -10,22 +10,22 @@ namespace ConsulSharp
     public class ListEventParmeter
     {
         /// <summary>
-        /// name
+        /// Specifies the name of the event to filter. This is specified as part of the URL as a query parameter.
         /// </summary>
-        public string Name { get; set; }    
+        public string Name { get; set; }
 
         /// <summary>
-        /// node
+        /// Specifies a regular expression to filter by node name. This is specified as part of the URL as a query parameter.
         /// </summary>
         public string Node { get; set; }
 
         /// <summary>
-        /// service
+        /// Specifies a regular expression to filter by service name. This is specified as part of the URL as a query parameter.
         /// </summary>
         public string Service { get; set; }
 
         /// <summary>
-        /// tag
+        ///  Specifies a regular expression to filter by tag. This is specified as part of the URL as a query parameter.
         /// </summary>
         public string Tag { get; set; }
     }
