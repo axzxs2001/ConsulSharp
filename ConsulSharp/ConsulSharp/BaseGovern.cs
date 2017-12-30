@@ -101,6 +101,10 @@ namespace ConsulSharp
         protected async Task<(bool result, W backEntity)> Put<T, W>(T entity, string url)
         {
             var backResult = await Put(entity, url);
+            if(!backResult.result)
+            {
+                throw new Exception(backResult.backJson);
+            }
             var backEntity = JsonConvert.DeserializeObject<W>(backResult.backJson);
             return (backResult.result, backEntity);
         }

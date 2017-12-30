@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using ConsulSharp;
+using ConsulSharp.ACL;
 
 namespace ConsulSharpSample
 {
@@ -10,7 +11,7 @@ namespace ConsulSharpSample
         {
             while (true)
             {
-                Console.WriteLine("1、Agent  2、Catalog  3、Health  按e退出");
+                Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL 按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -22,13 +23,65 @@ namespace ConsulSharpSample
                     case "3":
                         HealthManage();
                         break;
+                    case "4":
+                        ACLManage();
+                        break;
                     case "e":
                         return;
                 }
             }
         }
 
+        #region ACL
+        static void ACLManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、BootstrapACLs  2、CreateACLToken  按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        BootstrapACL();
+                        break;
+                    case "2":
+                        CreateACLToken();
+                        break;
+                    case "e":
+                        return;
+                }
+            }
+        }
 
+        static void BootstrapACL()
+        {
+            try
+            {
+                var acl = new ACLGovern();
+                var result = acl.BootstrapACLs().GetAwaiter().GetResult();
+                Console.WriteLine(result.result);
+                Console.WriteLine(result.backBootstrapACLs.ID);
+            }
+            catch(Exception exc)
+            {
+                Console.WriteLine($"错误:{exc.Message}");
+            }
+        }
+
+        static void CreateACLToken()
+        {
+            try
+            {
+                var acl = new ACLGovern();
+                var result = acl.CreateACLToken(new ACLTokenParmeter { ID="acl001", Name="dc1", Rules="", Type= "management" }).GetAwaiter().GetResult();
+                Console.WriteLine(result.result);
+                Console.WriteLine(result.backBootstrapACLs.ID);
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine($"错误:{exc.Message}");
+            }
+        }
+        #endregion
 
 
         #region Health管理
@@ -46,7 +99,7 @@ namespace ConsulSharpSample
 
                         break;
                     case "2":
-                    
+
                         break;
                     case "e":
                         return;
@@ -228,14 +281,14 @@ namespace ConsulSharpSample
         private static void StreamLog()
         {
             var agentGovern = new AgentGovern();
-            agentGovern.WritLog += delegate(string log)
+            agentGovern.WritLog += delegate (string log)
             {
                 Console.WriteLine(log);
-            };         
-            agentGovern.StreamLogs().GetAwaiter().GetResult();           
+            };
+            agentGovern.StreamLogs().GetAwaiter().GetResult();
         }
 
-      
+
 
         /// <summary>
         /// 查询成员
