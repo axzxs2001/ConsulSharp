@@ -37,7 +37,7 @@ namespace ConsulSharpSample
         {
             while (true)
             {
-                Console.WriteLine("1、BootstrapACLs  2、CreateACLToken  按e退出");
+                Console.WriteLine("1、BootstrapACLs  2、CreateACLToken 3、ReadACLToken   按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -45,6 +45,9 @@ namespace ConsulSharpSample
                         break;
                     case "2":
                         CreateACLToken();
+                        break;
+                    case "3":
+                        ReadACLToken();
                         break;
                     case "e":
                         return;
@@ -61,7 +64,7 @@ namespace ConsulSharpSample
                 Console.WriteLine(result.result);
                 Console.WriteLine(result.backBootstrapACLs.ID);
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Console.WriteLine($"错误:{exc.Message}");
             }
@@ -72,9 +75,26 @@ namespace ConsulSharpSample
             try
             {
                 var acl = new ACLGovern();
-                var result = acl.CreateACLToken(new ACLTokenParmeter { ID="acl001", Name="dc1", Rules="", Type= "management" }).GetAwaiter().GetResult();
+                var result = acl.CreateACLToken(new ACLTokenParmeter { ID = "acl001", Name = "dc1", Rules = "", Type = "management" }).GetAwaiter().GetResult();
                 Console.WriteLine(result.result);
                 Console.WriteLine(result.backBootstrapACLs.ID);
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine($"错误:{exc.Message}");
+            }
+        }
+
+        static void ReadACLToken()
+        {
+            try
+            {
+                var acl = new ACLGovern();
+                var result = acl.ReadACLToken("0f738123-28ee-4a6d-bd22-8648f99ffdc5").GetAwaiter().GetResult();
+                foreach (var aclresult in result)
+                {
+                    Console.WriteLine(EntityToString(aclresult));
+                }
             }
             catch (Exception exc)
             {
@@ -336,5 +356,16 @@ namespace ConsulSharpSample
         }
 
         #endregion
+
+
+        static string EntityToString(object obj)
+        {
+            var content = new StringBuilder("类型="+obj.GetType().Name+"\r\n");
+            foreach (var pro in obj.GetType().GetProperties())
+            {
+                content.AppendLine($"{pro.Name}:{pro.GetValue(obj, null)}");
+            }
+            return content.ToString();
+        }
     }
 }
