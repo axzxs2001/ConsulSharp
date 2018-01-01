@@ -68,7 +68,16 @@ namespace ConsulSharp.Agent
             return await Get<ViewMetricsResult>("/agent/metrics");
         }
         /// <summary>
-        /// stream logs
+        /// WriteLog
+        /// </summary>
+        public event WriteLogHandle WriteLog;
+        /// <summary>
+        /// WriteLog Delegate
+        /// </summary>
+        /// <param name="log"></param>
+        public delegate void WriteLogHandle(string log);
+        /// <summary>
+        /// This endpoint streams logs from the local agent until the connection is closed.Must subscription WriteLog event.
         /// </summary>
         /// <returns></returns>
         public async Task StreamLogs()
@@ -80,20 +89,20 @@ namespace ConsulSharp.Agent
             {
                 var bytes = new byte[1024];
                 var result = await stream.ReadAsync(bytes, 0, bytes.Length);
-                WritLog?.Invoke(Encoding.Default.GetString(bytes).Trim('\0'));
+                WriteLog?.Invoke(Encoding.Default.GetString(bytes).Trim('\0'));
             }
         }
         /// <summary>
-        /// join agent
+        /// This endpoint instructs the agent to attempt to connect to a given address.
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> JoinAgent(JoinAgent joinAgent)
+        public async Task<(bool result, string backJson)> JoinAgent(JoinAgentParmeter joinAgentParmeter)
         {
-            return await Put(joinAgent, $"/agent/join");
+            return await Put(joinAgentParmeter, $"/agent/join");
         }
 
         /// <summary>
-        /// graceful leave and shutdown
+        /// This endpoint triggers a graceful leave and shutdown of the agent. It is used to ensure other nodes see the agent as "left" instead of "failed". Nodes that leave will not attempt to re-join the cluster on restarting with a snapshot.For nodes in server mode, the node is removed from the Raft peer set in a graceful manner.This is critical, as in certain situations a non-graceful leave can affect cluster availability.
         /// </summary>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> GracefulLeaveAndShutdown()
@@ -101,7 +110,7 @@ namespace ConsulSharp.Agent
             return await Put("", $"/agent/leave");
         }
         /// <summary>
-        /// force leave and shutdown
+        /// This endpoint instructs the agent to force a node into the left state. If a node fails unexpectedly, then it will be in a failed state. Once in the failed state, Consul will attempt to reconnect, and the services and checks belonging to that node will not be cleaned up. Forcing a node into the left state allows its old entries to be removed.
         /// </summary>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> ForceLeaveAndShutdown()
@@ -110,39 +119,38 @@ namespace ConsulSharp.Agent
         }
 
         /// <summary>
-        /// force leave and shutdown acl_token
+        /// This endpoint updates the ACL tokens currently in use by the agent. It can be used to introduce ACL tokens to the agent for the first time, or to update tokens that were initially loaded from the agent's configuration. Tokens are not persisted, so will need to be updated again if the agent is restarted.
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> UpdateACLToken(UpdateToken token)
+        public async Task<(bool result, string backJson)> UpdateACLToken(UpdateTokenParmeter token)
         {
             return await Put(token, $"/agent/acl_token");
         }
         /// <summary>
-        /// force leave and shutdown acl_agent_token
+        ///  This endpoint updates the ACL tokens currently in use by the agent. It can be used to introduce ACL tokens to the agent for the first time, or to update tokens that were initially loaded from the agent's configuration. Tokens are not persisted, so will need to be updated again if the agent is restarted.
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> UpdateACLAgentToken(UpdateToken token)
+        public async Task<(bool result, string backJson)> UpdateACLAgentToken(UpdateTokenParmeter token)
         {
             return await Put(token, $"/agent/acl_agent_token");
         }
         /// <summary>
-        /// force leave and shutdown acl_agent_master_token
+        ///  This endpoint updates the ACL tokens currently in use by the agent. It can be used to introduce ACL tokens to the agent for the first time, or to update tokens that were initially loaded from the agent's configuration. Tokens are not persisted, so will need to be updated again if the agent is restarted.
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> UpdateACLAgentMasterToken(UpdateToken token)
+        public async Task<(bool result, string backJson)> UpdateACLAgentMasterToken(UpdateTokenParmeter token)
         {
             return await Put(token, $"/agent/acl_agent_master_token");
         }
         /// <summary>
-        /// force leave and shutdown acl_replication_token
+        ///  This endpoint updates the ACL tokens currently in use by the agent. It can be used to introduce ACL tokens to the agent for the first time, or to update tokens that were initially loaded from the agent's configuration. Tokens are not persisted, so will need to be updated again if the agent is restarted.
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> UpdateACLReplicationToken(UpdateToken token)
+        public async Task<(bool result, string backJson)> UpdateACLReplicationToken(UpdateTokenParmeter token)
         {
             return await Put(token, $"/agent/acl_replication_token");
         }
-        public event WriteLogHandle WritLog;
-        public delegate void WriteLogHandle(string log);
+  
 
         #endregion
 

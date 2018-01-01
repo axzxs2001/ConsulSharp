@@ -5,17 +5,17 @@ using System.Text;
 namespace ConsulSharp
 {
     /// <summary>
-    /// join agent
+    /// Join Agent Parmeter
     /// </summary>
-    public class JoinAgent
+    public class JoinAgentParmeter
     {
         /// <summary>
-        /// address
+        /// Specifies the address of the other agent to join. This is specified as part of the URL.
         /// </summary>
         public string Address { get; set; }
 
         /// <summary>
-        /// wan
+        /// Specifies to try and join over the WAN pool. This is only optional for agents running in server mode. This is specified as part of the URL as a query parameter
         /// </summary>
         public string Wan { get; set; }
     }

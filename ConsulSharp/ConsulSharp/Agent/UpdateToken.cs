@@ -7,10 +7,10 @@ namespace ConsulSharp
     /// <summary>
     /// Update ACL Tokens
     /// </summary>
-    public class UpdateToken
+    public class UpdateTokenParmeter
     {
         /// <summary>
-        /// token
+        /// Specifies the ACL token to set.
         /// </summary>
         public string Token { get; set; }
     }
