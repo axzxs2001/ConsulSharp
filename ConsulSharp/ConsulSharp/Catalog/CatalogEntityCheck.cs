@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsulSharp
+namespace ConsulSharp.Catalog
 {
     /// <summary>
     /// Catalog Entity Check
     /// </summary>
-    public class CatalogEntityCheck
+    public class Check
     {
         /// <summary>
         /// Node Name

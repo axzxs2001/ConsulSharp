@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using ConsulSharp.Agent.Check;
+using ConsulSharp.Agent.Service;
 
 namespace ConsulSharp.Agent
 {

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsulSharp
+namespace ConsulSharp.Catalog
 {
     /// <summary>
     /// Health Node
     /// </summary>
-    public class HealthCatalogNode: BaseNode
+    public class ListNodesResult: BaseNode
     {       
         /// <summary>
         /// Create Index

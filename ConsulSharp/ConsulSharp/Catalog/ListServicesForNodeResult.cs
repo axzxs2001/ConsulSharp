@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsulSharp
+namespace ConsulSharp.Catalog
 {
     /// <summary>
     /// List Services for Node
     /// </summary>
-    public class CatalogNode
+    public class ListServicesForNodeResult
     {
         /// <summary>
         /// node

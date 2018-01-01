@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsulSharp.Agent.Service;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

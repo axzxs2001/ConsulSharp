@@ -7,138 +7,96 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsulSharp
+namespace ConsulSharp.Catalog
 {
     /// <summary>
     /// Service Govern
     /// </summary>
-    public class CatalogGovern: Govern
+    public class CatalogGovern : Govern
     {
-        
+
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="baseAddress">Base Address</param>
-        public CatalogGovern(string baseAddress = "http://localhost:8500"):base(baseAddress)
-        {       
-        }     
+        public CatalogGovern(string baseAddress = "http://localhost:8500") : base(baseAddress)
+        {
+        }
 
         #region catalog
         /// <summary>
-        /// register service
+        /// This endpoint is a low-level mechanism for registering or updating entries in the catalog. It is usually preferable to instead use the agent endpoints for registration as they are simpler and perform anti-entropy.
         /// </summary>
         /// <returns></returns>
-        /// <param name="service">service</param>
-        public async Task<(bool result, string backJson)> RegisterCatalog(CatalogEntity catalog)
+        /// <param name="catalogEntityParmeter">Catalog Entity Parmeter</param>
+        public async Task<(bool result, string backJson)> RegisterEntity(CatalogEntityParmeter catalogEntityParmeter)
         {
-            return await Put(catalog, $"/catalog/register");
+            return await Put(catalogEntityParmeter, $"/catalog/register");
         }
         /// <summary>
-        /// deregister service
+        /// This endpoint is a low-level mechanism for directly removing entries from the Catalog. It is usually preferable to instead use the agent endpoints for deregistration as they are simpler and perform anti-entropy.
         /// </summary>
         /// <returns></returns>
-        /// <param name="deregisterEntity">deregister entity</param>
-        public async Task<(bool result, string backJson)> DeregisterCatalog(DeCatalogEntity deregisterEntity)
+        /// <param name="deregisterEntityParmeter">Deregister Entity Parmeter</param>
+        public async Task<(bool result, string backJson)> DeregisterCatalog(DeregisterEntityParmeter deregisterEntityParmeter)
         {
-            return await Put(deregisterEntity, $"/catalog/deregister");
+            return await Put(deregisterEntityParmeter, $"/catalog/deregister");
         }
 
         /// <summary>
-        /// get catalog datacenter
+        /// This endpoint returns the list of all known datacenters. The datacenters will be sorted in ascending order based on the estimated median round trip time from the server to the servers in that datacenter.        This endpoint does not require a cluster leader and will succeed even during an availability outage.Therefore, it can be used as a simple check to see if any Consul servers are routable.
         /// </summary>
         /// <returns></returns>
-        public async Task<string[]> CatalogDatacenters()
+        public async Task<string[]> ListDatacenters()
         {
-            var json = await Get("/catalog/datacenters");
-            if (!string.IsNullOrEmpty(json))
-            {
-                try
-                {
-                    dynamic jsonObj = JsonConvert.DeserializeObject(json);
-                    var services = new List<string>();
-                    foreach (var serviceCheck in jsonObj)
-                    {
-                        services.Add(serviceCheck.Value);
-                    }
-                    return services.ToArray();
-                }
-                catch (JsonReaderException)
-                {
-                    throw new ApplicationException($"back content is error formatter:{json}");
-                }
-            }
-            else
-            {
-                throw new ApplicationException($"back content is empty.");
-            }
+            return await Get<string[]>("/catalog/datacenters");
         }
         /// <summary>
-        /// get catalog nodes
+        /// This endpoint and returns the nodes registered in a given datacenter.
         /// </summary>
         /// <returns></returns>
-        public async Task<HealthCatalogNode[]> CatalogNodes()
+        public async Task<ListNodesResult[]> ListNodes(ListNodesParmeter listNodesParmeter)
         {
-            return await Get<HealthCatalogNode[]>("/catalog/nodes");
+            return await Get<ListNodesResult[], ListNodesParmeter>("/catalog/nodes", listNodesParmeter);
         }
+
         /// <summary>
-        /// get catalog node by name
+        /// This endpoint returns the node's registered services.
         /// </summary>
+        /// <param name="listServicesForNodeParmeter">List Services For Node Parmeter</param>
         /// <returns></returns>
-        public async Task<CatalogNode> CatalogNodeByName(string nodeName)
+        public async Task<ListServicesForNodeResult> ListServicesForNode(ListServicesForNodeParmeter listServicesForNodeParmeter)
         {
-            return await Get<CatalogNode>($"/catalog/node/{nodeName}");
+            return await Get<ListServicesForNodeResult, ListServicesForNodeParmeter>($"/catalog/node", listServicesForNodeParmeter);
         }
         /// <summary>
-        /// get catalog services
+        /// This endpoint returns the services registered in a given datacenter.
+        /// </summary>
+        /// <param name="listServicesParmeter"></param>
+        /// <returns></returns>
+
+        public async Task<Dictionary<string, dynamic>> ListServices(ListServicesParmeter listServicesParmeter)
+        {
+            return await Get<Dictionary<string, dynamic>, ListServicesParmeter>("/catalog/services", listServicesParmeter);
+        }
+
+
+        /// <summary>
+        /// This endpoint returns the nodes providing a service in a given datacenter.
         /// </summary>    
-        /// <param name="requestUrl">Request Url</param>
-        /// <param name="dataCenter">Data Center Name</param>
+       
         /// <returns></returns>
-        public async Task<Dictionary<string, string[]>> CatalogServices(string dataCenter = null)
+        public async Task<ListNodesForServiceResult[]> ListNodesForService(ListNodesForServiceParmeter  listNodesForServiceParmeter)
         {
 
-            var json = await Get("/catalog/services", dataCenter);
-            if (!string.IsNullOrEmpty(json))
-            {
-                try
-                {
-                    dynamic jsonObj = JsonConvert.DeserializeObject(json);
-                    var services = new Dictionary<string, string[]>();
-                    foreach (var serviceCheck in jsonObj)
-                    {
-                        var names = new List<string>();
-                        foreach (var child in serviceCheck.Value)
-                        {
-                            names.Add(child.Value);
-                        }
-                        services.Add(serviceCheck.Name, names.ToArray());
-                    }
-                    return services;
-                }
-                catch (JsonReaderException)
-                {
-                    throw new ApplicationException($"back content is error formatter:{json}");
-                }
-            }
-            else
-            {
-                throw new ApplicationException($"back content is empty.");
-            }
+            return await Get<ListNodesForServiceResult[], ListNodesForServiceParmeter>("/catalog/service", listNodesForServiceParmeter);
+
         }
 
-        /// <summary>
-        /// get catalog service by service name
-        /// </summary>
-        /// <param name="requestUrl">Request Url</param>
-        /// <param name="dataCenter">Data Center Name</param> 
-        /// <returns></returns>
-        public async Task<CatalogService[]> CatalogServiceByName(string serviceName, string dataCenter = null)
-        {
-            return await Get<CatalogService[]>($"/catalog/service/{serviceName}", dataCenter);
-        }
-        #endregion   
+    
+        #endregion
 
-     
+
 
     }
 }

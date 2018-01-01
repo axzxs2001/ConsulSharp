@@ -93,7 +93,13 @@ namespace ConsulSharp
             {
                 if (((W)pro.GetValue(inEntity, null)) != default(W))
                 {
-                    parmeterString.Append($"{pro.Name}={pro.GetValue(inEntity, null)}&");
+                    var proName = pro.Name;
+                    var atts = pro.GetCustomAttributes(typeof(FieldNameAttribute), false);
+                    if (atts.Length > 0)
+                    {
+                        proName = (atts[0] as FieldNameAttribute).ChangeFieldName;
+                    }
+                    parmeterString.Append($"{proName}={pro.GetValue(inEntity, null)}&");
                 }
             }
             return parmeterString.ToString().Trim('&');
