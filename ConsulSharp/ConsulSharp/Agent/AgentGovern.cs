@@ -28,6 +28,7 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// List Members,This endpoint returns the members the agent sees in the cluster gossip pool. Due to the nature of gossip, this is eventually consistent: the results may differ by agent. The strongly consistent view of nodes is instead provided by /v1/catalog/nodes.
         /// </summary>
+        /// <param name="listMembersParmeter">List Members Parmeter</param>
         /// <returns></returns>
         public async Task<Member[]> ListMembers(ListMembersParmeter listMembersParmeter)
         {
@@ -54,6 +55,7 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint places the agent into "maintenance mode". During maintenance mode, the node will be marked as unavailable and will not be present in DNS or API queries. This API call is idempotent.        Maintenance mode is persistent and will be automatically restored on agent restart.
         /// </summary>
+        /// <param name="enableMaintenanceModeParmeter">Enable Maintenance ModeParmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> EnableMaintenanceMode(EnableMaintenanceModeParmeter  enableMaintenanceModeParmeter)
         {
@@ -175,6 +177,7 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint remove a check from the local agent. The agent will take care of deregistering the check from the catalog. If the check with the provided ID does not exist, no action is taken.
         /// </summary>
+        /// <param name="tTLCheckUpdateParmeter">TTL CheckUpdate Parmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> DeregisterCheck(DeregisterCheckParmeter deregisterCheckParmeter )
         {
@@ -183,6 +186,7 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint is used with a TTL type check to set the status of the check to passing and to reset the TTL clock.
         /// </summary>
+        /// <param name="tTLCheckUpdateParmeter">TTL CheckUpdate Parmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckPass(TTLCheckPassParmeter  tTLCheckPassParmeter)
         {
@@ -191,6 +195,7 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint is used with a TTL type check to set the status of the check to warning and to reset the TTL clock.
         /// </summary>
+        /// <param name="tTLCheckUpdateParmeter">TTL CheckUpdate Parmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckWarn(TTLCheckPassParmeter tTLCheckPassParmeter)
         {
@@ -199,6 +204,7 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint is used with a TTL type check to set the status of the check to critical and to reset the TTL clock.
         /// </summary>
+        /// <param name="tTLCheckUpdateParmeter">TTL CheckUpdate Parmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckFail(TTLCheckPassParmeter tTLCheckPassParmeter)
         {
@@ -207,6 +213,7 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint is used with a TTL type check to set the status of the check and to reset the TTL clock.
         /// </summary>
+        /// <param name="tTLCheckUpdateParmeter">TTL CheckUpdate Parmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckUpdate(TTLCheckUpdateParmeter  tTLCheckUpdateParmeter)
         {
@@ -216,36 +223,31 @@ namespace ConsulSharp.Agent
 
         #region service
         /// <summary>
-        /// List Services
+        /// This endpoint returns all the services that are registered with the local agent. These services were either provided through configuration files or added dynamically using the HTTP API.        It is important to note that the services known by the agent may be different from those reported by the catalog.This is usually due to changes being made while there is no leader elected.The agent performs active anti-entropy, so in most situations everything will be in sync within a few seconds.
         /// </summary>
         /// <returns></returns>    
-        public async Task<Dictionary<string, ListService>> ListServices(TTLCheckPassParmeter checkPass)
+        public async Task<Dictionary<string, ListService>> ListServices()
         {
             return await Get<Dictionary<string, ListService>>($"/agent/services");
         }
 
         /// <summary>
-        /// register service
+        /// This endpoint adds a new service, with an optional health check, to the local agent.        The agent is responsible for managing the status of its local services, and for sending updates about its local services to the servers to keep the global catalog in sync.
         /// </summary>
         /// <returns></returns>
-        /// <param name="service">service</param>
-        public async Task<(bool result, string backJson)> RegisterServices(Service service)
+        /// <param name="registerServiceParmeter">Register Service Parmeter</param>
+        public async Task<(bool result, string backJson)> RegisterServices(RegisterServiceParmeter registerServiceParmeter)
         {
-            return await Put(service, $"/agent/service/register");
+            return await Put(registerServiceParmeter, $"/agent/service/register");
         }
         /// <summary>
-        /// deregister service
+        /// This endpoint removes a service from the local agent. If the service does not exist, no action is taken.The agent will take care of deregistering the service with the catalog.If there is an associated check, that is also deregistered.
         /// </summary>
         /// <returns></returns>
-        /// <param name="serviceID">service ID</param>
-        public async Task<(bool result, string backJson)> DeregisterServices(string serviceID)
+        /// <param name="deregisterCheckParmeter">Deregister Check Parmeter</param>
+        public async Task<(bool result, string backJson)> DeregisterServices(DeregisterCheckParmeter deregisterCheckParmeter)
         {
-            return await Put("", $"/agent/service/deregister/{ serviceID}");
-            //var client = new HttpClient();
-            //client.BaseAddress = new Uri(_baseAddress);
-            //var response = await client.PutAsync($"/agent/service/deregister/" + serviceID, null);
-            //var backJson = await response.Content.ReadAsStringAsync();
-            //return (result: response.StatusCode == System.Net.HttpStatusCode.OK, backJson: backJson);
+            return await Put(deregisterCheckParmeter, $"/agent/service/deregister");      
         }
         #endregion
 

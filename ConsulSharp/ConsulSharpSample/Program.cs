@@ -391,7 +391,7 @@ namespace ConsulSharpSample
         /// </summary>
         private static void RegisterService()
         {
-            var service = new Service();
+            var service = new RegisterServiceParmeter();
             service.ID = "newservice001";
             service.Name = "newservice001";
             service.Address = "192.168.1.110";
