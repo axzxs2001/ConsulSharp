@@ -6,11 +6,12 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using ConsulSharp.Agent.Check;
 
 namespace ConsulSharp.Agent
 {
     /// <summary>
-    /// Service Govern
+    /// Agent,Check,Service Govern
     /// </summary>
     public class AgentGovern : Govern
     {
@@ -150,66 +151,66 @@ namespace ConsulSharp.Agent
         {
             return await Put(token, $"/agent/acl_replication_token");
         }
-  
+
 
         #endregion
 
         #region Check
         /// <summary>
-        /// view metrics
+        /// This endpoint returns all checks that are registered with the local agent. These checks were either provided through configuration files or added dynamically using the HTTP API.        It is important to note that the checks known by the agent may be different from those reported by the catalog.This is usually due to changes being made while there is no leader elected.The agent performs active anti-entropy, so in most situations everything will be in sync within a few seconds.
         /// </summary>
         /// <returns></returns>
-        public async Task<QueryCheck> ListChecks()
+        public async Task<ListChecksParmeter> ListChecks()
         {
-            return await Get<QueryCheck>("/agent/checks");
+            return await Get<ListChecksParmeter>("/agent/checks");
         }
         /// <summary>
-        /// register check
+        /// This endpoint adds a new check to the local agent. Checks may be of script, HTTP, TCP, or TTL type. The agent is responsible for managing the status of the check and keeping the Catalog in sync.
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> RegisterCheck(RegisterCheck check)
+        public async Task<(bool result, string backJson)> RegisterCheck(RegisterCheckParmeter check)
         {
             return await Put(check, $"/agent/check/register");
         }
         /// <summary>
-        /// deregister check
+        /// This endpoint remove a check from the local agent. The agent will take care of deregistering the check from the catalog. If the check with the provided ID does not exist, no action is taken.
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> DeregisterCheck(string checkID)
+        public async Task<(bool result, string backJson)> DeregisterCheck(DeregisterCheckParmeter deregisterCheckParmeter )
         {
-            return await Put("", $"/agent/check/deregister/{checkID}");
+            return await Put(deregisterCheckParmeter, $"/agent/check/deregister");
         }
         /// <summary>
-        /// TTL check pass
+        /// This endpoint is used with a TTL type check to set the status of the check to passing and to reset the TTL clock.
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> TTLCheckPass(TTLCheckOpt checkPass)
+        public async Task<(bool result, string backJson)> TTLCheckPass(TTLCheckPassParmeter  tTLCheckPassParmeter)
         {
-            return await Put(checkPass, $"/agent/check/pass");
+            return await Put(tTLCheckPassParmeter, $"/agent/check/pass");
         }
         /// <summary>
-        /// TTL check warn
+        /// This endpoint is used with a TTL type check to set the status of the check to warning and to reset the TTL clock.
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> TTLCheckWarn(TTLCheckOpt checkPass)
+        public async Task<(bool result, string backJson)> TTLCheckWarn(TTLCheckPassParmeter tTLCheckPassParmeter)
         {
-            return await Put(checkPass, $"/agent/check/warn");
+            return await Put(tTLCheckPassParmeter, $"/agent/check/warn");
         }
         /// <summary>
-        /// TTL check fail
+        /// This endpoint is used with a TTL type check to set the status of the check to critical and to reset the TTL clock.
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> TTLCheckFail(TTLCheckOpt checkPass)
+        public async Task<(bool result, string backJson)> TTLCheckFail(TTLCheckPassParmeter tTLCheckPassParmeter)
         {
-            return await Put(checkPass, $"/agent/check/fail");
+            return await Put(tTLCheckPassParmeter, $"/agent/check/fail");
         }
         /// <summary>
-        /// TTL check update
+        /// This endpoint is used with a TTL type check to set the status of the check and to reset the TTL clock.
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> TTLCheckUpdate(TTLCheckUpdate checkUpdate)
+        public async Task<(bool result, string backJson)> TTLCheckUpdate(TTLCheckUpdateParmeter  tTLCheckUpdateParmeter)
         {
-            return await Put(checkUpdate, $"/agent/check/update");
+            return await Put(tTLCheckUpdateParmeter, $"/agent/check/update");
         }
         #endregion
 
@@ -218,7 +219,7 @@ namespace ConsulSharp.Agent
         /// List Services
         /// </summary>
         /// <returns></returns>    
-        public async Task<Dictionary<string, ListService>> ListServices(TTLCheckOpt checkPass)
+        public async Task<Dictionary<string, ListService>> ListServices(TTLCheckPassParmeter checkPass)
         {
             return await Get<Dictionary<string, ListService>>($"/agent/services");
         }

@@ -5,17 +5,17 @@ using System.Text;
 namespace ConsulSharp
 {
     /// <summary>
-    /// ttl check pass,warn,fail
+    /// TTL Check Pass Parmeter
     /// </summary>
-    public class TTLCheckOpt
+    public class TTLCheckPassParmeter
     {
         /// <summary>
-        /// check id
+        /// Specifies the unique ID of the check to use. This is specified as part of the URL.
         /// </summary>
         public string Check_ID { get; set; }
 
         /// <summary>
-        /// note
+        /// Specifies a human-readable message. This will be passed through to the check's Output field.
         /// </summary>
         public string Note { get; set; }
     }

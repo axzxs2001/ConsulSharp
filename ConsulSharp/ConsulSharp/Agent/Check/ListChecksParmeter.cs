@@ -7,7 +7,7 @@ namespace ConsulSharp
     /// <summary>
     /// Health Check,List Checks
     /// </summary>
-    public class QueryCheck
+    public class ListChecksParmeter
     {
         /// <summary>
         /// Node Name
