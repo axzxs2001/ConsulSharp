@@ -7,7 +7,7 @@ namespace ConsulSharp
     /// <summary>
     /// counter
     /// </summary>
-    public class CounterSample
+    public class Counter
     {
         /// <summary>
         /// name

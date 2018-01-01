@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsulSharp
+namespace ConsulSharp.Agent
 {
     /// <summary>
     /// Service Govern
@@ -25,25 +25,25 @@ namespace ConsulSharp
         #region Agent
 
         /// <summary>
-        /// get agent members
+        /// List Members,This endpoint returns the members the agent sees in the cluster gossip pool. Due to the nature of gossip, this is eventually consistent: the results may differ by agent. The strongly consistent view of nodes is instead provided by /v1/catalog/nodes.
         /// </summary>
         /// <returns></returns>
-        public async Task<Member[]> Members()
+        public async Task<Member[]> ListMembers(ListMembersParmeter listMembersParmeter)
         {
-            return await Get<Member[]>("/agent/members");
+            return await Get<Member[], ListMembersParmeter>("/agent/members", listMembersParmeter);
         }
 
         /// <summary>
-        /// get agent configuration
+        /// This endpoint returns the configuration and member information of the local agent. The Config element contains a subset of the configuration and its format will not change in a backwards incompatible way between releases. DebugConfig contains the full runtime configuration but its format is subject to change without notice or deprecation.
         /// </summary>
         /// <returns></returns>
-        public async Task<Configuration> Configuration()
+        public async Task<ReadConfigurationResult> ReadConfiguration()
         {
-            return await Get<Configuration>("/agent/self");
+            return await Get<ReadConfigurationResult>("/agent/self");
         }
 
         /// <summary>
-        /// reload agent
+        /// This endpoint instructs the agent to reload its configuration. Any errors encountered during this process are returned.Not all configuration options are reloadable.See the Reloadable Configuration section on the agent options page for details on which options are supported.
         /// </summary>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> ReloadAgent()
@@ -51,35 +51,35 @@ namespace ConsulSharp
             return await Put("", $"/agent/reload");
         }
         /// <summary>
-        /// enable maintenance mode
+        /// This endpoint places the agent into "maintenance mode". During maintenance mode, the node will be marked as unavailable and will not be present in DNS or API queries. This API call is idempotent.        Maintenance mode is persistent and will be automatically restored on agent restart.
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> EnableMaintenanceMode(MaintenanceMode maintenanceMode)
+        public async Task<(bool result, string backJson)> EnableMaintenanceMode(EnableMaintenanceModeParmeter  enableMaintenanceModeParmeter)
         {
-            return await Put(maintenanceMode, $"/agent/maintenance");
+            return await Put(enableMaintenanceModeParmeter, $"/agent/maintenance");
         }
 
         /// <summary>
-        /// view metrics
+        /// This endpoint returns the configuration and member information of the local agent.
         /// </summary>
         /// <returns></returns>
-        public async Task<Metrics> ViewMetrics()
+        public async Task<ViewMetricsResult> ViewMetrics()
         {
-            return await Get<Metrics>("/agent/metrics");
+            return await Get<ViewMetricsResult>("/agent/metrics");
         }
         /// <summary>
         /// stream logs
         /// </summary>
         /// <returns></returns>
         public async Task StreamLogs()
-        {         
+        {
             var client = new HttpClient();
-            client.BaseAddress = new Uri($"{_baseAddress}");        
+            client.BaseAddress = new Uri($"{_baseAddress}");
             var stream = await client.GetStreamAsync("/agent/monitor");
             while (stream.CanRead)
             {
                 var bytes = new byte[1024];
-                var result = await stream.ReadAsync(bytes, 0, bytes.Length);                
+                var result = await stream.ReadAsync(bytes, 0, bytes.Length);
                 WritLog?.Invoke(Encoding.Default.GetString(bytes).Trim('\0'));
             }
         }
@@ -141,7 +141,7 @@ namespace ConsulSharp
         {
             return await Put(token, $"/agent/acl_replication_token");
         }
-        public event WriteLogHandle  WritLog;
+        public event WriteLogHandle WritLog;
         public delegate void WriteLogHandle(string log);
 
         #endregion
@@ -167,7 +167,7 @@ namespace ConsulSharp
         /// deregister check
         /// </summary>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> DeregisterCheck(string  checkID)
+        public async Task<(bool result, string backJson)> DeregisterCheck(string checkID)
         {
             return await Put("", $"/agent/check/deregister/{checkID}");
         }
@@ -212,7 +212,7 @@ namespace ConsulSharp
         /// <returns></returns>    
         public async Task<Dictionary<string, ListService>> ListServices(TTLCheckOpt checkPass)
         {
-            return await Get<Dictionary<string,ListService>>($"/agent/services");
+            return await Get<Dictionary<string, ListService>>($"/agent/services");
         }
 
         /// <summary>

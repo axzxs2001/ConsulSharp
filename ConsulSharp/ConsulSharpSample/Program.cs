@@ -368,7 +368,7 @@ namespace ConsulSharpSample
         private static void QueryMembers()
         {
             var agentGovern = new AgentGovern();
-            foreach (var member in agentGovern.Members().GetAwaiter().GetResult())
+            foreach (var member in agentGovern.ListMembers().GetAwaiter().GetResult())
             {
                 Console.WriteLine($"Name:{member.Name} 地址:{member.Addr}:{member.Port}");
             }

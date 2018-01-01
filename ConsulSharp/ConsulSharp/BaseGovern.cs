@@ -57,6 +57,49 @@ namespace ConsulSharp
             }
         }
 
+        protected async Task<T> Get<T, W>(string url, W inEntity) where W : class, new()
+        {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri($"{_baseAddress}");
+            var parString = GetUrlParmeter<W>(inEntity);
+            if (!string.IsNullOrEmpty(parString))
+            {
+                url += $"?{parString}";
+            }
+            var response = await client.GetAsync($"/{urlPrefix}/{url}");
+            var json = await response.Content.ReadAsStringAsync();
+            if (!string.IsNullOrEmpty(json))
+            {
+                try
+                {
+                    var entity = JsonConvert.DeserializeObject<T>(json);
+                    return entity;
+                }
+                catch (JsonReaderException)
+                {
+                    throw new ApplicationException($"back content is error formatter:{json}");
+                }
+            }
+            else
+            {
+                throw new ApplicationException($"back content is empty.");
+            }
+        }
+
+        string GetUrlParmeter<W>(W inEntity) where W : class, new()
+        {
+            var parmeterString = new StringBuilder();
+            foreach (var pro in inEntity.GetType().GetProperties())
+            {
+                if (((W)pro.GetValue(inEntity, null)) != default(W))
+                {
+                    parmeterString.Append($"{pro.Name}={pro.GetValue(inEntity, null)}&");
+                }
+            }
+            return parmeterString.ToString().Trim('&');
+        }
+
+
         /// <summary>
         /// get
         /// </summary>
@@ -101,7 +144,7 @@ namespace ConsulSharp
         protected async Task<(bool result, W backEntity)> Put<T, W>(T entity, string url)
         {
             var backResult = await Put(entity, url);
-            if(!backResult.result)
+            if (!backResult.result)
             {
                 throw new Exception(backResult.backJson);
             }

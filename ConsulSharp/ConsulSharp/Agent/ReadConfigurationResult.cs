@@ -7,7 +7,7 @@ namespace ConsulSharp
     /// <summary>
     /// Read Configuration
     /// </summary>
-    public class Configuration
+    public class ReadConfigurationResult
     {
         /// <summary>
         /// config

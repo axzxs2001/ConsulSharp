@@ -5,7 +5,7 @@ using System.Text;
 namespace ConsulSharp
 {
     /// <summary>
-    /// agent List Members
+    /// List Members
     /// </summary>
     public class Member
     {
@@ -24,7 +24,7 @@ namespace ConsulSharp
         /// <summary>
         /// tags
         /// </summary>
-        public string[] Tags { get; set; }
+        public Dictionary<string,string> Tags { get; set; }
         /// <summary>
         /// status
         /// </summary>

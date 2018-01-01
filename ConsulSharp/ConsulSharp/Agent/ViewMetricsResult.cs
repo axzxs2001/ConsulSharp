@@ -5,9 +5,9 @@ using System.Text;
 namespace ConsulSharp
 {
     /// <summary>
-    /// View Metrics
+    /// View Metrics Result
     /// </summary>
-    public class Metrics
+    public class ViewMetricsResult
     {
         /// <summary>
         /// timestamp
@@ -24,11 +24,11 @@ namespace ConsulSharp
         /// <summary>
         /// counters
         /// </summary>
-        public CounterSample[] Counters { get; set; }
+        public Counter[] Counters { get; set; }
         /// <summary>
         /// samples
         /// </summary>
-        public CounterSample[] Samples { get; set; }
+        public Sample[] Samples { get; set; }
 
     }
 }
