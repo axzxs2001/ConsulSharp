@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsulSharp
+namespace ConsulSharp.Coordinates
 {
     /// <summary>
     /// Coordnates coord

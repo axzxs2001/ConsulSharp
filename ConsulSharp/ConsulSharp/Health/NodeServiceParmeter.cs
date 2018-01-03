@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsulSharp.Health;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

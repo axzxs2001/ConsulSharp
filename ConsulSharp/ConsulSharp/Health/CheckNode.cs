@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsulSharp
+namespace ConsulSharp.Health
 {
     /// <summary>
     /// List Checks for Node
     /// </summary>
-    public class CheckNode: BaseCheckNode
+    public class CheckNodeResult: BaseCheckNode
     {
         /// <summary>
         /// id

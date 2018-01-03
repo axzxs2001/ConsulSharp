@@ -8,7 +8,7 @@ namespace ConsulSharp.Health
     /// <summary>
     /// List Nodes for Service
     /// </summary>
-    public class NodeService
+    public class NodeServiceResult
     {
         /// <summary>
         /// node
