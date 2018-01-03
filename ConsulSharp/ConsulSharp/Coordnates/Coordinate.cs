@@ -7,7 +7,7 @@ namespace ConsulSharp
     /// <summary>
     /// Coordinate
     /// </summary>
-    public class LanCoordinate: Coordinate
+    public class LanCoordinateResult: Coordinate
     {
         /// <summary>
         /// Segment

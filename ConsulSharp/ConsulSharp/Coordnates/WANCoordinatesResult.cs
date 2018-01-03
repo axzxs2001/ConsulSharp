@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsulSharp
+namespace ConsulSharp.Coordinates
 {
     /// <summary>
     /// Read WAN Coordinates
     /// </summary>
-    public class WANCoordinates
+    public class WANCoordinatesResult
     {
         /// <summary>
         /// datacenter

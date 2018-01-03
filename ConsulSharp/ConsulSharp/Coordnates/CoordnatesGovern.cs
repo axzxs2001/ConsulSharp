@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsulSharp
+namespace ConsulSharp.Coordinates
 {
     /// <summary>
     /// Coordnates Govern
@@ -23,34 +23,34 @@ namespace ConsulSharp
         {
         }
         /// <summary>
-        /// Read WAN Coordinates
+        /// This endpoint returns the WAN network coordinates for all Consul servers, organized by datacenters. It serves data out of the server's local Serf data, so its results may vary as requests are handled by different servers in the cluster.
         /// </summary>
         /// <returns></returns>
-        public async Task<WANCoordinates[]> ReadWANCoordinates()
+        public async Task<WANCoordinatesResult[]> ReadWANCoordinates()
         {
-            return await Get<WANCoordinates[]>($"/coordinate/datacenters");
+            return await Get<WANCoordinatesResult[]>($"/coordinate/datacenters");
         }
         /// <summary>
-        /// Read LAN Coordinates for all nodes
+        /// This endpoint returns the LAN network coordinates for all nodes in a given datacenter.
         /// </summary>
-        /// <param name="lanCoordinates">LAN Coordinates</param>
+        /// <param name="lanCoordinates">LAN Coordinates Parmeter</param>
         /// <returns></returns>
-        public async Task<LanCoordinate[]> ReadLANCoordinatesForAllNodes(LANCoordinatesParmeter lanCoordinates)
+        public async Task<LanCoordinateResult[]> ReadLANCoordinatesForAllNodes(LANCoordinatesParmeter  lANCoordinatesParmeter)
         {
-            return await Get<LanCoordinate[]>($"/coordinate/nodes/{(string.IsNullOrEmpty(lanCoordinates.DC) ? lanCoordinates.Segment : lanCoordinates.DC)}");
+            return await Get<LanCoordinateResult[], LANCoordinatesParmeter>($"/coordinate/nodes", lANCoordinatesParmeter);
         }
         /// <summary>
-        /// Read LAN Coordinates for a node
+        /// This endpoint returns the LAN network coordinates for the given node.
         /// </summary>
-        /// <param name="lanCoordinates">LAN Coordinates</param>
+        /// <param name="lANCoordinatesParmeter">LAN Coordinates Parmeter</param>
         /// <returns></returns>
-        public async Task<LanCoordinate[]> ReadLANCoordinatesForANodes(LANCoordinatesParmeter lanCoordinates)
+        public async Task<LanCoordinateResult[]> ReadLANCoordinatesForANodes(LANCoordinatesParmeter lANCoordinatesParmeter)
         {
-            return await Get<LanCoordinate[]>($"/coordinate/node/{(string.IsNullOrEmpty(lanCoordinates.DC) ? lanCoordinates.Segment : lanCoordinates.DC)}");
+            return await Get<LanCoordinateResult[], LANCoordinatesParmeter>($"/coordinate/node", lANCoordinatesParmeter);
         }
 
         /// <summary>
-        /// Update LAN Coordinates for a node
+        /// This endpoint updates the LAN network coordinates for a node in a given datacenter.
         /// </summary>
         /// <returns></returns>
         /// <param name="dc">datacenter</param>
