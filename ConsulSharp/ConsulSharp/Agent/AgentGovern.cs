@@ -56,7 +56,7 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint places the agent into "maintenance mode". During maintenance mode, the node will be marked as unavailable and will not be present in DNS or API queries. This API call is idempotent.        Maintenance mode is persistent and will be automatically restored on agent restart.
         /// </summary>
-        /// <param name="enableMaintenanceModeParmeter">Enable Maintenance ModeParmeter</param>
+        /// <param name="enableMaintenanceModeParmeter">Enable Maintenance Mode Parmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> EnableMaintenanceMode(EnableMaintenanceModeParmeter  enableMaintenanceModeParmeter)
         {
@@ -99,6 +99,7 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint instructs the agent to attempt to connect to a given address.
         /// </summary>
+        /// <param name="joinAgentParmeter">Join Agent Parmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> JoinAgent(JoinAgentParmeter joinAgentParmeter)
         {
@@ -125,34 +126,38 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint updates the ACL tokens currently in use by the agent. It can be used to introduce ACL tokens to the agent for the first time, or to update tokens that were initially loaded from the agent's configuration. Tokens are not persisted, so will need to be updated again if the agent is restarted.
         /// </summary>
+        /// <param name="updateTokenParmeter">Update Token Parmeter</param>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> UpdateACLToken(UpdateTokenParmeter token)
+        public async Task<(bool result, string backJson)> UpdateACLToken(UpdateTokenParmeter updateTokenParmeter)
         {
-            return await Put(token, $"/agent/acl_token");
+            return await Put(updateTokenParmeter, $"/agent/acl_token");
         }
         /// <summary>
         ///  This endpoint updates the ACL tokens currently in use by the agent. It can be used to introduce ACL tokens to the agent for the first time, or to update tokens that were initially loaded from the agent's configuration. Tokens are not persisted, so will need to be updated again if the agent is restarted.
         /// </summary>
+        /// <param name="updateTokenParmeter">Update Token Parmeter</param>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> UpdateACLAgentToken(UpdateTokenParmeter token)
+        public async Task<(bool result, string backJson)> UpdateACLAgentToken(UpdateTokenParmeter updateTokenParmeter)
         {
-            return await Put(token, $"/agent/acl_agent_token");
+            return await Put(updateTokenParmeter, $"/agent/acl_agent_token");
         }
         /// <summary>
         ///  This endpoint updates the ACL tokens currently in use by the agent. It can be used to introduce ACL tokens to the agent for the first time, or to update tokens that were initially loaded from the agent's configuration. Tokens are not persisted, so will need to be updated again if the agent is restarted.
         /// </summary>
+        /// <param name="updateTokenParmeter">Update Token Parmeter</param>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> UpdateACLAgentMasterToken(UpdateTokenParmeter token)
+        public async Task<(bool result, string backJson)> UpdateACLAgentMasterToken(UpdateTokenParmeter updateTokenParmeter)
         {
-            return await Put(token, $"/agent/acl_agent_master_token");
+            return await Put(updateTokenParmeter, $"/agent/acl_agent_master_token");
         }
         /// <summary>
         ///  This endpoint updates the ACL tokens currently in use by the agent. It can be used to introduce ACL tokens to the agent for the first time, or to update tokens that were initially loaded from the agent's configuration. Tokens are not persisted, so will need to be updated again if the agent is restarted.
         /// </summary>
+        /// <param name="updateTokenParmeter">Update Token Parmeter</param>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> UpdateACLReplicationToken(UpdateTokenParmeter token)
+        public async Task<(bool result, string backJson)> UpdateACLReplicationToken(UpdateTokenParmeter updateTokenParmeter)
         {
-            return await Put(token, $"/agent/acl_replication_token");
+            return await Put(updateTokenParmeter, $"/agent/acl_replication_token");
         }
 
 
@@ -170,15 +175,16 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint adds a new check to the local agent. Checks may be of script, HTTP, TCP, or TTL type. The agent is responsible for managing the status of the check and keeping the Catalog in sync.
         /// </summary>
+        /// <param name="registerCheckParmeter">Register Check Parmeter</param>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> RegisterCheck(RegisterCheckParmeter check)
+        public async Task<(bool result, string backJson)> RegisterCheck(RegisterCheckParmeter registerCheckParmeter)
         {
-            return await Put(check, $"/agent/check/register");
+            return await Put(registerCheckParmeter, $"/agent/check/register");
         }
         /// <summary>
         /// This endpoint remove a check from the local agent. The agent will take care of deregistering the check from the catalog. If the check with the provided ID does not exist, no action is taken.
         /// </summary>
-        /// <param name="tTLCheckUpdateParmeter">TTL CheckUpdate Parmeter</param>
+        /// <param name="deregisterCheckParmeter">Deregister Check Parmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> DeregisterCheck(DeregisterCheckParmeter deregisterCheckParmeter )
         {
@@ -196,7 +202,7 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint is used with a TTL type check to set the status of the check to warning and to reset the TTL clock.
         /// </summary>
-        /// <param name="tTLCheckUpdateParmeter">TTL CheckUpdate Parmeter</param>
+        /// <param name="tTLCheckPassParmeter">TTL Check Pass Parmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckWarn(TTLCheckPassParmeter tTLCheckPassParmeter)
         {
@@ -205,7 +211,7 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint is used with a TTL type check to set the status of the check to critical and to reset the TTL clock.
         /// </summary>
-        /// <param name="tTLCheckUpdateParmeter">TTL CheckUpdate Parmeter</param>
+        /// <param name="tTLCheckPassParmeter">TTL Check Pass Parmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckFail(TTLCheckPassParmeter tTLCheckPassParmeter)
         {
@@ -214,7 +220,7 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint is used with a TTL type check to set the status of the check and to reset the TTL clock.
         /// </summary>
-        /// <param name="tTLCheckUpdateParmeter">TTL CheckUpdate Parmeter</param>
+        /// <param name="tTLCheckUpdateParmeter">TTL Check Update Parmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckUpdate(TTLCheckUpdateParmeter  tTLCheckUpdateParmeter)
         {

@@ -55,6 +55,7 @@ namespace ConsulSharp.Catalog
         /// This endpoint and returns the nodes registered in a given datacenter.
         /// </summary>
         /// <returns></returns>
+        /// <param name="listNodesParmeter">List Nodes Parmeter</param>
         public async Task<ListNodesResult[]> ListNodes(ListNodesParmeter listNodesParmeter)
         {
             return await Get<ListNodesResult[], ListNodesParmeter>("/catalog/nodes", listNodesParmeter);
@@ -72,7 +73,7 @@ namespace ConsulSharp.Catalog
         /// <summary>
         /// This endpoint returns the services registered in a given datacenter.
         /// </summary>
-        /// <param name="listServicesParmeter"></param>
+        /// <param name="listServicesParmeter">List Services Parmeter</param>
         /// <returns></returns>
 
         public async Task<Dictionary<string, dynamic>> ListServices(ListServicesParmeter listServicesParmeter)
@@ -84,7 +85,7 @@ namespace ConsulSharp.Catalog
         /// <summary>
         /// This endpoint returns the nodes providing a service in a given datacenter.
         /// </summary>    
-       
+        /// <param name="listNodesForServiceParmeter">List Nodes For Service Parmeter</param>
         /// <returns></returns>
         public async Task<ListNodesForServiceResult[]> ListNodesForService(ListNodesForServiceParmeter  listNodesForServiceParmeter)
         {
