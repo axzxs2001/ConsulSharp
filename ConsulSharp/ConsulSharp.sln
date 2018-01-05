@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsulSharp", "ConsulSharp\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsulSharpSample", "ConsulSharpSample\ConsulSharpSample.csproj", "{8261AD35-9611-43C6-BF5B-879FAC592BE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsulSharp.UnitTest", "ConsulSharp.UnitTest\ConsulSharp.UnitTest.csproj", "{B6F1AF54-2CCE-4D61-92E0-40BC5A0602B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsulSharp.UnitTest", "ConsulSharp.UnitTest\ConsulSharp.UnitTest.csproj", "{B6F1AF54-2CCE-4D61-92E0-40BC5A0602B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
