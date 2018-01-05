@@ -135,6 +135,44 @@ namespace ConsulSharp
             var backJson = await response.Content.ReadAsStringAsync();
             return (result: response.StatusCode == System.Net.HttpStatusCode.OK, backJson: backJson);
         }
+        /// <summary>
+        /// post
+        /// </summary>
+        /// <typeparam name="T">register type</typeparam>
+        /// <param name="entity">register entity</param>
+        /// <param name="url">put url</param>
+        /// <returns></returns>
+        protected async Task<(bool result, string backJson)> Post<T>(T entity, string url)
+        {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(_baseAddress);
+            var json = JsonConvert.SerializeObject(entity);
+            var stream = new MemoryStream(Encoding.Default.GetBytes(json));
+            var content = new StreamContent(stream);
+            var response = await client.PostAsync($"/{urlPrefix}/{url}", content);
+            var backJson = await response.Content.ReadAsStringAsync();
+            return (result: response.StatusCode == System.Net.HttpStatusCode.OK, backJson: backJson);
+        }
+
+        /// <summary>
+        /// Post with parmeter and back parmeter
+        /// </summary>
+        /// <typeparam name="T">in parmeter</typeparam>
+        /// <typeparam name="W">out parmeter</typeparam>
+        /// <param name="entity">in entity</param>
+        /// <param name="url">put url</param>
+        /// <returns></returns>
+        protected async Task<(bool result, W backEntity)> Post<T, W>(T entity, string url)
+        {
+            var backResult = await Post(entity, url);
+            if (!backResult.result)
+            {
+                throw new Exception(backResult.backJson);
+            }
+            var backEntity = JsonConvert.DeserializeObject<W>(backResult.backJson);
+            return (backResult.result, backEntity);
+        }
+
 
         /// <summary>
         /// put with parmeter and back parmeter

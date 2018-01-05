@@ -26,11 +26,30 @@ namespace ConsulSharp.Operator
         /// <summary>
         /// This endpoint creates a new network area and returns its ID if it is created successfully.
         /// </summary>
-        /// <param name="createNetworkAreaParmeter"></param>
+        /// <param name="createNetworkAreaParmeter">Create Network Area Parmeter</param>
         /// <returns></returns>
-        public async Task<CreateNetworkAreaResult> CreateNetworkArea(CreateNetworkAreaParmeter createNetworkAreaParmeter)
+        public async Task<(bool result,CreateNetworkAreaResult createNetworkAreaResult)> CreateNetworkArea(CreateNetworkAreaParmeter createNetworkAreaParmeter)
         {
-            return await Get<CreateNetworkAreaResult, CreateNetworkAreaParmeter>("/operator/area", createNetworkAreaParmeter);
+            return await Post<CreateNetworkAreaParmeter, CreateNetworkAreaResult>(createNetworkAreaParmeter,"/operator/area");
         }
+        /// <summary>
+        /// his endpoint lists all network areas.
+        /// </summary>
+        /// <param name="createNetworkAreaParmeter">List Network Areas Parmeter</param>
+        /// <returns></returns>
+        public async Task<ListNetworkAreasResult[]> ListNetworkAreas(ListNetworkAreasParmeter listNetworkAreasParmeter)
+        {
+            return await Get<ListNetworkAreasResult[], ListNetworkAreasParmeter>("/operator/area", listNetworkAreasParmeter);
+        }
+        /// <summary>
+        /// This endpoint updates a network area to the given configuration.
+        /// </summary>
+        /// <param name="updateNetworkAreaParmeter">Update Network Area Parmeter</param>
+        /// <returns></returns>
+        public async Task<(bool result, string backString)> UpdateNetworkArea(UpdateNetworkAreaParmeter  updateNetworkAreaParmeter)
+        {
+            return await Post<UpdateNetworkAreaParmeter>(updateNetworkAreaParmeter, "/operator/area");
+        }
+
     }
 }
