@@ -28,9 +28,9 @@ namespace ConsulSharp.Operator
         /// </summary>
         /// <param name="createNetworkAreaParmeter">Create Network Area Parmeter</param>
         /// <returns></returns>
-        public async Task<(bool result,CreateNetworkAreaResult createNetworkAreaResult)> CreateNetworkArea(CreateNetworkAreaParmeter createNetworkAreaParmeter)
+        public async Task<(bool result, CreateNetworkAreaResult createNetworkAreaResult)> CreateNetworkArea(CreateNetworkAreaParmeter createNetworkAreaParmeter)
         {
-            return await Post<CreateNetworkAreaParmeter, CreateNetworkAreaResult>(createNetworkAreaParmeter,"/operator/area");
+            return await Post<CreateNetworkAreaParmeter, CreateNetworkAreaResult>(createNetworkAreaParmeter, "/operator/area");
         }
         /// <summary>
         /// his endpoint lists all network areas.
@@ -46,10 +46,50 @@ namespace ConsulSharp.Operator
         /// </summary>
         /// <param name="updateNetworkAreaParmeter">Update Network Area Parmeter</param>
         /// <returns></returns>
-        public async Task<(bool result, string backString)> UpdateNetworkArea(UpdateNetworkAreaParmeter  updateNetworkAreaParmeter)
+        public async Task<(bool result, string backString)> UpdateNetworkArea(UpdateNetworkAreaParmeter updateNetworkAreaParmeter)
         {
-            return await Post<UpdateNetworkAreaParmeter>(updateNetworkAreaParmeter, "/operator/area");
+            return await Put<UpdateNetworkAreaParmeter>(updateNetworkAreaParmeter, "/operator/area");
         }
 
+        /// <summary>
+        /// This endpoint lists a specific network area.
+        /// </summary>
+        /// <param name="List Specific Network Area Parmeter">ListSpecificNetworkAreaParmeter</param>
+        /// <returns></returns>
+        public async Task<ListNetworkAreasResult[]> ListSpecificNetworkArea(ListSpecificNetworkAreaParmeter listSpecificNetworkAreaParmeter)
+        {
+            return await Get<ListNetworkAreasResult[], ListSpecificNetworkAreaParmeter>("/operator/area", listSpecificNetworkAreaParmeter);
+        }
+
+        /// <summary>
+        /// This endpoint deletes a specific network area.
+        /// </summary>
+        /// <param name="listSpecificNetworkAreaParmeter">Delete Network Area Parmeter</param>
+        /// <returns></returns>
+        public async Task<(bool result, string backString)> DeleteNetworkArea(ListSpecificNetworkAreaParmeter listSpecificNetworkAreaParmeter)
+        {
+            return await Delete<ListSpecificNetworkAreaParmeter, string>(listSpecificNetworkAreaParmeter, "/operator/area");
+        }
+
+
+        /// <summary>
+        /// This endpoint attempts to join the given Consul servers into a specific network area.
+        /// </summary>
+        /// <param name="listSpecificNetworkAreaParmeter">List Specific Network Area Parmeter</param>
+        /// <returns></returns>
+        public async Task<(bool result, JoinNetworkAreaResult[] joinNetworkAreaResults)> JoinNetworkArea(ListSpecificNetworkAreaParmeter listSpecificNetworkAreaParmeter)
+        {
+            return await Put<ListSpecificNetworkAreaParmeter, JoinNetworkAreaResult[]>(listSpecificNetworkAreaParmeter, "	/operator/area/join");
+        }
+
+        /// <summary>
+        /// This endpoint provides a listing of the Consul servers present in a specific network area.
+        /// </summary>
+        /// <param name="listSpecificNetworkAreaParmeter">List Specific Network Area Parmeter</param>
+        /// <returns></returns>
+        public async Task<(bool result, ListNetworkAreaMembersResult[] listNetworkAreaMembersResults)> ListNetworkAreaMembers(ListSpecificNetworkAreaParmeter listSpecificNetworkAreaParmeter)
+        {
+            return await Put<ListSpecificNetworkAreaParmeter, ListNetworkAreaMembersResult[]>(listSpecificNetworkAreaParmeter, "/operator/area/members");
+        }
     }
 }
