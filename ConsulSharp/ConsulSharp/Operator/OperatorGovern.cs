@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using ConsulSharp.Operator.Area;
+using ConsulSharp.Operator.Autopilot;
 
 namespace ConsulSharp.Operator
 {
@@ -23,6 +24,8 @@ namespace ConsulSharp.Operator
         public OperatorGovern(string baseAddress = "http://localhost:8500") : base(baseAddress)
         {
         }
+
+        #region Area
         /// <summary>
         /// This endpoint creates a new network area and returns its ID if it is created successfully.
         /// </summary>
@@ -91,5 +94,40 @@ namespace ConsulSharp.Operator
         {
             return await Put<ListSpecificNetworkAreaParmeter, ListNetworkAreaMembersResult[]>(listSpecificNetworkAreaParmeter, "/operator/area/members");
         }
+        #endregion
+
+
+        #region Autopilot
+        /// <summary>
+        /// This endpoint retrieves its latest Autopilot configuration.
+        /// </summary>
+        /// <param name="readConfigurationParmeter">Read Configuration Result</param>
+        /// <returns></returns>
+        public async Task<ConsulSharp.Operator.Autopilot.ReadConfigurationResult> ReadConfiguration(ReadConfigurationParmeter readConfigurationParmeter)
+        {
+            return await Get<ConsulSharp.Operator.Autopilot.ReadConfigurationResult, ReadConfigurationParmeter>("/operator/autopilot/configuration", readConfigurationParmeter);
+        }
+
+        /// <summary>
+        /// This endpoint updates the Autopilot configuration of the cluster.
+        /// </summary>
+        /// <param name="updateConfigurationParmeter">Update Configuration Parmeter</param>
+        /// <returns></returns>
+        public async Task<(bool result, ConsulSharp.Operator.Autopilot.ReadConfigurationResult readConfigurationResult)> UpdateConfiguration(UpdateConfigurationParmeter  updateConfigurationParmeter)
+        {
+            return await Put<UpdateConfigurationParmeter, ConsulSharp.Operator.Autopilot.ReadConfigurationResult>(updateConfigurationParmeter, "	/operator/autopilot/configuration");
+        }
+        /// <summary>
+        /// This endpoint queries the health of the autopilot status.
+        /// </summary>
+        /// <param name="readHealthParmeter">Read Health Parmeter</param>
+        /// <returns></returns>
+        public async Task<ReadHealthResult> ReadHealth(ReadHealthParmeter  readHealthParmeter)
+        {
+            return await Get<ReadHealthResult, ReadHealthParmeter>("/operator/autopilot/health", readHealthParmeter);
+        }
+
+
+        #endregion
     }
 }
