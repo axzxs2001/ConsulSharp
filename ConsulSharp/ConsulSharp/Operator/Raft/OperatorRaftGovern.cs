@@ -12,7 +12,7 @@ using ConsulSharp.Operator.Keyring;
 namespace ConsulSharp.Operator.Raft
 {
     /// <summary>
-    /// Operator Govern
+    /// Operator Raft Govern
     /// </summary>
     public class OperatorRaftGovern : Govern
     {
