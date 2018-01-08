@@ -1,14 +1,6 @@
-﻿using ConsulSharp.Health;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Text;
+﻿
 using System.Threading.Tasks;
-using ConsulSharp.Operator.Area;
-using ConsulSharp.Operator.Autopilot;
-using ConsulSharp.Operator.Keyring;
+
 namespace ConsulSharp.Operator.Segments
 {
     /// <summary>
