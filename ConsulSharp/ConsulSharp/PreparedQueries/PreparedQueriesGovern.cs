@@ -13,20 +13,20 @@ namespace ConsulSharp.PreparedQueries
     /// Prepared Queries Govern
     /// </summary>
     public class PreparedQueriesGovern : Govern
-    {        
+    {
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="baseAddress">Base Address</param>
-        public PreparedQueriesGovern(string baseAddress = "http://localhost:8500"):base(baseAddress)
-        {       
+        public PreparedQueriesGovern(string baseAddress = "http://localhost:8500") : base(baseAddress)
+        {
         }
         /// <summary>
         /// This endpoint creates a new prepared query and returns its ID if it is created successfully.
         /// </summary>
         /// <param name="createPreparedQueryParmeter">Create Prepared Query Parmeter</param>
         /// <returns></returns>
-        public async Task<(bool result, CreatePreparedQueryResult createPreparedQueryResult)> CreatePreparedQuery(CreatePreparedQueryParmeter  createPreparedQueryParmeter)
+        public async Task<(bool result, CreatePreparedQueryResult createPreparedQueryResult)> CreatePreparedQuery(CreatePreparedQueryParmeter createPreparedQueryParmeter)
         {
             return await Post<CreatePreparedQueryParmeter, CreatePreparedQueryResult>(createPreparedQueryParmeter, $"/query");
         }
@@ -36,7 +36,7 @@ namespace ConsulSharp.PreparedQueries
         /// </summary>
         /// <param name="readPreparedQueryParmeter">Read Prepared Query Parmeter</param>
         /// <returns></returns>
-        public async Task<ReadPreparedQueryResult> ReadPreparedQuery(ReadPreparedQueryParmeter  readPreparedQueryParmeter)
+        public async Task<ReadPreparedQueryResult> ReadPreparedQuery(ReadPreparedQueryParmeter readPreparedQueryParmeter)
         {
             return await Get<ReadPreparedQueryResult, ReadPreparedQueryParmeter>($"/query", readPreparedQueryParmeter);
         }
@@ -46,7 +46,7 @@ namespace ConsulSharp.PreparedQueries
         /// </summary>
         /// <param name="updatePreparedQueryParmeter">Update Prepared Query Parmeter</param>
         /// <returns></returns>
-        public async Task<(bool result, string backResult)> UpdatePreparedQuery(UpdatePreparedQueryParmeter  updatePreparedQueryParmeter)
+        public async Task<(bool result, string backResult)> UpdatePreparedQuery(UpdatePreparedQueryParmeter updatePreparedQueryParmeter)
         {
             return await Put<UpdatePreparedQueryParmeter, string>(updatePreparedQueryParmeter, $"/query");
         }
@@ -60,6 +60,27 @@ namespace ConsulSharp.PreparedQueries
             return await Delete<UpdatePreparedQueryParmeter, string>(updatePreparedQueryParmeter, $"/query");
         }
 
-        public 
+
+
+        /// <summary>
+        /// This endpoint executes an existing prepared query. If no query exists by the given ID, an error is returned.
+        /// </summary>
+        /// <param name="executePreparedQueryParmeter">Execute Prepared Query Parmeter</param>
+        /// <returns></returns>
+        public async Task<ExecutePreparedQueryResult> ExecutePreparedQuery(ExecutePreparedQueryParmeter  executePreparedQueryParmeter)
+        {
+            return await Get<ExecutePreparedQueryResult, ExecutePreparedQueryParmeter>($"/query/execute", executePreparedQueryParmeter);
+        }
+        /// <summary>
+        /// This endpoint generates a fully-rendered query for a given name, post interpolation.
+        /// </summary>
+        /// <param name="explainPreparedQueryParmeter">Explain Prepared Query Parmeter</param>
+        /// <returns></returns>
+        public async Task<ExplainPreparedQueryResult> ExplainPreparedQuery(ExplainPreparedQueryParmeter  explainPreparedQueryParmeter)
+        {
+            return await Get<ExplainPreparedQueryResult, ExplainPreparedQueryParmeter>($"/query/explain", explainPreparedQueryParmeter);
+        }
+
+
     }
 }

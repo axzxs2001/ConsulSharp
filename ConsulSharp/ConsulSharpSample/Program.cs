@@ -2,6 +2,9 @@
 using System.Text;
 using ConsulSharp;
 using ConsulSharp.ACL;
+using ConsulSharp.Agent;
+using ConsulSharp.Agent.Check;
+using ConsulSharp.Agent.Service;
 using ConsulSharp.Event;
 namespace ConsulSharpSample
 {
@@ -353,11 +356,11 @@ namespace ConsulSharpSample
         private static void StreamLog()
         {
             var agentGovern = new AgentGovern();
-            agentGovern.WritLog += delegate (string log)
-            {
-                Console.WriteLine(log);
-            };
-            agentGovern.StreamLogs().GetAwaiter().GetResult();
+            //agentGovern.WritLog += delegate (string log)
+            //{
+            //    Console.WriteLine(log);
+            //};
+            //agentGovern.StreamLogs().GetAwaiter().GetResult();
         }
 
 
