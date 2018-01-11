@@ -7,48 +7,36 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsulSharp.KV
+namespace ConsulSharp.Status
 {
     /// <summary>
-    /// KV Govern
+    /// Status Govern
     /// </summary>
-    public class KVGovern: Govern
+    public class StatusGovern : Govern
     {        
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="baseAddress">Base Address</param>
-        public KVGovern(string baseAddress = "http://localhost:8500"):base(baseAddress)
+        public StatusGovern(string baseAddress = "http://localhost:8500"):base(baseAddress)
         {       
         }
 
         /// <summary>
-        /// This endpoint returns the specified key. If no key exists at the given path, a 404 is returned instead of a 200 response.For multi-key reads, please consider using transaction.
+        /// This endpoint returns the Raft leader for the datacenter in which the agent is running.
         /// </summary>
-        /// <param name="readKeyParmeter">Read Key Parmeter</param>
         /// <returns></returns>
-        public async Task<ReadKeyResult[]> EventList(ReadKeyParmeter readKeyParmeter)
+        public async Task<string> GetRaftLeader()
         {
-            return await Get<ReadKeyResult[], ReadKeyParmeter>($"/kv", readKeyParmeter);
-        }
-
-        /// <summary>
-        /// Even though the return type is application/json, the value is either true or false, indicating whether the create/update succeeded.The table below shows this endpoint's support for blocking queries, consistency modes, and required ACLs.
-        /// </summary>
-        /// <param name="firEventParmeter">Create Update Key Parmeter</param>
-        /// <returns></returns>
-        public async Task<(bool result, bool createUpdateResult)> CreateUpdateKey(CreateUpdateKeyParmeter  createUpdateKeyParmeter)
-        {
-            return await Put<CreateUpdateKeyParmeter, bool>(createUpdateKeyParmeter, $"/kv");
+            return await Get<string>($"/status/leader");
         }
         /// <summary>
-        /// This endpoint deletes a single key or all keys sharing a prefix.
+        /// This endpoint retrieves the Raft peers for the datacenter in which the the agent is running. This list of peers is strongly consistent and can be useful in determining when a given server has successfully joined the cluster.
         /// </summary>
-        /// <param name="deleteKeyParmeter">Delete Key Parmeter</param>
         /// <returns></returns>
-        public async Task<(bool result, bool deleteResult)> DeleteKey(DeleteKeyParmeter  deleteKeyParmeter)
+        public async Task<string[]> ListRaftPeers()
         {
-            return await Delete<DeleteKeyParmeter, bool>(deleteKeyParmeter, $"/kv");
+            return await Get<string[]>($"/status/peers");
         }
     }
 }
