@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ConsulSharp.KV
 {
     /// <summary>
-    /// Event Govern
+    /// KV Govern
     /// </summary>
     public class KVGovern: Govern
     {        
