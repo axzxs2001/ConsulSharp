@@ -168,9 +168,9 @@ namespace ConsulSharp.Agent
         /// This endpoint returns all checks that are registered with the local agent. These checks were either provided through configuration files or added dynamically using the HTTP API.        It is important to note that the checks known by the agent may be different from those reported by the catalog.This is usually due to changes being made while there is no leader elected.The agent performs active anti-entropy, so in most situations everything will be in sync within a few seconds.
         /// </summary>
         /// <returns></returns>
-        public async Task<ListChecksParmeter> ListChecks()
+        public async Task<Dictionary<string, ListChecks>> ListChecks()
         {
-            return await Get<ListChecksParmeter>("/agent/checks");
+            return await Get<Dictionary<string, ListChecks>>("/agent/checks");
         }
         /// <summary>
         /// This endpoint adds a new check to the local agent. Checks may be of script, HTTP, TCP, or TTL type. The agent is responsible for managing the status of the check and keeping the Catalog in sync.
@@ -184,11 +184,11 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint remove a check from the local agent. The agent will take care of deregistering the check from the catalog. If the check with the provided ID does not exist, no action is taken.
         /// </summary>
-        /// <param name="deregisterCheckParmeter">Deregister Check Parmeter</param>
+        /// <param name="checkID">Check ID</param>
         /// <returns></returns>    
-        public async Task<(bool result, string backJson)> DeregisterCheck(DeregisterCheckParmeter deregisterCheckParmeter )
+        public async Task<(bool result, string backJson)> DeregisterCheck(string checkID)
         {
-            return await Put(deregisterCheckParmeter, $"/agent/check/deregister");
+            return await Put($"/agent/check/deregister/{checkID}");
         }
         /// <summary>
         /// This endpoint is used with a TTL type check to set the status of the check to passing and to reset the TTL clock.

@@ -7,7 +7,7 @@ namespace ConsulSharp.Agent.Check
     /// <summary>
     /// Health Check,List Checks
     /// </summary>
-    public class ListChecksParmeter
+    public class ListChecks
     {
         /// <summary>
         /// Node Name

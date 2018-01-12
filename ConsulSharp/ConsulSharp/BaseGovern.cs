@@ -136,6 +136,20 @@ namespace ConsulSharp
             return (result: response.StatusCode == System.Net.HttpStatusCode.OK, backJson: backJson);
         }
         /// <summary>
+        /// put
+        /// </summary>
+        /// <param name="url">put url</param>
+        /// <returns></returns>
+        protected async Task<(bool result, string backJson)> Put(string url)
+        {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(_baseAddress);             
+            var response = await client.PutAsync($"/{urlPrefix}/{url}",null);
+            var backJson = await response.Content.ReadAsStringAsync();
+            return (result: response.StatusCode == System.Net.HttpStatusCode.OK, backJson: backJson);
+        }
+
+        /// <summary>
         /// post
         /// </summary>
         /// <typeparam name="T">register type</typeparam>
