@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Text;
 using ConsulSharp;
 using ConsulSharp.ACL;
@@ -12,7 +13,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-        
+            ListMembers();
             while (true)
             {
                 Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL  5、Event  按e退出");
@@ -59,9 +60,10 @@ namespace ConsulSharpSample
             throw new NotImplementedException();
         }
 
+        #region Agent
         private static void AgentManage()
         {
-            Console.WriteLine("1、Check  2、Service    按e退出");
+            Console.WriteLine("1、Check Manage  2、Service Manage  3、List Members  按e退出");
             switch (Console.ReadLine())
             {
                 case "1":
@@ -70,10 +72,29 @@ namespace ConsulSharpSample
                 case "2":
                     ServiceManage();
                     break;
+                case "3":
+                    ListMembers();
+                    break;
                 case "e":
+
                     return;
             }
         }
+
+        private static void ListMembers()
+        {
+            var agentGovern = new AgentGovern();
+            var list = agentGovern.ListMembers(new ListMembersParmeter { Wan = true }).GetAwaiter().GetResult();
+            foreach (var item in list)
+            {
+                Console.WriteLine(EntityToString(item));
+                Console.WriteLine("-----------------------------------------------");
+            }
+        }
+
+
+        #endregion
+
         #region Service
         private static void ServiceManage()
         {
@@ -95,13 +116,13 @@ namespace ConsulSharpSample
                         EnableMaintenanceMode();
                         break;
                     case "5":
-                 
+
                         break;
                     case "6":
-                 
+
                         break;
                     case "7":
-                      
+
                         break;
                     case "e":
                         return;
@@ -152,7 +173,7 @@ namespace ConsulSharpSample
         }
         static void EnableMaintenanceMode()
         {
-           
+
             var agentGovern = new AgentGovern();
             var result = agentGovern.EnableMaintenanceMode(new EnableMaintenanceModeParmeter { ServiceID = "lisapi001", Enable = true, Reason = "abc" }).GetAwaiter().GetResult();
             Console.WriteLine($"result={result.result}");
@@ -238,7 +259,7 @@ namespace ConsulSharpSample
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={result.backJson}");
         }
-    
+
 
         /// <summary>
         /// TTL Check Pass
@@ -290,12 +311,7 @@ namespace ConsulSharpSample
 
         static string EntityToString(object obj)
         {
-            var content = new StringBuilder("类型=" + obj.GetType().Name + "\r\n");
-            foreach (var pro in obj.GetType().GetProperties())
-            {
-                content.AppendLine($"{pro.Name}:{pro.GetValue(obj, null)}");
-            }
-            return content.ToString();
+            return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
         }
 
 

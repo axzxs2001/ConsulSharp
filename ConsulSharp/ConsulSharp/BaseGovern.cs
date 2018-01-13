@@ -103,7 +103,7 @@ namespace ConsulSharp
             var parmeterString = new StringBuilder();
             foreach (var pro in inEntity.GetType().GetProperties())
             {
-                if (((W)pro.GetValue(inEntity, null)) != default(W))
+                //if ((pro.GetValue(inEntity, null)) != pro.PropertyType.)
                 {
                     var proName = pro.Name;
                     var atts = pro.GetCustomAttributes(typeof(FieldNameAttribute), false);
