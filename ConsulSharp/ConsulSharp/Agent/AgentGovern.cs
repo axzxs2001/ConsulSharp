@@ -60,7 +60,7 @@ namespace ConsulSharp.Agent
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> EnableMaintenanceMode(EnableMaintenanceModeParmeter  enableMaintenanceModeParmeter)
         {
-            return await Put(enableMaintenanceModeParmeter, $"/agent/maintenance");
+            return await Put($"/agent/service/maintenance/{enableMaintenanceModeParmeter.ServiceID}?enable={enableMaintenanceModeParmeter.Enable}&reason={enableMaintenanceModeParmeter.Reason}");
         }
 
         /// <summary>

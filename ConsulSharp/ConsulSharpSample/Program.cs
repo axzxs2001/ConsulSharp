@@ -12,7 +12,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            DeregisterService();
+        
             while (true)
             {
                 Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL  5、Event  按e退出");
@@ -79,7 +79,7 @@ namespace ConsulSharpSample
         {
             while (true)
             {
-                Console.WriteLine("1、List Services   2、Register Check   3、Deregister Check  4、TTL Check Pass   5、TTL Check Warn   6、TTL Check Fail   7、TTL Check Update  按e退出");
+                Console.WriteLine("1、List Services   2、Register Service   3、Deregister Service  4、Enable Maintenance Mode   5、  6、  7、  按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -89,19 +89,19 @@ namespace ConsulSharpSample
                         RegisterService();
                         break;
                     case "3":
-                        DeregisterCheck();
+                        DeregisterService();
                         break;
                     case "4":
-                        TTLCheckPass();
+                        EnableMaintenanceMode();
                         break;
                     case "5":
-                        TTLCheckWarn();
+                 
                         break;
                     case "6":
-                        TTLCheckFail();
+                 
                         break;
                     case "7":
-                        TTLCheckUpdate();
+                      
                         break;
                     case "e":
                         return;
@@ -150,6 +150,15 @@ namespace ConsulSharpSample
                 Console.WriteLine("-----------------------------------------------");
             }
         }
+        static void EnableMaintenanceMode()
+        {
+           
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.EnableMaintenanceMode(new EnableMaintenanceModeParmeter { ServiceID = "lisapi001", Enable = true, Reason = "abc" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
+
         #endregion
         #region Check
         static void CheckManage()
@@ -229,7 +238,7 @@ namespace ConsulSharpSample
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={result.backJson}");
         }
-
+    
 
         /// <summary>
         /// TTL Check Pass

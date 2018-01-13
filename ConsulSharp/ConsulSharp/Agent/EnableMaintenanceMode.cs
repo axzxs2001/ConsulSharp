@@ -10,6 +10,11 @@ namespace ConsulSharp
     public class EnableMaintenanceModeParmeter
     {
         /// <summary>
+        /// Specifies the ID of the service to put in maintenance mode. This is specified as part of the URL.
+        /// </summary>
+        public string ServiceID { get; set; }
+
+        /// <summary>
         /// Specifies whether to enable or disable maintenance mode. This is specified as part of the URL as a query string parameter.
         /// </summary>
         public bool Enable { get; set; }
