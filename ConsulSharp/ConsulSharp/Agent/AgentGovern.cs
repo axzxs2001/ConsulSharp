@@ -196,8 +196,8 @@ namespace ConsulSharp.Agent
         /// <param name="tTLCheckUpdateParmeter">TTL CheckUpdate Parmeter</param>
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckPass(TTLCheckPassParmeter  tTLCheckPassParmeter)
-        {
-            return await Put(tTLCheckPassParmeter, $"/agent/check/pass");
+        {          
+            return await Put(tTLCheckPassParmeter,$"/agent/check/pass/{tTLCheckPassParmeter.Check_ID}");
         }
         /// <summary>
         /// This endpoint is used with a TTL type check to set the status of the check to warning and to reset the TTL clock.
@@ -206,7 +206,7 @@ namespace ConsulSharp.Agent
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckWarn(TTLCheckPassParmeter tTLCheckPassParmeter)
         {
-            return await Put(tTLCheckPassParmeter, $"/agent/check/warn");
+            return await Put(tTLCheckPassParmeter, $"/agent/check/warn/{tTLCheckPassParmeter.Check_ID}");
         }
         /// <summary>
         /// This endpoint is used with a TTL type check to set the status of the check to critical and to reset the TTL clock.
@@ -215,7 +215,7 @@ namespace ConsulSharp.Agent
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckFail(TTLCheckPassParmeter tTLCheckPassParmeter)
         {
-            return await Put(tTLCheckPassParmeter, $"/agent/check/fail");
+            return await Put(tTLCheckPassParmeter, $"/agent/check/fail/{tTLCheckPassParmeter.Check_ID}");
         }
         /// <summary>
         /// This endpoint is used with a TTL type check to set the status of the check and to reset the TTL clock.
@@ -224,7 +224,7 @@ namespace ConsulSharp.Agent
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> TTLCheckUpdate(TTLCheckUpdateParmeter  tTLCheckUpdateParmeter)
         {
-            return await Put(tTLCheckUpdateParmeter, $"/agent/check/update");
+            return await Put(tTLCheckUpdateParmeter, $"/agent/check/update/{tTLCheckUpdateParmeter.Check_ID}");
         }
         #endregion
 

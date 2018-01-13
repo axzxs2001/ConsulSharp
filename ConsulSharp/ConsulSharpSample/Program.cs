@@ -11,7 +11,8 @@ namespace ConsulSharpSample
     class Program
     {
         static void Main(string[] args)
-        {     
+        {
+            TTLCheckUpdate();
             while (true)
             {
                 Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL  5、Event  按e退出");
@@ -66,8 +67,8 @@ namespace ConsulSharpSample
                 case "1":
                     CheckManage();
                     break;
-                case "2":                   
-                    break;               
+                case "2":
+                    break;
                 case "e":
                     return;
             }
@@ -77,7 +78,7 @@ namespace ConsulSharpSample
         {
             while (true)
             {
-                Console.WriteLine("1、List Checks   2、Register Check   3、Deregister Check    按e退出");
+                Console.WriteLine("1、List Checks   2、Register Check   3、Deregister Check  4、TTL Check Pass   5、TTL Check Warn   6、TTL Check Fail   7、TTL Check Update  按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -90,7 +91,16 @@ namespace ConsulSharpSample
                         DeregisterCheck();
                         break;
                     case "4":
-
+                        TTLCheckPass();
+                        break;
+                    case "5":
+                        TTLCheckWarn();
+                        break;
+                    case "6":
+                        TTLCheckFail();
+                        break;
+                    case "7":
+                        TTLCheckUpdate();
                         break;
                     case "e":
                         return;
@@ -141,6 +151,54 @@ namespace ConsulSharpSample
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={result.backJson}");
         }
+
+
+        /// <summary>
+        /// TTL Check Pass
+        /// </summary>
+        static void TTLCheckPass()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.TTLCheckPass(new TTLCheckPassParmeter { Check_ID = "lisapicheck001", Note = "n1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
+        /// <summary>
+        /// TTL Check Warn
+        /// </summary>
+        static void TTLCheckWarn()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.TTLCheckWarn(new TTLCheckPassParmeter { Check_ID = "lisapicheck001", Note = "n1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
+        /// <summary>
+        /// TTL Check Fail
+        /// </summary>
+        static void TTLCheckFail()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.TTLCheckFail(new TTLCheckPassParmeter { Check_ID = "lisapicheck001", Note = "n1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
+        /// <summary>
+        /// TTL Check Update
+        /// </summary>
+        static void TTLCheckUpdate()
+        {
+            var agentGovern = new AgentGovern();
+            var registerCheck = new TTLCheckUpdateParmeter()
+            {
+                Check_ID = "lisapicheck001",
+                Status = "passing",
+                Output = "abc"
+            };
+            var result = agentGovern.TTLCheckUpdate(registerCheck).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
         #endregion
 
         static string EntityToString(object obj)
@@ -152,5 +210,7 @@ namespace ConsulSharpSample
             }
             return content.ToString();
         }
+
+
     }
 }
