@@ -252,9 +252,9 @@ namespace ConsulSharp.Agent
         /// </summary>
         /// <returns></returns>
         /// <param name="deregisterCheckParmeter">Deregister Check Parmeter</param>
-        public async Task<(bool result, string backJson)> DeregisterServices(DeregisterCheckParmeter deregisterCheckParmeter)
+        public async Task<(bool result, string backJson)> DeregisterServices(string serviceID)
         {
-            return await Put(deregisterCheckParmeter, $"/agent/service/deregister");      
+            return await Put($"/agent/service/deregister/{serviceID}");      
         }
         #endregion
 

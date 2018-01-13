@@ -12,7 +12,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            TTLCheckUpdate();
+            DeregisterService();
             while (true)
             {
                 Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL  5、Event  按e退出");
@@ -68,11 +68,89 @@ namespace ConsulSharpSample
                     CheckManage();
                     break;
                 case "2":
+                    ServiceManage();
                     break;
                 case "e":
                     return;
             }
         }
+        #region Service
+        private static void ServiceManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、List Services   2、Register Check   3、Deregister Check  4、TTL Check Pass   5、TTL Check Warn   6、TTL Check Fail   7、TTL Check Update  按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        ListServices();
+                        break;
+                    case "2":
+                        RegisterService();
+                        break;
+                    case "3":
+                        DeregisterCheck();
+                        break;
+                    case "4":
+                        TTLCheckPass();
+                        break;
+                    case "5":
+                        TTLCheckWarn();
+                        break;
+                    case "6":
+                        TTLCheckFail();
+                        break;
+                    case "7":
+                        TTLCheckUpdate();
+                        break;
+                    case "e":
+                        return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Register Service
+        /// </summary>
+        private static void RegisterService()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.RegisterServices(new RegisterServiceParmeter
+            {
+                ID = "test0001",
+                Name = "test0001",
+                Address = "http://www.baiduc.om",
+                Port = 80,
+                Tags = new string[] { "baidu", "百度" }
+            }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
+        /// <summary>
+        /// Deregister Service
+        /// </summary>
+        private static void DeregisterService()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.DeregisterServices("test0001").GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
+        /// <summary>
+        /// List Services
+        /// </summary>
+        static void ListServices()
+        {
+            var agentGovern = new AgentGovern();
+            var list = agentGovern.ListServices().GetAwaiter().GetResult();
+            foreach (var item in list)
+            {
+                Console.WriteLine($"{item.Key}");
+                Console.WriteLine(EntityToString(item.Value));
+                Console.WriteLine("-----------------------------------------------");
+            }
+        }
+        #endregion
         #region Check
         static void CheckManage()
         {
