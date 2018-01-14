@@ -62,6 +62,15 @@ namespace ConsulSharp.Agent
         {
             return await Put($"/agent/service/maintenance/{enableMaintenanceModeParmeter.ServiceID}?enable={enableMaintenanceModeParmeter.Enable}&reason={enableMaintenanceModeParmeter.Reason}");
         }
+        /// <summary>
+        /// Agent Enable Maintenance Mode
+        /// </summary>
+        /// <param name="enableMaintenanceModeParmeter">Enable Maintenance Mode Parmeter</param>
+        /// <returns></returns>
+        public async Task<(bool result, string backJson)> AgentEnableMaintenanceMode(EnableMaintenanceModeParmeter enableMaintenanceModeParmeter)
+        {
+            return await Put($"/agent/maintenance?enable={enableMaintenanceModeParmeter.Enable}&reason={enableMaintenanceModeParmeter.Reason}");
+        }
 
         /// <summary>
         /// This endpoint returns the configuration and member information of the local agent.
@@ -88,7 +97,7 @@ namespace ConsulSharp.Agent
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri($"{_baseAddress}");
-            var stream = await client.GetStreamAsync("/agent/monitor");
+            var stream = await client.GetStreamAsync("v1/agent/monitor");
             while (stream.CanRead)
             {
                 var bytes = new byte[1024];

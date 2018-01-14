@@ -13,7 +13,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            ListMembers();
+            StreamLogs();
             while (true)
             {
                 Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL  5、Event  按e退出");
@@ -63,7 +63,7 @@ namespace ConsulSharpSample
         #region Agent
         private static void AgentManage()
         {
-            Console.WriteLine("1、Check Manage  2、Service Manage  3、List Members  按e退出");
+            Console.WriteLine("1、Check Manage  2、Service Manage  3、List Members  4、Read Configuration  5、Reload Agent 6、Enable Maintenance Mode  7、View Metrics  8、Stream Logs     按e退出");
             switch (Console.ReadLine())
             {
                 case "1":
@@ -75,12 +75,28 @@ namespace ConsulSharpSample
                 case "3":
                     ListMembers();
                     break;
+                case "4":
+                    ReadConfiguration();
+                    break;
+                case "5":
+                    ReloadAgent();
+                    break;
+                case "6":
+                    AgentEnableMaintenanceMode();
+                    break;
+                case "7":
+                    ViewMetrics();
+                    break;
+                case "8":
+                    StreamLogs();
+                    break;
                 case "e":
-
                     return;
             }
         }
-
+        /// <summary>
+        /// List Members
+        /// </summary>
         private static void ListMembers()
         {
             var agentGovern = new AgentGovern();
@@ -91,7 +107,62 @@ namespace ConsulSharpSample
                 Console.WriteLine("-----------------------------------------------");
             }
         }
+        /// <summary>
+        /// Read Configuration
+        /// </summary>
+        private static void ReadConfiguration()
+        {
+            var agentGovern = new AgentGovern();
+            var list = agentGovern.ReadConfiguration().GetAwaiter().GetResult();
+            Console.WriteLine(EntityToString(list));
+        }
+        /// <summary>
+        /// Reload Agent
+        /// </summary>
+        private static void ReloadAgent()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.ReloadAgent().GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}"); ;
+        }
 
+        /// <summary>
+        /// Enable Maintenance Mode
+        /// </summary>
+        private static void AgentEnableMaintenanceMode()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.AgentEnableMaintenanceMode(new EnableMaintenanceModeParmeter
+            {
+                Enable = true,
+                Reason = "abc"
+            }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}"); ;
+        }
+
+        /// <summary>
+        /// View Metrics
+        /// </summary>
+        private static void ViewMetrics()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.ViewMetrics().GetAwaiter().GetResult();
+            Console.WriteLine(result);
+        }
+        /// <summary>
+        /// Stream Logs
+        /// </summary>
+        private static void StreamLogs()
+        {
+            var agentGovern = new AgentGovern();
+            agentGovern.WriteLog += delegate (string log)
+            {
+                Console.WriteLine(log);
+            };
+            agentGovern.StreamLogs().GetAwaiter().GetResult();
+        }
 
         #endregion
 
@@ -181,6 +252,7 @@ namespace ConsulSharpSample
         }
 
         #endregion
+
         #region Check
         static void CheckManage()
         {
