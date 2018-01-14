@@ -92,12 +92,13 @@ namespace ConsulSharp.Agent
         /// <summary>
         /// This endpoint streams logs from the local agent until the connection is closed.Must subscription WriteLog event.
         /// </summary>
+        /// <param name="loglevel">Specifies a text string containing a log level to filter on, such as info.</param>
         /// <returns></returns>
-        public async Task StreamLogs()
+        public async Task StreamLogs(string loglevel=null)
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri($"{_baseAddress}");
-            var stream = await client.GetStreamAsync("v1/agent/monitor");
+            var stream = await client.GetStreamAsync($"v1/agent/monitor?loglevel={loglevel}");
             while (stream.CanRead)
             {
                 var bytes = new byte[1024];
@@ -139,7 +140,7 @@ namespace ConsulSharp.Agent
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> UpdateACLToken(UpdateTokenParmeter updateTokenParmeter)
         {
-            return await Put(updateTokenParmeter, $"/agent/acl_token");
+            return await Put(updateTokenParmeter, $"/agent/token/acl_token");
         }
         /// <summary>
         ///  This endpoint updates the ACL tokens currently in use by the agent. It can be used to introduce ACL tokens to the agent for the first time, or to update tokens that were initially loaded from the agent's configuration. Tokens are not persisted, so will need to be updated again if the agent is restarted.

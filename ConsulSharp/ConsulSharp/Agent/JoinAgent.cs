@@ -17,6 +17,6 @@ namespace ConsulSharp
         /// <summary>
         /// Specifies to try and join over the WAN pool. This is only optional for agents running in server mode. This is specified as part of the URL as a query parameter
         /// </summary>
-        public string Wan { get; set; }
+        public bool Wan { get; set; }
     }
 }

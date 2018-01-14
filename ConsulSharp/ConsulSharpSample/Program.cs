@@ -13,7 +13,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            StreamLogs();
+            UpdateACLTokens();
             while (true)
             {
                 Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL  5、Event  按e退出");
@@ -63,7 +63,7 @@ namespace ConsulSharpSample
         #region Agent
         private static void AgentManage()
         {
-            Console.WriteLine("1、Check Manage  2、Service Manage  3、List Members  4、Read Configuration  5、Reload Agent 6、Enable Maintenance Mode  7、View Metrics  8、Stream Logs     按e退出");
+            Console.WriteLine("1、Check Manage  2、Service Manage  3、List Members  4、Read Configuration  5、Reload Agent 6、Enable Maintenance Mode  7、View Metrics  8、Stream Logs  9、Join Agent   10、Graceful Leave and Shutdown  11、Force Leave And Shutdown   12、Update ACL Tokens  13、Update ACL Agent Token  14、Update ACL Agent Master Token  15、Update ACL Replication Token   按e退出");
             switch (Console.ReadLine())
             {
                 case "1":
@@ -90,10 +90,33 @@ namespace ConsulSharpSample
                 case "8":
                     StreamLogs();
                     break;
+                case "9":
+                    JoinAgent();
+                    break;
+                case "10":
+                    GracefulLeaveandShutdown();
+                    break;
+                case "11":
+                    ForceLeaveAndShutdown();
+                    break;
+                case "12":
+                    UpdateACLTokens();
+                    break;
+                case "13":
+                    UpdateACLAgentToken();
+                    break;
+                case "14":
+                    UpdateACLAgentMasterToken();
+                    break;
+                case "15":
+                    UpdateACLReplicationToken();
+                    break;
                 case "e":
                     return;
             }
         }
+
+
         /// <summary>
         /// List Members
         /// </summary>
@@ -164,6 +187,92 @@ namespace ConsulSharpSample
             agentGovern.StreamLogs().GetAwaiter().GetResult();
         }
 
+        /// <summary>
+        /// Join Agent
+        /// </summary>
+        private static void JoinAgent()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.JoinAgent(new JoinAgentParmeter
+            {
+                Address = "192.168.1.1",
+                Wan = false
+            }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
+        /// <summary>
+        /// Graceful Leaveand Shutdown
+        /// </summary>
+        private static void GracefulLeaveandShutdown()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.GracefulLeaveAndShutdown().GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
+        /// <summary>
+        /// Force Leave And Shutdown
+        /// </summary>
+        private static void ForceLeaveAndShutdown()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.ForceLeaveAndShutdown().GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
+        /// <summary>
+        /// Update ACL Tokens
+        /// </summary>
+        private static void UpdateACLTokens()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.UpdateACLToken(new UpdateTokenParmeter {
+                 Token="2d3423fdfd"
+            }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
+        /// <summary>
+        /// Update ACL Agent Token
+        /// </summary>
+        private static void UpdateACLAgentToken()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.UpdateACLAgentToken(new UpdateTokenParmeter
+            {
+                Token = "2d3423fdfd"
+            }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
+        /// <summary>
+        /// Update ACL Agent Master Token
+        /// </summary>
+        private static void UpdateACLAgentMasterToken()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.UpdateACLAgentMasterToken(new UpdateTokenParmeter
+            {
+                Token = "2d3423fdfd"
+            }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
+
+        /// <summary>
+        /// Update ACL Replication Token
+        /// </summary>
+        private static void UpdateACLReplicationToken()
+        {
+            var agentGovern = new AgentGovern();
+            var result = agentGovern.UpdateACLReplicationToken(new UpdateTokenParmeter
+            {
+                Token = "2d3423fdfd"
+            }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}");
+        }
         #endregion
 
         #region Service
