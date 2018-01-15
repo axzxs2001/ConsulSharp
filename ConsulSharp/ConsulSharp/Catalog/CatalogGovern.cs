@@ -89,12 +89,8 @@ namespace ConsulSharp.Catalog
         /// <returns></returns>
         public async Task<ListNodesForServiceResult[]> ListNodesForService(ListNodesForServiceParmeter  listNodesForServiceParmeter)
         {
-
             return await Get<ListNodesForServiceResult[], ListNodesForServiceParmeter>($"/catalog/service/{listNodesForServiceParmeter.Service}", listNodesForServiceParmeter);
-
-        }
-
-    
+        }    
         #endregion
 
 

@@ -8,16 +8,18 @@ using ConsulSharp.Agent.Check;
 using ConsulSharp.Agent.Service;
 using ConsulSharp.Catalog;
 using ConsulSharp.Event;
+using ConsulSharp.KV;
+
 namespace ConsulSharpSample
 {
     class Program
     {
         static void Main(string[] args)
         {
-            ListNodesForService();
+            DeleteKey();
             while (true)
             {
-                Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL  5、Event  按e退出");
+                Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL  5、Event  6、Health  7、Operator  8、KV Store   按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -34,6 +36,12 @@ namespace ConsulSharpSample
                         break;
                     case "5":
                         EventManage();
+                        break;
+                    case "6":
+                        break;
+                    case "7":
+                        break;
+                    case "8":
                         break;
                     case "e":
                         return;
@@ -55,6 +63,57 @@ namespace ConsulSharpSample
         {
             throw new NotImplementedException();
         }
+        #region KV Store
+        private static void KVStoreManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、Read Key  2、Create Update Key   3、Delete Key  按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        ReadKey();
+                        break;
+                    case "2":
+                        CreateUpdateKey();
+                        break;
+                    case "3":
+                        DeleteKey();
+                        break;                    
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// Read Key
+        /// </summary>
+        private static void ReadKey()
+        {
+            var kvGovern = new KVGovern();
+            var result = kvGovern.ReadKey(new ReadKeyParmeter { Key = "testkey"}).GetAwaiter().GetResult();
+            Console.WriteLine(EntityToString(result));
+        }
+        /// <summary>
+        /// Create/UpdateKey
+        /// </summary>
+        private static void CreateUpdateKey()
+        {
+            var kvGovern = new KVGovern();
+            var result = kvGovern.CreateUpdateKey(new  CreateUpdateKeyParmeter { Key = "testkey", DC="dc2", Acquire="a", Release="b"  },"abc").GetAwaiter().GetResult();
+            Console.WriteLine(EntityToString(result));
+        }
+        /// <summary>
+        /// Delete Key
+        /// </summary>
+        private static void DeleteKey()
+        {
+            var kvGovern = new KVGovern();
+            var result = kvGovern.DeleteKey(new DeleteKeyParmeter { Key= "testkey"   }).GetAwaiter().GetResult();
+            Console.WriteLine(EntityToString(result));
+        }
+        #endregion
+
         #region Catalog
         private static void CatalogManage()
         {
@@ -165,7 +224,7 @@ namespace ConsulSharpSample
         private static void ListNodesForService()
         {
             var catalogGovern = new CatalogGovern();
-            var result = catalogGovern.ListNodesForService(new  ListNodesForServiceParmeter { DC = "dc1", Service= "lisapi" }).GetAwaiter().GetResult();
+            var result = catalogGovern.ListNodesForService(new ListNodesForServiceParmeter { DC = "dc1", Service = "lisapi" }).GetAwaiter().GetResult();
             Console.WriteLine(EntityToString(result));
         }
         #endregion

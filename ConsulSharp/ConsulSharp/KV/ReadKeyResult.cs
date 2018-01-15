@@ -34,6 +34,24 @@ namespace ConsulSharp.KV
         /// </summary>
         public string Value { get; set; }
         /// <summary>
+        /// Decode Value
+        /// </summary>
+        public string DecodeValue
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Value))
+                {
+                    byte[] bytes = Convert.FromBase64String(Value);
+                    return Encoding.UTF8.GetString(bytes);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+        /// <summary>
         /// Session
         /// </summary>
         public string Session { get; set; }

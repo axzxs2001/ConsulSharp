@@ -206,7 +206,31 @@ namespace ConsulSharp
             var backEntity = JsonConvert.DeserializeObject<W>(backResult.backJson);
             return (backResult.result, backEntity);
         }
-
+        /// <summary>
+        /// put ,parmeter with url
+        /// </summary>
+        /// <typeparam name="T">in parmeter</typeparam>
+        /// <typeparam name="W">out parmeter</typeparam>
+        /// <param name="entity">in entity</param>
+        /// <param name="value">value</param>
+        /// <param name="url">put url</param>
+        /// <returns></returns>
+        protected async Task<(bool result, W backEntity)> Put<T, W>(T entity, object value,string url) where T : class, new()
+        {
+     
+            var parString = GetUrlParmeter<T>(entity);
+            if (!string.IsNullOrEmpty(parString))
+            {
+                url += $"?{parString}";
+            }
+            var backResult = await Put(value, url);
+            if (!backResult.result)
+            {
+                throw new Exception(backResult.backJson);
+            }
+            var backEntity = JsonConvert.DeserializeObject<W>(backResult.backJson);
+            return (backResult.result, backEntity);
+        }
         /// <summary>
         /// delete 
         /// </summary>

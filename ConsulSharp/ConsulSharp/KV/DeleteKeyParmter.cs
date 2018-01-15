@@ -10,6 +10,10 @@ namespace ConsulSharp.KV
     public class DeleteKeyParmeter
     {
         /// <summary>
+        /// Specifies the path of the key to delete.
+        /// </summary>
+        public string Key { get; set; }
+        /// <summary>
         /// Specifies to delete all keys which have the specified prefix. Without this, only a key with an exact match will be deleted.
         /// </summary>
         public bool Recurse { get; set; }

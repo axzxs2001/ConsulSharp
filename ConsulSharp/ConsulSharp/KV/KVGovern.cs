@@ -27,19 +27,20 @@ namespace ConsulSharp.KV
         /// </summary>
         /// <param name="readKeyParmeter">Read Key Parmeter</param>
         /// <returns></returns>
-        public async Task<ReadKeyResult[]> EventList(ReadKeyParmeter readKeyParmeter)
+        public async Task<ReadKeyResult[]> ReadKey(ReadKeyParmeter readKeyParmeter)
         {
-            return await Get<ReadKeyResult[], ReadKeyParmeter>($"/kv", readKeyParmeter);
+            return await Get<ReadKeyResult[], ReadKeyParmeter>($"/kv/{readKeyParmeter.Key}", readKeyParmeter);
         }
 
         /// <summary>
         /// Even though the return type is application/json, the value is either true or false, indicating whether the create/update succeeded.The table below shows this endpoint's support for blocking queries, consistency modes, and required ACLs.
         /// </summary>
         /// <param name="firEventParmeter">Create Update Key Parmeter</param>
+        /// <param name="value">value</param>
         /// <returns></returns>
-        public async Task<(bool result, bool createUpdateResult)> CreateUpdateKey(CreateUpdateKeyParmeter  createUpdateKeyParmeter)
+        public async Task<(bool result, bool createUpdateResult)> CreateUpdateKey(CreateUpdateKeyParmeter  createUpdateKeyParmeter,object value)
         {
-            return await Put<CreateUpdateKeyParmeter, bool>(createUpdateKeyParmeter, $"/kv");
+              return await Put<CreateUpdateKeyParmeter, bool>(createUpdateKeyParmeter,value,  $"/kv/{createUpdateKeyParmeter.Key}");           
         }
         /// <summary>
         /// This endpoint deletes a single key or all keys sharing a prefix.
@@ -48,7 +49,7 @@ namespace ConsulSharp.KV
         /// <returns></returns>
         public async Task<(bool result, bool deleteResult)> DeleteKey(DeleteKeyParmeter  deleteKeyParmeter)
         {
-            return await Delete<DeleteKeyParmeter, bool>(deleteKeyParmeter, $"/kv");
+            return await Delete<DeleteKeyParmeter, bool>(deleteKeyParmeter, $"/kv/{deleteKeyParmeter.Key}");
         }
     }
 }
