@@ -6,6 +6,7 @@ using ConsulSharp.ACL;
 using ConsulSharp.Agent;
 using ConsulSharp.Agent.Check;
 using ConsulSharp.Agent.Service;
+using ConsulSharp.Catalog;
 using ConsulSharp.Event;
 namespace ConsulSharpSample
 {
@@ -13,7 +14,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            UpdateACLTokens();
+            ListNodesForService();
             while (true)
             {
                 Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL  5、Event  按e退出");
@@ -54,11 +55,121 @@ namespace ConsulSharpSample
         {
             throw new NotImplementedException();
         }
-
+        #region Catalog
         private static void CatalogManage()
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+                Console.WriteLine("1、Register Entity  2、Deregister Entity   3、List Datacenters  4、List Nodes   5、List Services   6、List Nodes for Service  7、List Services For Node   按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        RegisterEntity();
+                        break;
+                    case "2":
+                        DeregisterEntity();
+                        break;
+                    case "3":
+                        ListDatacenters();
+                        break;
+                    case "4":
+                        ListNodes();
+                        break;
+                    case "5":
+                        CatalogListServices();
+                        break;
+                    case "6":
+                        ListNodesForService();
+                        break;
+                    case "7":
+                        ListServicesForNode();
+
+                        break;
+                    case "e":
+                        return;
+                }
+            }
         }
+        /// <summary>
+        /// Register Entity
+        /// </summary>
+        private static void RegisterEntity()
+        {
+            var acatalogGovern = new CatalogGovern();
+            var result = acatalogGovern.RegisterEntity(new RegisterEntityParmeter
+            {
+                Address = "123.123.123.123",
+                ID = "40e4a748-2192-161a-0510-9bf59fe950bd",
+                Node = "abc",
+                Datacenter = "dc1",
+                TaggedAddresses = new TaggedAddress { Lan = "123.123.123.123", Wan = "" }
+
+            }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}"); ;
+        }
+        /// <summary>
+        /// Deregister Entity
+        /// </summary>
+        private static void DeregisterEntity()
+        {
+            var catalogGovern = new CatalogGovern();
+            var result = catalogGovern.DeregisterCatalog(new DeregisterEntityParmeter
+            {
+                Node = "abc",
+                Datacenter = "dc1"
+
+            }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backJson}"); ;
+        }
+        /// <summary>
+        /// List Datacenters
+        /// </summary>
+        private static void ListDatacenters()
+        {
+            var catalogGovern = new CatalogGovern();
+            var result = catalogGovern.ListDatacenters().GetAwaiter().GetResult();
+            Console.WriteLine(EntityToString(result));
+        }
+        /// <summary>
+        /// List Nodes
+        /// </summary>
+        private static void ListNodes()
+        {
+            var catalogGovern = new CatalogGovern();
+            var result = catalogGovern.ListNodes(new ListNodesParmeter { DC = "dc1" }).GetAwaiter().GetResult();
+            Console.WriteLine(EntityToString(result));
+        }
+        /// <summary>
+        /// ListServices
+        /// </summary>
+        private static void CatalogListServices()
+        {
+            var catalogGovern = new CatalogGovern();
+            var result = catalogGovern.ListServices(new ListServicesParmeter { DC = "dc1" }).GetAwaiter().GetResult();
+            Console.WriteLine(EntityToString(result));
+        }
+        /// <summary>
+        /// List Services For Node
+        /// </summary>
+        private static void ListServicesForNode()
+        {
+            var catalogGovern = new CatalogGovern();
+            var result = catalogGovern.ListServicesForNode(new ListServicesForNodeParmeter { DC = "dc1", Node = "n1" }).GetAwaiter().GetResult();
+            Console.WriteLine(EntityToString(result));
+        }
+        /// <summary>
+        /// List Nodes For Service
+        /// </summary>
+        private static void ListNodesForService()
+        {
+            var catalogGovern = new CatalogGovern();
+            var result = catalogGovern.ListNodesForService(new  ListNodesForServiceParmeter { DC = "dc1", Service= "lisapi" }).GetAwaiter().GetResult();
+            Console.WriteLine(EntityToString(result));
+        }
+        #endregion
+
 
         #region Agent
         private static void AgentManage()
@@ -227,8 +338,9 @@ namespace ConsulSharpSample
         private static void UpdateACLTokens()
         {
             var agentGovern = new AgentGovern();
-            var result = agentGovern.UpdateACLToken(new UpdateTokenParmeter {
-                 Token="2d3423fdfd"
+            var result = agentGovern.UpdateACLToken(new UpdateTokenParmeter
+            {
+                Token = "2d3423fdfd"
             }).GetAwaiter().GetResult();
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={result.backJson}");

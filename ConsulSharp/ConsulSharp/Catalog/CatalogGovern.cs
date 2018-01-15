@@ -29,7 +29,7 @@ namespace ConsulSharp.Catalog
         /// </summary>
         /// <returns></returns>
         /// <param name="catalogEntityParmeter">Catalog Entity Parmeter</param>
-        public async Task<(bool result, string backJson)> RegisterEntity(CatalogEntityParmeter catalogEntityParmeter)
+        public async Task<(bool result, string backJson)> RegisterEntity(RegisterEntityParmeter catalogEntityParmeter)
         {
             return await Put(catalogEntityParmeter, $"/catalog/register");
         }
@@ -90,7 +90,7 @@ namespace ConsulSharp.Catalog
         public async Task<ListNodesForServiceResult[]> ListNodesForService(ListNodesForServiceParmeter  listNodesForServiceParmeter)
         {
 
-            return await Get<ListNodesForServiceResult[], ListNodesForServiceParmeter>("/catalog/service", listNodesForServiceParmeter);
+            return await Get<ListNodesForServiceResult[], ListNodesForServiceParmeter>($"/catalog/service/{listNodesForServiceParmeter.Service}", listNodesForServiceParmeter);
 
         }
 

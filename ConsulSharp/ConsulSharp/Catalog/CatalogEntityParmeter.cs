@@ -5,7 +5,7 @@ namespace ConsulSharp.Catalog
     /// <summary>
     /// Register Entity Parmeter
     /// </summary>
-    public class CatalogEntityParmeter
+    public class RegisterEntityParmeter
     {
         /// <summary>
         /// An optional UUID to assign to the service. If not provided, one is generated. This must be a 36-character UUID.

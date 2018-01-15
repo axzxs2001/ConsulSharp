@@ -12,7 +12,7 @@ namespace ConsulSharp.Catalog
         /// <summary>
         /// Specifies the datacenter to query. This will default to the datacenter of the agent being queried. This is specified as part of the URL as a query parameter.
         /// </summary>
-        public string ID { get; set; }
+        public string DC{ get; set; }
         /// <summary>
         /// Specifies a node name to sort the node list in ascending order based on the estimated round trip time from that node. Passing ?near=_agent will use the agent's node for the sort. This is specified as part of the URL as a query parameter.
         /// </summary>
