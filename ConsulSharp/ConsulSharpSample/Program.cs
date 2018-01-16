@@ -16,32 +16,38 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            DeleteKey();
+            CreateACLToken();
             while (true)
             {
-                Console.WriteLine("1、Agent  2、Catalog  3、Health 4、ACL  5、Event  6、Health  7、Operator  8、KV Store   按e退出");
+                Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator    按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
-                        AgentManage();
+                        ACLManage();
+
                         break;
                     case "2":
-                        CatalogManage();
+                        AgentManage();
+
                         break;
                     case "3":
-                        HealthManage();
+                        CatalogManage();
+
                         break;
                     case "4":
-                        ACLManage();
+
                         break;
                     case "5":
                         EventManage();
                         break;
                     case "6":
+                        HealthManage();
                         break;
                     case "7":
+                        KVStoreManage();
                         break;
                     case "8":
+
                         break;
                     case "e":
                         return;
@@ -54,11 +60,119 @@ namespace ConsulSharpSample
             throw new NotImplementedException();
         }
 
+        #region ACL
         private static void ACLManage()
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+                Console.WriteLine("1、Bootstrap ACLs  2、Create ACL Token   3、Update ACL Token  4、Delete ACL Token   5、Read ACL Token  6、Clone ACL Token   7、List ACLs  8、Check ACL Replication  按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        BootstrapACLs();
+                        break;
+                    case "2":
+                        CreateACLToken();
+                        break;
+                    case "3":
+                        UpdateACLToken();
+                        break;
+                    case "4":
+                        DeleteACLToken();
+                        break;
+                    case "5":
+                        ReadACLToken();
+                        break;
+                    case "6":
+                        CloneACLToken();
+                        break;
+                    case "7":
+                        ListACLs();
+                        break;
+                    case "8":
+                        CheckACLReplication();
+                        break;
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// Bootstrap ACLs
+        /// </summary>
+        private static void BootstrapACLs()
+        {
+            var aclGovern = new ACLGovern();
+            var result = aclGovern.BootstrapACLs().GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.backBootstrapACLs)}");
+        }
+        /// <summary>
+        /// Create ACL Token
+        /// </summary>
+        private static void CreateACLToken()
+        {
+            var aclGovern = new ACLGovern();
+            var result = aclGovern.CreateACLToken(new ACLTokenParmeter { ID = "a0e4a748-2192-161a-0510-9bf59fe950bd", Name = "acl01", Type = "client" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.backBootstrapACLs)}");
+        }
+        /// <summary>
+        /// Update ACL Token
+        /// </summary>
+        private static void UpdateACLToken()
+        {
+            var aclGovern = new ACLGovern();
+            var result = aclGovern.UpdateACLToken(new ACLTokenParmeter { ID = "a0e4a748-2192-161a-0510-9bf59fe950bd", Name = "acl01", Type = "client" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.backJson)}");
+        }
+        /// <summary>
+        /// Delete ACL Token
+        /// </summary>
+        private static void DeleteACLToken()
+        {
+            var aclGovern = new ACLGovern();
+            var result = aclGovern.DeleteACLToken("a0e4a748-2192-161a-0510-9bf59fe950bd").GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.backJson)}");
+        }
+        /// <summary>
+        /// ReadACLToken
+        /// </summary>
+        private static void ReadACLToken()
+        {
+            var aclGovern = new ACLGovern();
+            var result = aclGovern.ReadACLToken("a0e4a748-2192-161a-0510-9bf59fe950bd").GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// Clone ACL Token
+        /// </summary>
+        private static void CloneACLToken()
+        {
+            var aclGovern = new ACLGovern();
+            var result = aclGovern.CloneACLToken("a0e4a748-2192-161a-0510-9bf59fe950bd").GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.bootstrapACLsResult)}"); 
+        }
+        /// <summary>
+        /// List ACLs
+        /// </summary>
+        private static void ListACLs()
+        {
+            var aclGovern = new ACLGovern();
+            var result = aclGovern.ListACLs().GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}"); 
         }
 
+        private static void CheckACLReplication()
+        {
+            var aclGovern = new ACLGovern();
+            var result = aclGovern.CheckACLReplication("dc1").GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}"); 
+        }
+        #endregion
         private static void HealthManage()
         {
             throw new NotImplementedException();
@@ -79,7 +193,7 @@ namespace ConsulSharpSample
                         break;
                     case "3":
                         DeleteKey();
-                        break;                    
+                        break;
                     case "e":
                         return;
                 }
@@ -91,7 +205,7 @@ namespace ConsulSharpSample
         private static void ReadKey()
         {
             var kvGovern = new KVGovern();
-            var result = kvGovern.ReadKey(new ReadKeyParmeter { Key = "testkey"}).GetAwaiter().GetResult();
+            var result = kvGovern.ReadKey(new ReadKeyParmeter { Key = "testkey" }).GetAwaiter().GetResult();
             Console.WriteLine(EntityToString(result));
         }
         /// <summary>
@@ -100,7 +214,7 @@ namespace ConsulSharpSample
         private static void CreateUpdateKey()
         {
             var kvGovern = new KVGovern();
-            var result = kvGovern.CreateUpdateKey(new  CreateUpdateKeyParmeter { Key = "testkey", DC="dc2", Acquire="a", Release="b"  },"abc").GetAwaiter().GetResult();
+            var result = kvGovern.CreateUpdateKey(new CreateUpdateKeyParmeter { Key = "testkey", DC = "dc2", Acquire = "a", Release = "b" }, "abc").GetAwaiter().GetResult();
             Console.WriteLine(EntityToString(result));
         }
         /// <summary>
@@ -109,7 +223,7 @@ namespace ConsulSharpSample
         private static void DeleteKey()
         {
             var kvGovern = new KVGovern();
-            var result = kvGovern.DeleteKey(new DeleteKeyParmeter { Key= "testkey"   }).GetAwaiter().GetResult();
+            var result = kvGovern.DeleteKey(new DeleteKeyParmeter { Key = "testkey" }).GetAwaiter().GetResult();
             Console.WriteLine(EntityToString(result));
         }
         #endregion
@@ -165,7 +279,7 @@ namespace ConsulSharpSample
 
             }).GetAwaiter().GetResult();
             Console.WriteLine($"result={result.result}");
-            Console.WriteLine($"back content={result.backJson}"); ;
+            Console.WriteLine($"back content={result.backJson}");
         }
         /// <summary>
         /// Deregister Entity
@@ -228,7 +342,6 @@ namespace ConsulSharpSample
             Console.WriteLine(EntityToString(result));
         }
         #endregion
-
 
         #region Agent
         private static void AgentManage()

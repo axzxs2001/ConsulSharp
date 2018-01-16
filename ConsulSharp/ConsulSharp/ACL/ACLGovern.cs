@@ -76,7 +76,7 @@ namespace ConsulSharp.ACL
         /// </summary>
         /// <param name="uuid">Specifies the UUID of the ACL token to read. This is required and is specified as part of the URL path.</param>
         /// <returns></returns>    
-        public async Task<(bool result, BootstrapACLsResult backJson)> CloneACLToken(string uuid)
+        public async Task<(bool result, BootstrapACLsResult bootstrapACLsResult)> CloneACLToken(string uuid)
         {
             return await Put<string, BootstrapACLsResult>("", $"/acl/clone/{uuid}");
         }
