@@ -10,6 +10,11 @@ namespace ConsulSharp.Coordinates
     public class LANCoordinatesParmeter
     {
         /// <summary>
+        /// Node
+        /// </summary>
+        public string Node
+        { get; set; }
+        /// <summary>
         /// Specifies the datacenter to query. This will default to the datacenter of the agent being queried. This is specified as part of the URL as a query parameter.
         /// </summary>
         public string DC

@@ -13,6 +13,11 @@ namespace ConsulSharp.Coordinates
         /// Node
         /// </summary>
         public string Node { get; set; }
+
+        /// <summary>
+        /// Segment
+        /// </summary>
+        public string Segment { get; set; }
         /// <summary>
         /// Coord
         /// </summary>

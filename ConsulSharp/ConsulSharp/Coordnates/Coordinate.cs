@@ -9,9 +9,6 @@ namespace ConsulSharp.Coordinates
     /// </summary>
     public class LanCoordinateResult: Coordinate
     {
-        /// <summary>
-        /// Segment
-        /// </summary>
-        public string Segment { get; set; }      
+    
     }
 }

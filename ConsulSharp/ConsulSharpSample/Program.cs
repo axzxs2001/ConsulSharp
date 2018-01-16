@@ -7,6 +7,7 @@ using ConsulSharp.Agent;
 using ConsulSharp.Agent.Check;
 using ConsulSharp.Agent.Service;
 using ConsulSharp.Catalog;
+using ConsulSharp.Coordinates;
 using ConsulSharp.Event;
 using ConsulSharp.KV;
 
@@ -16,7 +17,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            CreateACLToken();
+            UpdateLANCoordinatesForANode();
             while (true)
             {
                 Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator    按e退出");
@@ -35,7 +36,7 @@ namespace ConsulSharpSample
 
                         break;
                     case "4":
-
+                        CoordinatesManage();
                         break;
                     case "5":
                         EventManage();
@@ -59,7 +60,77 @@ namespace ConsulSharpSample
         {
             throw new NotImplementedException();
         }
+        private static void HealthManage()
+        {
+            throw new NotImplementedException();
+        }
 
+        #region Coordinates
+        private static void CoordinatesManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、Read WAN Coordinates  2、Read LAN Coordinates For All Nodes   3、Read LAN Coordinates for a node  4、Update LAN Coordinates For A Node  按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        ReadWANCoordinates();
+                        break;
+                    case "2":
+                        ReadLANCoordinatesForAllNodes();
+                        break;
+                    case "3":
+                        ReadLANCoordinatesForANode();
+                        break;
+                    case "4":
+                        UpdateLANCoordinatesForANode();
+                        break;
+
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// Read WAN Coordinates
+        /// </summary>
+        private static void ReadWANCoordinates()
+        {
+            var coordnatesGovern = new CoordnatesGovern();
+            var result = coordnatesGovern.ReadWANCoordinates().GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+
+        /// <summary>
+        /// Read LAN Coordinates For All Nodes
+        /// </summary>
+        private static void ReadLANCoordinatesForAllNodes()
+        {
+            var coordnatesGovern = new CoordnatesGovern();
+            var result = coordnatesGovern.ReadLANCoordinatesForAllNodes(new LANCoordinatesParmeter { DC = "dc1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// Read LAN Coordinates For A Node
+        /// </summary>
+        private static void ReadLANCoordinatesForANode()
+        {
+            var coordnatesGovern = new CoordnatesGovern();
+            var result = coordnatesGovern.ReadLANCoordinatesForANodes(new LANCoordinatesParmeter { DC = "dc1", Node = "n1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+
+        /// <summary>
+        /// Update LAN Coordinates For A Node
+        /// </summary>
+        private static void UpdateLANCoordinatesForANode()
+        {
+            var coordnatesGovern = new CoordnatesGovern();
+            var result = coordnatesGovern.UpdateLANCoordinatesForANode(new Coordinate { Node="n1" },"dc1").GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.lanCoordinates)}");
+        }
+        #endregion
         #region ACL
         private static void ACLManage()
         {
@@ -154,7 +225,7 @@ namespace ConsulSharpSample
             var aclGovern = new ACLGovern();
             var result = aclGovern.CloneACLToken("a0e4a748-2192-161a-0510-9bf59fe950bd").GetAwaiter().GetResult();
             Console.WriteLine($"result={result.result}");
-            Console.WriteLine($"back content={EntityToString(result.bootstrapACLsResult)}"); 
+            Console.WriteLine($"back content={EntityToString(result.bootstrapACLsResult)}");
         }
         /// <summary>
         /// List ACLs
@@ -163,20 +234,17 @@ namespace ConsulSharpSample
         {
             var aclGovern = new ACLGovern();
             var result = aclGovern.ListACLs().GetAwaiter().GetResult();
-            Console.WriteLine($"back content={EntityToString(result)}"); 
+            Console.WriteLine($"back content={EntityToString(result)}");
         }
 
         private static void CheckACLReplication()
         {
             var aclGovern = new ACLGovern();
             var result = aclGovern.CheckACLReplication("dc1").GetAwaiter().GetResult();
-            Console.WriteLine($"back content={EntityToString(result)}"); 
+            Console.WriteLine($"back content={EntityToString(result)}");
         }
         #endregion
-        private static void HealthManage()
-        {
-            throw new NotImplementedException();
-        }
+
         #region KV Store
         private static void KVStoreManage()
         {

@@ -12,6 +12,8 @@ namespace ConsulSharp.Coordinates
         /// <summary>
         /// height
         /// </summary>
-        public int Height { get; set; }
+        public double Height { get; set; }
+     
+
     }
 }

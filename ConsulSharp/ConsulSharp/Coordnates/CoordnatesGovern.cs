@@ -35,7 +35,7 @@ namespace ConsulSharp.Coordinates
         /// </summary>
         /// <param name="lanCoordinates">LAN Coordinates Parmeter</param>
         /// <returns></returns>
-        public async Task<LanCoordinateResult[]> ReadLANCoordinatesForAllNodes(LANCoordinatesParmeter  lANCoordinatesParmeter)
+        public async Task<LanCoordinateResult[]> ReadLANCoordinatesForAllNodes(LANCoordinatesParmeter lANCoordinatesParmeter)
         {
             return await Get<LanCoordinateResult[], LANCoordinatesParmeter>($"/coordinate/nodes", lANCoordinatesParmeter);
         }
@@ -46,7 +46,7 @@ namespace ConsulSharp.Coordinates
         /// <returns></returns>
         public async Task<LanCoordinateResult[]> ReadLANCoordinatesForANodes(LANCoordinatesParmeter lANCoordinatesParmeter)
         {
-            return await Get<LanCoordinateResult[], LANCoordinatesParmeter>($"/coordinate/node", lANCoordinatesParmeter);
+            return await Get<LanCoordinateResult[], LANCoordinatesParmeter>($"/coordinate/node/{lANCoordinatesParmeter.Node}", lANCoordinatesParmeter);
         }
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace ConsulSharp.Coordinates
         /// </summary>
         /// <returns></returns>
         /// <param name="dc">datacenter</param>
-        public async Task<(bool result, LANCoordinatesParmeter lanCoordinates)> UpdateLANCoordinatesForANode(string dc)
+        public async Task<(bool result, LANCoordinatesParmeter lanCoordinates)> UpdateLANCoordinatesForANode(Coordinate coordinate,string dc)
         {
-            return await Put<string, LANCoordinatesParmeter>(dc, $"/coordinate/update");           
+            return await Put<Coordinate, LANCoordinatesParmeter>(coordinate, $"/coordinate/update?dc={dc}");
         }
     }
 }
