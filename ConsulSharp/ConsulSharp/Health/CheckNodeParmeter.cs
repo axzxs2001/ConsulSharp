@@ -7,7 +7,7 @@ namespace ConsulSharp.Health
     /// <summary>
     /// List Checks for Node
     /// </summary>
-    public class CheckNodeParmeter
+    public class  ListCheckForNodeParmeter
     {
         /// <summary>
         /// Specifies the name or ID of the node to query. This is specified as part of the URL

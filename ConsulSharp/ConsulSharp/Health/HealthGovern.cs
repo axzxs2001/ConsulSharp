@@ -28,9 +28,9 @@ namespace ConsulSharp.Health
         /// </summary>
         /// <param name="checkNodeParmeter">Check Node Parmeter</param>
         /// <returns></returns>
-        public async Task<CheckNodeResult[]> ListChecksForNode(CheckNodeParmeter checkNodeParmeter)
+        public async Task<CheckNodeResult[]> ListChecksForNode(ListCheckForNodeParmeter checkNodeParmeter)
         {          
-            return await Get<CheckNodeResult[], CheckNodeParmeter>($"/health/node", checkNodeParmeter);
+            return await Get<CheckNodeResult[], ListCheckForNodeParmeter>($"/health/node/{checkNodeParmeter.Node}", checkNodeParmeter);
         }
 
 
@@ -41,7 +41,7 @@ namespace ConsulSharp.Health
         /// <returns></returns>
         public async Task<CheckNodeResult[]> ListChecksForService(CheckServiceParmeter checkServiceParmeter)
         {          
-            return await Get<CheckNodeResult[], CheckServiceParmeter>($"/health/checks", checkServiceParmeter);
+            return await Get<CheckNodeResult[], CheckServiceParmeter>($"/health/checks/{checkServiceParmeter.Service}", checkServiceParmeter);
         }
 
         /// <summary>
@@ -49,9 +49,9 @@ namespace ConsulSharp.Health
         /// </summary>
         /// <param name="nodeServiceParmeter">Node Service Parmeter</param>
         /// <returns></returns>
-        public async Task<NodeServiceResult[]> ListNodeForService(NodeServiceParmeter nodeServiceParmeter)
+        public async Task<ListNodeForServiceResult[]> ListNodeForService(ListNodeForServiceParmeter  listNodeForServiceParmeter)
         {           
-            return await Get<NodeServiceResult[], NodeServiceParmeter>($"/health/service", nodeServiceParmeter);
+            return await Get<ListNodeForServiceResult[], ListNodeForServiceParmeter>($"/health/service/{listNodeForServiceParmeter.Service}", listNodeForServiceParmeter);
         }
 
 
@@ -60,9 +60,9 @@ namespace ConsulSharp.Health
         /// </summary>
         /// <param name="checkServiceParmeter">Check Service Parmeter</param>
         /// <returns></returns>
-        public async Task<BaseCheckNode[]> ListChecksInState(CheckServiceParmeter checkServiceParmeter)
+        public async Task<BaseCheckNode[]> ListChecksInState(ListChecksInStateParmeter  listChecksInStateParmeter)
         {        
-            return await Get<BaseCheckNode[], CheckServiceParmeter>($"/health/state",checkServiceParmeter);
+            return await Get<BaseCheckNode[], ListChecksInStateParmeter>($"/health/state/{listChecksInStateParmeter.State}", listChecksInStateParmeter);
         }
     }
 }

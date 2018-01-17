@@ -9,6 +9,7 @@ using ConsulSharp.Agent.Service;
 using ConsulSharp.Catalog;
 using ConsulSharp.Coordinates;
 using ConsulSharp.Event;
+using ConsulSharp.Health;
 using ConsulSharp.KV;
 
 namespace ConsulSharpSample
@@ -17,7 +18,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            ListEvents();
+            ListChecksInState();
             while (true)
             {
                 Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator    按e退出");
@@ -69,7 +70,7 @@ namespace ConsulSharpSample
                         break;
                     case "2":
                         ListEvents();
-                        break; 
+                        break;
                     case "e":
                         return;
                 }
@@ -81,7 +82,7 @@ namespace ConsulSharpSample
         private static void FireEvent()
         {
             var eventGovern = new EventGovern();
-            var result = eventGovern.FireEvent(new FireEventParmeter { Name="fireevent", DC="dc1", Node="n1", Service="lisapi", Tag="lisapi" }).GetAwaiter().GetResult();
+            var result = eventGovern.FireEvent(new FireEventParmeter { Name = "fireevent", DC = "dc1", Node = "n1", Service = "lisapi", Tag = "lisapi" }).GetAwaiter().GetResult();
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={EntityToString(result.fireEvent)}");
         }
@@ -91,14 +92,75 @@ namespace ConsulSharpSample
         private static void ListEvents()
         {
             var eventGovern = new EventGovern();
-            var result = eventGovern.EventList(new ListEventParmeter { Name = "fireevent", Node = "n1", Service = "lisapi", Tag = "lisapi" }).GetAwaiter().GetResult();  
+            var result = eventGovern.EventList(new ListEventParmeter { Name = "fireevent", Node = "n1", Service = "lisapi", Tag = "lisapi" }).GetAwaiter().GetResult();
             Console.WriteLine($"back content={EntityToString(result)}");
         }
         #endregion
+
+        #region Health
         private static void HealthManage()
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+                Console.WriteLine("1、List Checks for Node  2、List Checks For Service   3、List Nodes For Service   4、List Checks in State   按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        ListChecksForNode();
+                        break;
+                    case "2":
+                        ListChecksForService();
+                        break;
+                    case "3":
+                        HealthListNodesForService();
+                        break;
+                    case "4":
+                        ListChecksInState();
+                        break;
+                    case "e":
+                        return;
+                }
+            }
         }
+        /// <summary>
+        /// List Checks For Node
+        /// </summary>
+        private static void ListChecksForNode()
+        {
+            var healthGovern = new HealthGovern();
+            var result = healthGovern.ListChecksForNode(new ListCheckForNodeParmeter { DC = "dc1", Node = "n1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// List Checks For Service
+        /// </summary>
+        private static void ListChecksForService()
+        {
+            var healthGovern = new HealthGovern();
+            var result = healthGovern.ListChecksForService(new CheckServiceParmeter { Service = "lisapi", DC = "dc1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// List Nodes For Service
+        /// </summary>
+        private static void HealthListNodesForService()
+        {
+            var healthGovern = new HealthGovern();
+            var result = healthGovern.ListNodeForService(new ListNodeForServiceParmeter { Service = "lisapi", DC = "dc1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// List Checks In State
+        /// </summary>
+        private static void ListChecksInState()
+        {
+            var healthGovern = new HealthGovern();
+            var result = healthGovern.ListChecksInState(new ListChecksInStateParmeter { DC="dc1", State= "critical" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+
+
+        #endregion
 
         #region Coordinates
         private static void CoordinatesManage()
@@ -161,11 +223,12 @@ namespace ConsulSharpSample
         private static void UpdateLANCoordinatesForANode()
         {
             var coordnatesGovern = new CoordnatesGovern();
-            var result = coordnatesGovern.UpdateLANCoordinatesForANode(new Coordinate { Node="n1" },"dc1").GetAwaiter().GetResult();
+            var result = coordnatesGovern.UpdateLANCoordinatesForANode(new Coordinate { Node = "n1" }, "dc1").GetAwaiter().GetResult();
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={EntityToString(result.lanCoordinates)}");
         }
         #endregion
+
         #region ACL
         private static void ACLManage()
         {

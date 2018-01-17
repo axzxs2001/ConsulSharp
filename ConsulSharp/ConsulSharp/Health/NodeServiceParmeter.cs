@@ -8,7 +8,7 @@ namespace ConsulSharp
     /// <summary>
     /// List Nodes for Service parmeter
     /// </summary>
-    public class NodeServiceParmeter:CheckServiceParmeter
+    public class ListNodeForServiceParmeter:CheckServiceParmeter
     {
         /// <summary>
         /// Specifies the tag to filter the list. This is specifies as part of the URL as a query parameter.
