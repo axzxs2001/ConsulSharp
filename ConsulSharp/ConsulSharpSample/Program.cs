@@ -17,7 +17,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            UpdateLANCoordinatesForANode();
+            ListEvents();
             while (true)
             {
                 Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator    按e退出");
@@ -56,10 +56,45 @@ namespace ConsulSharpSample
             }
         }
 
+        #region Event
         private static void EventManage()
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+                Console.WriteLine("1、Fire Event  2、List Events   3、   4、  按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        FireEvent();
+                        break;
+                    case "2":
+                        ListEvents();
+                        break; 
+                    case "e":
+                        return;
+                }
+            }
         }
+        /// <summary>
+        /// Fire Event
+        /// </summary>
+        private static void FireEvent()
+        {
+            var eventGovern = new EventGovern();
+            var result = eventGovern.FireEvent(new FireEventParmeter { Name="fireevent", DC="dc1", Node="n1", Service="lisapi", Tag="lisapi" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.fireEvent)}");
+        }
+        /// <summary>
+        /// List Events
+        /// </summary>
+        private static void ListEvents()
+        {
+            var eventGovern = new EventGovern();
+            var result = eventGovern.EventList(new ListEventParmeter { Name = "fireevent", Node = "n1", Service = "lisapi", Tag = "lisapi" }).GetAwaiter().GetResult();  
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        #endregion
         private static void HealthManage()
         {
             throw new NotImplementedException();
