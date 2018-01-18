@@ -12,6 +12,7 @@ using ConsulSharp.Event;
 using ConsulSharp.Health;
 using ConsulSharp.KV;
 using ConsulSharp.Operator.Area;
+using ConsulSharp.Operator.Autopilot;
 
 namespace ConsulSharpSample
 {
@@ -19,7 +20,8 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            CreateNetworkArea();
+            UpdateConfiguration();
+            AutopilotReadConfiguration();
             while (true)
             {
                 Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator    按e退出");
@@ -58,8 +60,27 @@ namespace ConsulSharpSample
             }
         }
         #region Operator
+        public static void OperatorManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、Area 2、Autopilot 按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        OperatorAreaManage();
+                        break;
+                    case "2":
+                        OperatorAutopilotManage();
+                        break;
+                    case "e":
+                        return;
+                }
+            }
+        }
 
-        private static void OperatorManage()
+        #region OperatorArea
+        private static void OperatorAreaManage()
         {
             while (true)
             {
@@ -92,6 +113,8 @@ namespace ConsulSharpSample
                 }
             }
         }
+
+
         /// <summary>
         /// Create Network Area
         /// </summary>
@@ -151,13 +174,71 @@ namespace ConsulSharpSample
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={EntityToString(result.joinNetworkAreaResults)}");
         }
-
+        /// <summary>
+        /// List Network Area Members
+        /// </summary>
         private static void ListNetworkAreaMembers()
         {
             var operatorAreaGovern = new OperatorAreaGovern();
             var result = operatorAreaGovern.ListNetworkAreaMembers(new NetworkAreaParmeter { DC = "dc1", UUID = "" }).GetAwaiter().GetResult();
             Console.WriteLine($"back content={EntityToString(result)}");
         }
+
+        #endregion
+
+        #region Autopilot
+
+        public static void OperatorAutopilotManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、Read Configuration 2、Update Configuration  3、Read Health 按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        AutopilotReadConfiguration();
+                        break;
+                    case "2":
+                        UpdateConfiguration();
+                        break;
+                    case "3":
+                        ReadHealth();
+                        break;
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// Read Configuration
+        /// </summary>
+        private static void AutopilotReadConfiguration()
+        {
+            var operatorAutopilotGovern = new OperatorAutopilotGovern();
+            var result = operatorAutopilotGovern.ReadConfiguration(new ReadConfigurationParmeter { DC = "dc1", Stale = true }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// Update Configuration
+        /// </summary>
+        private static void UpdateConfiguration()
+        {
+            var operatorAutopilotGovern = new OperatorAutopilotGovern();
+            var result = operatorAutopilotGovern.UpdateConfiguration(new UpdateConfigurationParmeter { DC = "dc1", UpgradeVersionTag = "1a" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.jsonContent)}");
+        }
+
+        /// <summary>
+        /// Read Health
+        /// </summary>
+        private static void ReadHealth()
+        {
+            var operatorAutopilotGovern = new OperatorAutopilotGovern();
+            var result = operatorAutopilotGovern.ReadHealth(new  ReadHealthParmeter { DC = "dc1"}).GetAwaiter().GetResult();          
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        #endregion
         #endregion
 
 

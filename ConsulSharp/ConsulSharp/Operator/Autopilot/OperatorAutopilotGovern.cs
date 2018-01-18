@@ -38,9 +38,9 @@ namespace ConsulSharp.Operator.Autopilot
         /// </summary>
         /// <param name="updateConfigurationParmeter">Update Configuration Parmeter</param>
         /// <returns></returns>
-        public async Task<(bool result, ConsulSharp.Operator.Autopilot.ReadConfigurationResult readConfigurationResult)> UpdateConfiguration(UpdateConfigurationParmeter updateConfigurationParmeter)
+        public async Task<(bool result, string jsonContent)> UpdateConfiguration(UpdateConfigurationParmeter updateConfigurationParmeter)
         {
-            return await Put<UpdateConfigurationParmeter, ConsulSharp.Operator.Autopilot.ReadConfigurationResult>(updateConfigurationParmeter, "	/operator/autopilot/configuration");
+            return await Put<UpdateConfigurationParmeter,string>(updateConfigurationParmeter, "/operator/autopilot/configuration");
         }
         /// <summary>
         /// This endpoint queries the health of the autopilot status.

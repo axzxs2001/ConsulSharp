@@ -16,6 +16,6 @@ namespace ConsulSharp.Operator.Autopilot
         /// <summary>
         /// If the cluster does not currently have a leader an error will be returned. You can use the ?stale query parameter to read the Raft configuration from any of the Consul servers.
         /// </summary>
-        public string Stale { get; set; }
+        public bool Stale { get; set; }
     }
 }
