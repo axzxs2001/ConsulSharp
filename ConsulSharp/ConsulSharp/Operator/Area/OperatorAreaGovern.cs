@@ -12,7 +12,7 @@ namespace ConsulSharp.Operator.Area
         /// ctor
         /// </summary>
         /// <param name="baseAddress">Base Address</param>
-        public OperatorAreaGovern(string baseAddress = "http://localhost:8500") : base(baseAddress)
+        public OperatorAreaGovern(string baseAddress = "http://127.0.0.1:8500") : base(baseAddress)
         {
         }
 
@@ -24,7 +24,7 @@ namespace ConsulSharp.Operator.Area
         /// <returns></returns>
         public async Task<(bool result, CreateNetworkAreaResult createNetworkAreaResult)> CreateNetworkArea(CreateNetworkAreaParmeter createNetworkAreaParmeter)
         {
-            return await Post<CreateNetworkAreaParmeter, CreateNetworkAreaResult>(createNetworkAreaParmeter, "/operator/area");
+            return await Post<CreateNetworkAreaParmeter, CreateNetworkAreaResult>(createNetworkAreaParmeter, $"/operator/area");
         }
         /// <summary>
         /// his endpoint lists all network areas.
@@ -50,9 +50,9 @@ namespace ConsulSharp.Operator.Area
         /// </summary>
         /// <param name="List Specific Network Area Parmeter">ListSpecificNetworkAreaParmeter</param>
         /// <returns></returns>
-        public async Task<ListNetworkAreasResult[]> ListSpecificNetworkArea(ListSpecificNetworkAreaParmeter listSpecificNetworkAreaParmeter)
+        public async Task<ListNetworkAreasResult[]> ListSpecificNetworkArea(NetworkAreaParmeter listSpecificNetworkAreaParmeter)
         {
-            return await Get<ListNetworkAreasResult[], ListSpecificNetworkAreaParmeter>("/operator/area", listSpecificNetworkAreaParmeter);
+            return await Get<ListNetworkAreasResult[], NetworkAreaParmeter>("/operator/area", listSpecificNetworkAreaParmeter);
         }
 
         /// <summary>
@@ -60,9 +60,9 @@ namespace ConsulSharp.Operator.Area
         /// </summary>
         /// <param name="listSpecificNetworkAreaParmeter">Delete Network Area Parmeter</param>
         /// <returns></returns>
-        public async Task<(bool result, string backString)> DeleteNetworkArea(ListSpecificNetworkAreaParmeter listSpecificNetworkAreaParmeter)
+        public async Task<(bool result, string backString)> DeleteNetworkArea(NetworkAreaParmeter listSpecificNetworkAreaParmeter)
         {
-            return await Delete<ListSpecificNetworkAreaParmeter, string>(listSpecificNetworkAreaParmeter, "/operator/area");
+            return await Delete<NetworkAreaParmeter, string>(listSpecificNetworkAreaParmeter, "/operator/area");
         }
 
 
@@ -71,9 +71,9 @@ namespace ConsulSharp.Operator.Area
         /// </summary>
         /// <param name="listSpecificNetworkAreaParmeter">List Specific Network Area Parmeter</param>
         /// <returns></returns>
-        public async Task<(bool result, JoinNetworkAreaResult[] joinNetworkAreaResults)> JoinNetworkArea(ListSpecificNetworkAreaParmeter listSpecificNetworkAreaParmeter)
+        public async Task<(bool result, JoinNetworkAreaResult[] joinNetworkAreaResults)> JoinNetworkArea(NetworkAreaParmeter listSpecificNetworkAreaParmeter)
         {
-            return await Put<ListSpecificNetworkAreaParmeter, JoinNetworkAreaResult[]>(listSpecificNetworkAreaParmeter, "	/operator/area/join");
+            return await Put<NetworkAreaParmeter, JoinNetworkAreaResult[]>(listSpecificNetworkAreaParmeter, "	/operator/area/join");
         }
 
         /// <summary>
@@ -81,9 +81,9 @@ namespace ConsulSharp.Operator.Area
         /// </summary>
         /// <param name="listSpecificNetworkAreaParmeter">List Specific Network Area Parmeter</param>
         /// <returns></returns>
-        public async Task<(bool result, ListNetworkAreaMembersResult[] listNetworkAreaMembersResults)> ListNetworkAreaMembers(ListSpecificNetworkAreaParmeter listSpecificNetworkAreaParmeter)
+        public async Task<(bool result, ListNetworkAreaMembersResult[] listNetworkAreaMembersResults)> ListNetworkAreaMembers(NetworkAreaParmeter listSpecificNetworkAreaParmeter)
         {
-            return await Put<ListSpecificNetworkAreaParmeter, ListNetworkAreaMembersResult[]>(listSpecificNetworkAreaParmeter, "/operator/area/members");
+            return await Put<NetworkAreaParmeter, ListNetworkAreaMembersResult[]>(listSpecificNetworkAreaParmeter, "/operator/area/members");
         }
         #endregion
     }

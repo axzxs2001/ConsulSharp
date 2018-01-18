@@ -7,7 +7,7 @@ namespace ConsulSharp.Operator.Area
     /// <summary>
     /// List Specific Network Area Parmeter
     /// </summary>
-    public class ListSpecificNetworkAreaParmeter
+    public class NetworkAreaParmeter
     {
         /// <summary>
         /// Specifies the UUID of the area to list. This is specified as part of the URL.

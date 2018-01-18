@@ -11,6 +11,7 @@ using ConsulSharp.Coordinates;
 using ConsulSharp.Event;
 using ConsulSharp.Health;
 using ConsulSharp.KV;
+using ConsulSharp.Operator.Area;
 
 namespace ConsulSharpSample
 {
@@ -18,7 +19,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            ListChecksInState();
+            CreateNetworkArea();
             while (true)
             {
                 Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator    按e退出");
@@ -49,20 +50,123 @@ namespace ConsulSharpSample
                         KVStoreManage();
                         break;
                     case "8":
-
+                        OperatorManage();
                         break;
                     case "e":
                         return;
                 }
             }
         }
+        #region Operator
+
+        private static void OperatorManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、Create Network Area  2、List Network Areas  3、Update Network Area   4、List Specific Network Area  5、Delete Network Area  6、Join Network Area   7、List Network Area Members   按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        CreateNetworkArea();
+                        break;
+                    case "2":
+                        ListNetworkAreas();
+                        break;
+                    case "3":
+                        UpdateNetworkArea();
+                        break;
+                    case "4":
+                        ListSpecificNetworkArea();
+                        break;
+                    case "5":
+                        DeleteNetworkArea();
+                        break;
+                    case "6":
+                        JoinNetworkArea();
+                        break;
+                    case "7":
+                        ListNetworkAreaMembers();
+                        break;
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// Create Network Area
+        /// </summary>
+        private static void CreateNetworkArea()
+        {
+            var operatorAreaGovern = new OperatorAreaGovern();
+            var result = operatorAreaGovern.CreateNetworkArea(new CreateNetworkAreaParmeter { DC = "dc1", PeerDatacenter = "dc2", RetryJoin = new string[] { "127.0.0.1" }, UseTLS = false }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.createNetworkAreaResult)}");
+        }
+        /// <summary>
+        /// List Network Areas
+        /// </summary>
+        private static void ListNetworkAreas()
+        {
+            var operatorAreaGovern = new OperatorAreaGovern();
+            var result = operatorAreaGovern.ListNetworkAreas(new ListNetworkAreasParmeter { DC = "dc1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// Update Network Area
+        /// </summary>
+        private static void UpdateNetworkArea()
+        {
+            var operatorAreaGovern = new OperatorAreaGovern();
+            var result = operatorAreaGovern.UpdateNetworkArea(new UpdateNetworkAreaParmeter { DC = "dc1", UseTLS = false }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backString}");
+        }
+        /// <summary>
+        /// List Specific Network Area
+        /// </summary>
+        private static void ListSpecificNetworkArea()
+        {
+            var operatorAreaGovern = new OperatorAreaGovern();
+            var result = operatorAreaGovern.ListSpecificNetworkArea(new NetworkAreaParmeter { DC = "dc1", UUID = "" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// Delete Network Area
+        /// </summary>
+        private static void DeleteNetworkArea()
+        {
+            var operatorAreaGovern = new OperatorAreaGovern();
+            var result = operatorAreaGovern.DeleteNetworkArea(new NetworkAreaParmeter { DC = "dc1", UUID = "" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backString}");
+        }
+        /// <summary>
+        /// Join Network Area
+        /// </summary>
+        private static void JoinNetworkArea()
+        {
+            var operatorAreaGovern = new OperatorAreaGovern();
+            var result = operatorAreaGovern.JoinNetworkArea(new NetworkAreaParmeter { DC = "dc1", UUID = "" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.joinNetworkAreaResults)}");
+        }
+
+        private static void ListNetworkAreaMembers()
+        {
+            var operatorAreaGovern = new OperatorAreaGovern();
+            var result = operatorAreaGovern.ListNetworkAreaMembers(new NetworkAreaParmeter { DC = "dc1", UUID = "" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        #endregion
+
 
         #region Event
         private static void EventManage()
         {
             while (true)
             {
-                Console.WriteLine("1、Fire Event  2、List Events   3、   4、  按e退出");
+                Console.WriteLine("1、Fire Event  2、List Events 按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -155,7 +259,7 @@ namespace ConsulSharpSample
         private static void ListChecksInState()
         {
             var healthGovern = new HealthGovern();
-            var result = healthGovern.ListChecksInState(new ListChecksInStateParmeter { DC="dc1", State= "critical" }).GetAwaiter().GetResult();
+            var result = healthGovern.ListChecksInState(new ListChecksInStateParmeter { DC = "dc1", State = "critical" }).GetAwaiter().GetResult();
             Console.WriteLine($"back content={EntityToString(result)}");
         }
 

@@ -26,7 +26,7 @@ namespace ConsulSharp
         /// ctor
         /// </summary>
         /// <param name="baseAddress">Base Address</param>
-        public Govern(string baseAddress = "http://localhost:8500")
+        public Govern(string baseAddress = "http://127.0.0.1:8500")
         {
             _baseAddress = baseAddress;
         }
@@ -180,8 +180,8 @@ namespace ConsulSharp
         {
             var backResult = await Post(entity, url);
             if (!backResult.result)
-            {
-                throw new Exception(backResult.backJson);
+            {              
+                throw new Exception($"back content:{backResult.backJson}");
             }
             var backEntity = JsonConvert.DeserializeObject<W>(backResult.backJson);
             return (backResult.result, backEntity);
