@@ -14,6 +14,7 @@ using ConsulSharp.KV;
 using ConsulSharp.Operator.Area;
 using ConsulSharp.Operator.Autopilot;
 using ConsulSharp.Operator.Keyring;
+using ConsulSharp.Operator.Raft;
 
 namespace ConsulSharpSample
 {
@@ -21,7 +22,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            ListGossipEncryptionKeys();
+            RaftReadConfiguration();
             while (true)
             {
                 Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator    按e退出");
@@ -218,7 +219,7 @@ namespace ConsulSharpSample
         private static void AutopilotReadConfiguration()
         {
             var operatorAutopilotGovern = new OperatorAutopilotGovern();
-            var result = operatorAutopilotGovern.ReadConfiguration(new ReadConfigurationParmeter { DC = "dc1", Stale = true }).GetAwaiter().GetResult();
+            var result = operatorAutopilotGovern.ReadConfiguration(new ConsulSharp.Operator.Autopilot.ReadConfigurationParmeter { DC = "dc1", Stale = true }).GetAwaiter().GetResult();
             Console.WriteLine($"back content={EntityToString(result)}");
         }
         /// <summary>
@@ -309,11 +310,52 @@ namespace ConsulSharpSample
         private static void DeleteGossipEncryptionKey()
         {
             var operatorKeyringGovern = new OperatorKeyringGovern();
-            var result = operatorKeyringGovern.DeleteGossipEncryptionKey(new AddNewGossipEncryptionKeyParmeter { RelayFactor =1, Key = "7TnJPB4lKtjEcCWWjN6jSA==" }).GetAwaiter().GetResult();
+            var result = operatorKeyringGovern.DeleteGossipEncryptionKey(new AddNewGossipEncryptionKeyParmeter { RelayFactor = 1, Key = "7TnJPB4lKtjEcCWWjN6jSA==" }).GetAwaiter().GetResult();
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={EntityToString(result.backResult)}");
         }
         #endregion
+
+        #region Raft
+        public static void OperatorRaftManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、Read Configuration  2、Delete Raft Peer     按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        RaftReadConfiguration();
+                        break;
+                    case "2":
+                        DeleteRaftPeer();
+                        break;
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// Raft Read Configuration
+        /// </summary>
+        private static void RaftReadConfiguration()
+        {
+            var operatorRaftGovern = new OperatorRaftGovern();
+            var result = operatorRaftGovern.ReadConfiguration(new ConsulSharp.Operator.Raft.ReadConfigurationParmeter { DC = "dc1", Stale = true }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// Delete Raft Peer
+        /// </summary>
+        private static void DeleteRaftPeer()
+        {
+            var operatorRaftGovern = new OperatorRaftGovern();
+            var result = operatorRaftGovern.DeleteGossipEncryptionKey(new DeleteRaftPeerParmeter { ID="", DC="", Address="" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backResult}");
+        }
+        #endregion
+
         #endregion
 
 
