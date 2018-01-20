@@ -13,6 +13,7 @@ using ConsulSharp.Health;
 using ConsulSharp.KV;
 using ConsulSharp.Operator.Area;
 using ConsulSharp.Operator.Autopilot;
+using ConsulSharp.Operator.Keyring;
 
 namespace ConsulSharpSample
 {
@@ -20,8 +21,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            UpdateConfiguration();
-            AutopilotReadConfiguration();
+            ListGossipEncryptionKeys();
             while (true)
             {
                 Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator    按e退出");
@@ -72,6 +72,9 @@ namespace ConsulSharpSample
                         break;
                     case "2":
                         OperatorAutopilotManage();
+                        break;
+                    case "3":
+                        OperatorKeyringManage();
                         break;
                     case "e":
                         return;
@@ -235,8 +238,80 @@ namespace ConsulSharpSample
         private static void ReadHealth()
         {
             var operatorAutopilotGovern = new OperatorAutopilotGovern();
-            var result = operatorAutopilotGovern.ReadHealth(new  ReadHealthParmeter { DC = "dc1"}).GetAwaiter().GetResult();          
+            var result = operatorAutopilotGovern.ReadHealth(new ReadHealthParmeter { DC = "dc1" }).GetAwaiter().GetResult();
             Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        #endregion
+
+        #region Keyring 
+        /// <summary>
+        /// Operator Keyring Manage
+        /// </summary>
+        public static void OperatorKeyringManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、List Gossip Encryption Keys  2、Add New Gossip Encryption Key   3、Change Primary Gossip Encryption Key  4、Delete Gossip Encryption Key  按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        ListGossipEncryptionKeys();
+                        break;
+                    case "2":
+                        AddNewGossipEncryptionKey();
+                        break;
+                    case "3":
+                        ChangePrimaryGossipEncryptionKey();
+                        break;
+                    case "4":
+                        DeleteGossipEncryptionKey();
+                        break;
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// List Gossip Encryption Keys
+        /// </summary>
+        private static void ListGossipEncryptionKeys()
+        {
+            var operatorKeyringGovern = new OperatorKeyringGovern();
+            var result = operatorKeyringGovern.ListGossipEncryptionKeys(new ListGossipEncryptionKeysParmeter { RelayFactor = 1 }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+
+        }
+        /// <summary>
+        /// Add New Gossip Encryption Key
+        /// </summary>
+        private static void AddNewGossipEncryptionKey()
+        {
+            var operatorKeyringGovern = new OperatorKeyringGovern();
+            var result = operatorKeyringGovern.AddNewGossipEncryptionKey(new AddNewGossipEncryptionKeyParmeter { RelayFactor = 2, Key = "33g9DxVfKNzI8O+IQ5Ek+Q==" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.listGossipEncryptionKeysResults)}");
+
+        }
+        /// <summary>
+        /// Change Primary Gossip Encryption Key
+        /// </summary>
+        private static void ChangePrimaryGossipEncryptionKey()
+        {
+            var operatorKeyringGovern = new OperatorKeyringGovern();
+            var result = operatorKeyringGovern.ChangePrimaryGossipEncryptionKey(new AddNewGossipEncryptionKeyParmeter { RelayFactor = 2, Key = "7TnJPB4lKtjEcCWWjN6jSA==" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.backResult)}");
+        }
+
+        /// <summary>
+        /// Delete Gossip Encryption Key
+        /// </summary>
+        private static void DeleteGossipEncryptionKey()
+        {
+            var operatorKeyringGovern = new OperatorKeyringGovern();
+            var result = operatorKeyringGovern.DeleteGossipEncryptionKey(new AddNewGossipEncryptionKeyParmeter { RelayFactor =1, Key = "7TnJPB4lKtjEcCWWjN6jSA==" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.backResult)}");
         }
         #endregion
         #endregion

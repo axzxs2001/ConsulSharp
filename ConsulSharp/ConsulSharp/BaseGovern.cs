@@ -115,7 +115,7 @@ namespace ConsulSharp
                 }
             }
             return parmeterString.ToString().Trim('&');
-        }     
+        }
 
         /// <summary>
         /// put
@@ -143,8 +143,8 @@ namespace ConsulSharp
         protected async Task<(bool result, string backJson)> Put(string url)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri(_baseAddress);             
-            var response = await client.PutAsync($"/{urlPrefix}/{url}",null);
+            client.BaseAddress = new Uri(_baseAddress);
+            var response = await client.PutAsync($"/{urlPrefix}/{url}", null);
             var backJson = await response.Content.ReadAsStringAsync();
             return (result: response.StatusCode == System.Net.HttpStatusCode.OK, backJson: backJson);
         }
@@ -180,7 +180,7 @@ namespace ConsulSharp
         {
             var backResult = await Post(entity, url);
             if (!backResult.result)
-            {              
+            {
                 throw new Exception($"back content:{backResult.backJson}");
             }
             var backEntity = JsonConvert.DeserializeObject<W>(backResult.backJson);
@@ -215,9 +215,9 @@ namespace ConsulSharp
         /// <param name="value">value</param>
         /// <param name="url">put url</param>
         /// <returns></returns>
-        protected async Task<(bool result, W backEntity)> Put<T, W>(T entity, object value,string url) where T : class, new()
+        protected async Task<(bool result, W backEntity)> Put<T, W>(T entity, object value, string url) where T : class, new()
         {
-     
+
             var parString = GetUrlParmeter<T>(entity);
             if (!string.IsNullOrEmpty(parString))
             {
@@ -239,7 +239,7 @@ namespace ConsulSharp
         /// <param name="entity">in entity</param>
         /// <param name="url">delete url</param>
         /// <returns></returns>
-        protected async Task<(bool result, W backEntity)> Delete<T, W>(T entity, string url) where T:class,new()
+        protected async Task<(bool result, W backEntity)> Delete<T, W>(T entity, string url) where T : class, new()
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri(_baseAddress);
@@ -250,7 +250,7 @@ namespace ConsulSharp
             }
             var response = await client.DeleteAsync($"/{urlPrefix}/{url}");
             var backJson = await response.Content.ReadAsStringAsync();
-            var backResult= (result: response.StatusCode == System.Net.HttpStatusCode.OK, backJson: backJson);
+            var backResult = (result: response.StatusCode == System.Net.HttpStatusCode.OK, backJson: backJson);
             if (!backResult.result)
             {
                 throw new Exception(backResult.backJson);
@@ -258,8 +258,7 @@ namespace ConsulSharp
             var backEntity = JsonConvert.DeserializeObject<W>(backResult.backJson);
             return (backResult.result, backEntity);
         }
-
-
+ 
         #endregion
 
 

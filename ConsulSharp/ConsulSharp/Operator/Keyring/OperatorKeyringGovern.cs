@@ -31,9 +31,9 @@ namespace ConsulSharp.Operator.Keyring
         /// </summary>
         /// <param name="addNewGossipEncryptionKeyParmeter">Add New Gossip Encryption Key Parmeter</param>
         /// <returns></returns>
-        public async Task<(bool result, string backResult)> AddNewGossipEncryptionKey(AddNewGossipEncryptionKeyParmeter  addNewGossipEncryptionKeyParmeter)
+        public async Task<(bool result, ListGossipEncryptionKeysResult[] listGossipEncryptionKeysResults)> AddNewGossipEncryptionKey(AddNewGossipEncryptionKeyParmeter  addNewGossipEncryptionKeyParmeter)
         {
-            return await Post<AddNewGossipEncryptionKeyParmeter, string>(addNewGossipEncryptionKeyParmeter, "	/operator/keyring");
+            return await Post<AddNewGossipEncryptionKeyParmeter, ListGossipEncryptionKeysResult[]>(addNewGossipEncryptionKeyParmeter, "/operator/keyring");
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace ConsulSharp.Operator.Keyring
         /// <returns></returns>
         public async Task<(bool result, string backResult)> ChangePrimaryGossipEncryptionKey(AddNewGossipEncryptionKeyParmeter addNewGossipEncryptionKeyParmeter)
         {
-            return await Put<AddNewGossipEncryptionKeyParmeter, string>(addNewGossipEncryptionKeyParmeter, "	/operator/keyring");
+            return await Put<AddNewGossipEncryptionKeyParmeter, string>(addNewGossipEncryptionKeyParmeter, "/operator/keyring");
         }
         /// <summary>
         /// This endpoint removes a gossip encryption key from the cluster. This operation may only be performed on keys which are not currently the primary key.
@@ -52,7 +52,7 @@ namespace ConsulSharp.Operator.Keyring
         /// <returns></returns>
         public async Task<(bool result, string backResult)> DeleteGossipEncryptionKey(AddNewGossipEncryptionKeyParmeter addNewGossipEncryptionKeyParmeter)
         {
-            return await Delete<AddNewGossipEncryptionKeyParmeter, string>(addNewGossipEncryptionKeyParmeter, "	/operator/keyring");
+            return await Delete<AddNewGossipEncryptionKeyParmeter, string>(addNewGossipEncryptionKeyParmeter, "/operator/keyring");
         }
         #endregion
     }
