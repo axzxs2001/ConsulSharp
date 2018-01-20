@@ -23,7 +23,7 @@ namespace ConsulSharp.Operator.Segments
         /// <returns></returns>
         public async Task<string[]> ListNetworkSegments(ListNetworkSegmentsParmeter  listNetworkSegmentsParmeter)
         {
-            return await Get<string[], ListNetworkSegmentsParmeter>("/operator/raft/configuration", listNetworkSegmentsParmeter);
+            return await Get<string[], ListNetworkSegmentsParmeter>("/operator/segment", listNetworkSegmentsParmeter);
         }
       
     }

@@ -15,6 +15,7 @@ using ConsulSharp.Operator.Area;
 using ConsulSharp.Operator.Autopilot;
 using ConsulSharp.Operator.Keyring;
 using ConsulSharp.Operator.Raft;
+using ConsulSharp.Operator.Segments;
 
 namespace ConsulSharpSample
 {
@@ -22,7 +23,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            RaftReadConfiguration();
+            ListNetworkSegments();
             while (true)
             {
                 Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator    按e退出");
@@ -65,7 +66,7 @@ namespace ConsulSharpSample
         {
             while (true)
             {
-                Console.WriteLine("1、Area 2、Autopilot 按e退出");
+                Console.WriteLine("1、Area 2、Autopilot 3、Keyring 4、Raft  5、Segment  按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -76,6 +77,12 @@ namespace ConsulSharpSample
                         break;
                     case "3":
                         OperatorKeyringManage();
+                        break;
+                    case "4":
+                        OperatorRaftManage();
+                        break;
+                    case "5":
+                        OperatorSegmentManage();
                         break;
                     case "e":
                         return;
@@ -356,6 +363,37 @@ namespace ConsulSharpSample
         }
         #endregion
 
+        #region Segment
+        /// <summary>
+        /// OperatorSegmentManage
+        /// </summary>
+        private static void OperatorSegmentManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、List Network Segments   按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        ListNetworkSegments();
+                        break;                    
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// List Network Segments
+        /// </summary>
+        private static void ListNetworkSegments()
+        {
+            var operatorSegmentsGovern = new OperatorSegmentsGovern();
+            var result=operatorSegmentsGovern.ListNetworkSegments(new ListNetworkSegmentsParmeter { DC="dc1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+
+
+        #endregion
         #endregion
 
 
