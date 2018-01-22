@@ -17,6 +17,7 @@ using ConsulSharp.Operator.Keyring;
 using ConsulSharp.Operator.Raft;
 using ConsulSharp.Operator.Segments;
 using ConsulSharp.PreparedQueries;
+using ConsulSharp.Session;
 
 namespace ConsulSharpSample
 {
@@ -24,10 +25,10 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            ReadPreparedQuery();
+            CreateSession();
             while (true)
             {
-                Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator  9、Prepared Query   按e退出");
+                Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator  9、Prepared Query  10、Session  按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -57,12 +58,58 @@ namespace ConsulSharpSample
                     case "9":
                         PreparedQueryManage();
                         break;
-
+                    case "10":
+                        SessionManage();
+                        break;
                     case "e":
                         return;
                 }
             }
         }
+        #region Session
+        private static void SessionManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、Create Session  2、LDelete Session  3、Read Session   4、List Sessions for Node  5、List Sessions  6、Renew Session   按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        CreateSession();
+                        break;
+                    case "2":
+                        ListNetworkAreas();
+                        break;
+                    case "3":
+                        UpdateNetworkArea();
+                        break;
+                    case "4":
+                        ListSpecificNetworkArea();
+                        break;
+                    case "5":
+                        DeleteNetworkArea();
+                        break;
+                    case "6":
+                        JoinNetworkArea();
+                        break;
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// Create Session
+        /// </summary>
+        private static void CreateSession()
+        {
+            var sessionGovern = new SessionGovern();
+            var result = sessionGovern.CreateSession(new CreateSessionParmeter { DC = "dc1", LockDelay = "10s", Name = "abc", Node = "n1", Checks = new string[] { "lisapicheck001" }, Behavior = "release", TTL = "30s" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.createSessionResult)}");
+        }
+        #endregion
+
+
         #region Prepared Query
         public static void PreparedQueryManage()
         {
@@ -149,7 +196,7 @@ namespace ConsulSharpSample
         private static void ExplainPreparedQuery()
         {
             var preparedQueriesGovern = new PreparedQueriesGovern();
-            var result = preparedQueriesGovern.ExplainPreparedQuery(new  ExplainPreparedQueryParmeter { DC = "dc1", UUID = "a0e4a748-2192-161a-0510-9bf59fe950bd" }).GetAwaiter().GetResult();
+            var result = preparedQueriesGovern.ExplainPreparedQuery(new ExplainPreparedQueryParmeter { DC = "dc1", UUID = "a0e4a748-2192-161a-0510-9bf59fe950bd" }).GetAwaiter().GetResult();
             Console.WriteLine($"back content={EntityToString(result)}");
         }
         #endregion
