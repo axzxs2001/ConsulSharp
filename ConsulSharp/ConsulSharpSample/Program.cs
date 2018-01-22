@@ -16,6 +16,7 @@ using ConsulSharp.Operator.Autopilot;
 using ConsulSharp.Operator.Keyring;
 using ConsulSharp.Operator.Raft;
 using ConsulSharp.Operator.Segments;
+using ConsulSharp.PreparedQueries;
 
 namespace ConsulSharpSample
 {
@@ -23,10 +24,10 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            ListNetworkSegments();
+            RaftReadConfiguration();
             while (true)
             {
-                Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator    按e退出");
+                Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator  9、Prepared Query   按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -56,11 +57,51 @@ namespace ConsulSharpSample
                     case "8":
                         OperatorManage();
                         break;
+                    case "9":
+                        PreparedQueryManage();
+                        break;
+
                     case "e":
                         return;
                 }
             }
         }
+        #region 
+        public static void PreparedQueryManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、Create Prepared Query  2、Read Prepared Query  3、Update Prepared Query  4、Read Prepared Query  5、Delete Prepared Query  6、Execute Prepared Query 7、Explain Prepared Query 按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        CreatePreparedQuery();
+                        break;
+                    case "2":
+
+                        break;
+                    case "3":
+
+                        break;
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// Create Prepared Query 
+        /// </summary>
+        private static void CreatePreparedQuery()
+        {
+            var preparedQueriesGovern = new PreparedQueriesGovern();
+            var result = preparedQueriesGovern.CreatePreparedQuery(new CreatePreparedQueryParmeter { DC="dc1"}).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.createPreparedQueryResult)}");
+
+        }
+
+
+        #endregion
         #region Operator
         public static void OperatorManage()
         {
@@ -132,8 +173,7 @@ namespace ConsulSharpSample
         private static void CreateNetworkArea()
         {
             var operatorAreaGovern = new OperatorAreaGovern();
-            var result = operatorAreaGovern.CreateNetworkArea(new CreateNetworkAreaParmeter { DC = "dc1", PeerDatacenter = "dc2", RetryJoin = new string[] { "127.0.0.1" }, UseTLS = false }).GetAwaiter().GetResult();
-            Console.WriteLine($"result={result.result}");
+            var result = operatorAreaGovern.CreateNetworkArea(new CreateNetworkAreaParmeter { DC = "dc1", PeerDatacenter = "dc2", RetryJoin = new string[] { "127.0.0.1" }, UseTLS = false }).GetAwaiter().GetResult();    
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={EntityToString(result.createNetworkAreaResult)}");
         }
@@ -357,7 +397,7 @@ namespace ConsulSharpSample
         private static void DeleteRaftPeer()
         {
             var operatorRaftGovern = new OperatorRaftGovern();
-            var result = operatorRaftGovern.DeleteGossipEncryptionKey(new DeleteRaftPeerParmeter { ID="", DC="", Address="" }).GetAwaiter().GetResult();
+            var result = operatorRaftGovern.DeleteGossipEncryptionKey(new DeleteRaftPeerParmeter { ID = "", DC = "", Address = "" }).GetAwaiter().GetResult();
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={result.backResult}");
         }
