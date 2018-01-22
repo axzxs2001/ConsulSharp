@@ -24,7 +24,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            RaftReadConfiguration();
+            ReadPreparedQuery();
             while (true)
             {
                 Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator  9、Prepared Query   按e退出");
@@ -32,15 +32,12 @@ namespace ConsulSharpSample
                 {
                     case "1":
                         ACLManage();
-
                         break;
                     case "2":
                         AgentManage();
-
                         break;
                     case "3":
                         CatalogManage();
-
                         break;
                     case "4":
                         CoordinatesManage();
@@ -66,7 +63,7 @@ namespace ConsulSharpSample
                 }
             }
         }
-        #region 
+        #region Prepared Query
         public static void PreparedQueryManage()
         {
             while (true)
@@ -78,10 +75,13 @@ namespace ConsulSharpSample
                         CreatePreparedQuery();
                         break;
                     case "2":
-
+                        ReadPreparedQuery();
                         break;
                     case "3":
-
+                        UpdatePreparedQuery();
+                        break;
+                    case "4":
+                        ReadPreparedQuery1();
                         break;
                     case "e":
                         return;
@@ -94,14 +94,66 @@ namespace ConsulSharpSample
         private static void CreatePreparedQuery()
         {
             var preparedQueriesGovern = new PreparedQueriesGovern();
-            var result = preparedQueriesGovern.CreatePreparedQuery(new CreatePreparedQueryParmeter { DC="dc1"}).GetAwaiter().GetResult();
+            var result = preparedQueriesGovern.CreatePreparedQuery(new CreatePreparedQueryParmeter { DC = "dc1" }).GetAwaiter().GetResult();
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={EntityToString(result.createPreparedQueryResult)}");
-
+        }
+        /// <summary>
+        /// Read Prepared Query
+        /// </summary>
+        private static void ReadPreparedQuery()
+        {
+            var preparedQueriesGovern = new PreparedQueriesGovern();
+            var result = preparedQueriesGovern.ReadPreparedQuery(new ReadPreparedQueryParmeter { DC = "dc1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        public static void UpdatePreparedQuery()
+        {
+            var preparedQueriesGovern = new PreparedQueriesGovern();
+            var result = preparedQueriesGovern.UpdatePreparedQuery(new UpdatePreparedQueryParmeter { DC = "dc1", UUID = "a0e4a748-2192-161a-0510-9bf59fe950bd" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backResult}");
         }
 
-
+        /// <summary>
+        /// Read Prepared Query
+        /// </summary>
+        private static void ReadPreparedQuery1()
+        {
+            var preparedQueriesGovern = new PreparedQueriesGovern();
+            var result = preparedQueriesGovern.ReadPreparedQuery(new ReadPreparedQueryParmeter { DC = "dc1", UUID = "a0e4a748-2192-161a-0510-9bf59fe950bd" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// Delete Prepared Query
+        /// </summary>
+        private static void DeletePreparedQuery()
+        {
+            var preparedQueriesGovern = new PreparedQueriesGovern();
+            var result = preparedQueriesGovern.DeletePreparedQuery(new UpdatePreparedQueryParmeter { DC = "dc1", UUID = "a0e4a748-2192-161a-0510-9bf59fe950bd" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={result.backResult}");
+        }
+        /// <summary>
+        /// Execute Prepared Query
+        /// </summary>
+        private static void ExecutePreparedQuery()
+        {
+            var preparedQueriesGovern = new PreparedQueriesGovern();
+            var result = preparedQueriesGovern.ExecutePreparedQuery(new ExecutePreparedQueryParmeter { DC = "dc1", UUID = "a0e4a748-2192-161a-0510-9bf59fe950bd" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// Explain Prepared Query
+        /// </summary>
+        private static void ExplainPreparedQuery()
+        {
+            var preparedQueriesGovern = new PreparedQueriesGovern();
+            var result = preparedQueriesGovern.ExplainPreparedQuery(new  ExplainPreparedQueryParmeter { DC = "dc1", UUID = "a0e4a748-2192-161a-0510-9bf59fe950bd" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
         #endregion
+
         #region Operator
         public static void OperatorManage()
         {
@@ -173,7 +225,7 @@ namespace ConsulSharpSample
         private static void CreateNetworkArea()
         {
             var operatorAreaGovern = new OperatorAreaGovern();
-            var result = operatorAreaGovern.CreateNetworkArea(new CreateNetworkAreaParmeter { DC = "dc1", PeerDatacenter = "dc2", RetryJoin = new string[] { "127.0.0.1" }, UseTLS = false }).GetAwaiter().GetResult();    
+            var result = operatorAreaGovern.CreateNetworkArea(new CreateNetworkAreaParmeter { DC = "dc1", PeerDatacenter = "dc2", RetryJoin = new string[] { "127.0.0.1" }, UseTLS = false }).GetAwaiter().GetResult();
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={EntityToString(result.createNetworkAreaResult)}");
         }
@@ -416,7 +468,7 @@ namespace ConsulSharpSample
                 {
                     case "1":
                         ListNetworkSegments();
-                        break;                    
+                        break;
                     case "e":
                         return;
                 }
@@ -428,14 +480,13 @@ namespace ConsulSharpSample
         private static void ListNetworkSegments()
         {
             var operatorSegmentsGovern = new OperatorSegmentsGovern();
-            var result=operatorSegmentsGovern.ListNetworkSegments(new ListNetworkSegmentsParmeter { DC="dc1" }).GetAwaiter().GetResult();
+            var result = operatorSegmentsGovern.ListNetworkSegments(new ListNetworkSegmentsParmeter { DC = "dc1" }).GetAwaiter().GetResult();
             Console.WriteLine($"back content={EntityToString(result)}");
         }
 
 
         #endregion
         #endregion
-
 
         #region Event
         private static void EventManage()
