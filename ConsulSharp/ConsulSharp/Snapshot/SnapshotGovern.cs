@@ -13,13 +13,13 @@ namespace ConsulSharp.Snapshot
     /// Snapshot Govern
     /// </summary>
     public class SnapshotGovern : Govern
-    {        
+    {
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="baseAddress">Base Address</param>
-        public SnapshotGovern(string baseAddress = "http://localhost:8500"):base(baseAddress)
-        {       
+        public SnapshotGovern(string baseAddress = "http://localhost:8500") : base(baseAddress)
+        {
         }
 
         /// <summary>
@@ -27,9 +27,9 @@ namespace ConsulSharp.Snapshot
         /// </summary>
         /// <param name="generateSnapshotParmeter"></param>
         /// <returns></returns>
-        public async Task GenerateSnapshot(GenerateSnapshotParmeter generateSnapshotParmeter)
+        public async Task<string> GenerateSnapshot(GenerateSnapshotParmeter generateSnapshotParmeter)
         {
-             await Get<string,GenerateSnapshotParmeter>($"/kv", generateSnapshotParmeter);
+            return await Get<string, GenerateSnapshotParmeter>($"/snapshot", generateSnapshotParmeter);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace ConsulSharp.Snapshot
         /// <param name="restoreSnapshotParmeter">Restore Snapshot Result</param>
         /// <returns></returns>
         public async Task<(bool result, string restoreSnapshotResult)>
-RestoreSnapshot(RestoreSnapshotParmeter   restoreSnapshotParmeter)
+RestoreSnapshot(RestoreSnapshotParmeter restoreSnapshotParmeter)
         {
             return await Put<RestoreSnapshotParmeter, string>(restoreSnapshotParmeter, $"/snapshot");
         }

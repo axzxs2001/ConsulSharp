@@ -18,6 +18,7 @@ using ConsulSharp.Operator.Raft;
 using ConsulSharp.Operator.Segments;
 using ConsulSharp.PreparedQueries;
 using ConsulSharp.Session;
+using ConsulSharp.Snapshot;
 
 namespace ConsulSharpSample
 {
@@ -25,7 +26,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            ListSessions();
+            GenerateSnapshot();
             while (true)
             {
                 Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator  9、Prepared Query  10、Session  按e退出");
@@ -66,12 +67,53 @@ namespace ConsulSharpSample
                 }
             }
         }
+
+        #region Snapshot 
+        private static void SnapshotManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、Generate Snapshot  2、Restore Snapshot  按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        GenerateSnapshot();
+                        break;
+                    case "2":
+                        RestoreSnapshot();
+                        break;                  
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// Restore Snapshot
+        /// </summary>
+        private static void RestoreSnapshot()
+        {
+            var snapshotGovern = new SnapshotGovern();
+            var result = snapshotGovern.RestoreSnapshot(new RestoreSnapshotParmeter {  DC="dc1"}).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.restoreSnapshotResult)}");
+        }
+        /// <summary>
+        /// Generate Snapshot
+        /// </summary>
+        private static void GenerateSnapshot()
+        {
+            var snapshotGovern = new SnapshotGovern();
+            var result = snapshotGovern.GenerateSnapshot(new GenerateSnapshotParmeter { DC = "dc1", Stale = true }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result}");
+        }
+        #endregion
+
         #region Session
         private static void SessionManage()
         {
             while (true)
             {
-                Console.WriteLine("1、Create Session  2、LDelete Session  3、Read Session   4、List Sessions for Node  5、List Sessions  6、Renew Session   按e退出");
+                Console.WriteLine("1、Create Session  2、Delete Session  3、Read Session   4、List Sessions for Node  5、List Sessions  6、Renew Session   按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -154,7 +196,6 @@ namespace ConsulSharpSample
              Console.WriteLine($"back content={EntityToString(result)}");
         }
         #endregion
-
 
         #region Prepared Query
         public static void PreparedQueryManage()
