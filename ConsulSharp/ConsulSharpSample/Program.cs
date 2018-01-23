@@ -25,7 +25,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            CreateSession();
+            ListSessions();
             while (true)
             {
                 Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator  9、Prepared Query  10、Session  按e退出");
@@ -78,19 +78,19 @@ namespace ConsulSharpSample
                         CreateSession();
                         break;
                     case "2":
-                        ListNetworkAreas();
+                        DeleteSession();
                         break;
                     case "3":
-                        UpdateNetworkArea();
+                        ReadSession();
                         break;
                     case "4":
-                        ListSpecificNetworkArea();
+                        ListSessionsForNode();
                         break;
                     case "5":
-                        DeleteNetworkArea();
+                        ListSessions();
                         break;
                     case "6":
-                        JoinNetworkArea();
+                        RenewSession();
                         break;
                     case "e":
                         return;
@@ -103,9 +103,55 @@ namespace ConsulSharpSample
         private static void CreateSession()
         {
             var sessionGovern = new SessionGovern();
-            var result = sessionGovern.CreateSession(new CreateSessionParmeter { DC = "dc1", LockDelay = "10s", Name = "abc", Node = "n1", Checks = new string[] { "lisapicheck001" }, Behavior = "release", TTL = "30s" }).GetAwaiter().GetResult();
+            var result = sessionGovern.CreateSession(new CreateSessionParmeter { DC = "dc1", LockDelay = "10s", Name = "abc", Node = "n1", Behavior = "release", TTL = "30s" }).GetAwaiter().GetResult();
             Console.WriteLine($"result={result.result}");
             Console.WriteLine($"back content={EntityToString(result.createSessionResult)}");
+        }
+        /// <summary>
+        /// Delete Session
+        /// </summary>
+        private static void DeleteSession()
+        {
+            var sessionGovern = new SessionGovern();
+            var result = sessionGovern.DeleteSession(new DeleteSessionParmeter { DC = "dc1",UUID= "f2c9d2b6-ea0d-a55c-82b3-9220717a14c8" }).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.deleteSessionResult)}");
+        }
+        /// <summary>
+        /// Read Session
+        /// </summary>
+        private static void ReadSession()
+        {
+            var sessionGovern = new SessionGovern();
+            var result = sessionGovern.ReadSession(new DeleteSessionParmeter { DC = "dc1", UUID = "f2c9d2b6-ea0d-a55c-82b3-9220717a14c8" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// List Sessions For Node
+        /// </summary>
+        private static void ListSessionsForNode()
+        {
+            var sessionGovern = new SessionGovern();
+            var result = sessionGovern.ListSessionsForNode(new ListSessionsForNodeParmeter { DC = "dc1", Node = "n1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// List Sessions
+        /// </summary>
+        private static void ListSessions()
+        {
+            var sessionGovern = new SessionGovern();
+            var result = sessionGovern.ListSessions(new ListSessionsParmeter { DC = "dc1" }).GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// Renew Session
+        /// </summary>
+        private static void RenewSession()
+        {
+            var sessionGovern = new SessionGovern();
+            var result = sessionGovern.RenewSession(new DeleteSessionParmeter { DC = "dc1", UUID = "f2c9d2b6-ea0d-a55c-82b3-9220717a14c8" }).GetAwaiter().GetResult();
+             Console.WriteLine($"back content={EntityToString(result)}");
         }
         #endregion
 

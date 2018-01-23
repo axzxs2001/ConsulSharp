@@ -37,7 +37,7 @@ namespace ConsulSharp.Session
         /// <returns></returns>
         public async Task<(bool result, bool deleteSessionResult)> DeleteSession(DeleteSessionParmeter deleteSessionParmeter)
         {
-            return await Put<DeleteSessionParmeter, bool>(deleteSessionParmeter, $"/session/destroy");
+            return await Put<DeleteSessionParmeter, bool>(deleteSessionParmeter, $"/session/destroy/{deleteSessionParmeter.UUID}");
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace ConsulSharp.Session
         /// <returns></returns>
         public async Task<ReadSessionResult[]> ReadSession(DeleteSessionParmeter readSessionParmeter)
         {
-            return await Get<ReadSessionResult[], DeleteSessionParmeter>($"/Session/info", readSessionParmeter);
+            return await Get<ReadSessionResult[], DeleteSessionParmeter>($"/session/info/{readSessionParmeter.UUID}", readSessionParmeter);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace ConsulSharp.Session
         /// <returns></returns>
         public async Task<ReadSessionResult[]> ListSessionsForNode(ListSessionsForNodeParmeter listSessionsForNodeParmeter)
         {
-            return await Get<ReadSessionResult[], ListSessionsForNodeParmeter>($"/Session/node", listSessionsForNodeParmeter);
+            return await Get<ReadSessionResult[], ListSessionsForNodeParmeter>($"/Session/node/{listSessionsForNodeParmeter.Node}", listSessionsForNodeParmeter);
         }
         /// <summary>
         /// This endpoint returns the list of active sessions.
