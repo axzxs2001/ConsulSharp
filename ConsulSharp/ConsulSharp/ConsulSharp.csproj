@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>GuiSuwei</Authors>
+    <Company>GuiSuwei</Company>
+    <Description>The consul HTTP API implemented with C#.</Description>
+    <PackageProjectUrl>https://github.com/axzxs2001/ConsulSharp</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/axzxs2001/ConsulSharp/blob/master/ConsulSharp/ConsulSharp/ConsulSharp.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/axzxs2001/ConsulSharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>consul</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
