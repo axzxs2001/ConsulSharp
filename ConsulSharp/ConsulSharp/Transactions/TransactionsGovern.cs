@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ConsulSharp.Transactions
 {
     /// <summary>
-    /// KV Govern
+    /// Transactions Govern
     /// </summary>
     public class TransactionsGovern : Govern
     {        

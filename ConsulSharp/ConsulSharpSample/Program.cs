@@ -20,6 +20,7 @@ using ConsulSharp.PreparedQueries;
 using ConsulSharp.Session;
 using ConsulSharp.Snapshot;
 using ConsulSharp.Status;
+using ConsulSharp.Transactions;
 
 namespace ConsulSharpSample
 {
@@ -30,7 +31,7 @@ namespace ConsulSharpSample
             ListRaftPeers();
             while (true)
             {
-                Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator  9、Prepared Query  10、Session   按e退出");
+                Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator  9、Prepared Query  10、Session  11、Snapshot  12、Status  13、Transaction  按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -69,11 +70,42 @@ namespace ConsulSharpSample
                     case "12":
                         StatusManage();
                         break;
+                    case "13":
+                        TransactionManage();
+                        break;
                     case "e":
                         return;
                 }
             }
         }
+        #region Transaction
+        private static void TransactionManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、Create Transaction  按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        CreateTransaction();
+                        break;                
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// Create Transaction
+        /// </summary>
+        private static void CreateTransaction()
+        {
+            var transactionsGovern = new TransactionsGovern();
+            var result = transactionsGovern.CreateTransaction(new CreateTransactionParmeter { DC="dc1"}).GetAwaiter().GetResult();
+            Console.WriteLine($"result={result.result}");
+            Console.WriteLine($"back content={EntityToString(result.createTransactionResult)}");
+        }
+        #endregion
+
         #region Status
         private static void StatusManage()
         {
@@ -112,7 +144,6 @@ namespace ConsulSharpSample
             Console.WriteLine($"back content={EntityToString(result)}");
         }
         #endregion
-
 
         #region Snapshot 
         private static void SnapshotManage()
