@@ -6,14 +6,15 @@
     <Company>GuiSuwei</Company>
     <Description>The consul HTTP API implemented with C#.</Description>
     <PackageProjectUrl>https://github.com/axzxs2001/ConsulSharp</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/axzxs2001/ConsulSharp/blob/master/ConsulSharp/ConsulSharp/ConsulSharpNuget.png</PackageIconUrl>
+    <PackageIconUrl>https://en.gravatar.com/userimage/127492023/ffea227158c9cc0eb0624078fe9750cf.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/axzxs2001/ConsulSharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>consul</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
