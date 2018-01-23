@@ -19,6 +19,7 @@ using ConsulSharp.Operator.Segments;
 using ConsulSharp.PreparedQueries;
 using ConsulSharp.Session;
 using ConsulSharp.Snapshot;
+using ConsulSharp.Status;
 
 namespace ConsulSharpSample
 {
@@ -26,10 +27,10 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            GenerateSnapshot();
+            ListRaftPeers();
             while (true)
             {
-                Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator  9、Prepared Query  10、Session  按e退出");
+                Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator  9、Prepared Query  10、Session   按e退出");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -62,11 +63,56 @@ namespace ConsulSharpSample
                     case "10":
                         SessionManage();
                         break;
+                    case "11":
+                        SnapshotManage();
+                        break;
+                    case "12":
+                        StatusManage();
+                        break;
                     case "e":
                         return;
                 }
             }
         }
+        #region Status
+        private static void StatusManage()
+        {
+            while (true)
+            {
+                Console.WriteLine("1、Get Raft Leader   2、List Raft Peers  按e退出");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        GetRaftLeader();
+                        break;
+                    case "2":
+                        ListRaftPeers();
+                        break;
+                    case "e":
+                        return;
+                }
+            }
+        }
+        /// <summary>
+        /// Get Raft Leader
+        /// </summary>
+        private static void GetRaftLeader()
+        {
+            var statusGovern = new StatusGovern();
+            var result = statusGovern.GetRaftLeader().GetAwaiter().GetResult();        
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        /// <summary>
+        /// List Raft Peers
+        /// </summary>
+        private static void ListRaftPeers()
+        {
+            var statusGovern = new StatusGovern();
+            var result = statusGovern.ListRaftPeers().GetAwaiter().GetResult();
+            Console.WriteLine($"back content={EntityToString(result)}");
+        }
+        #endregion
+
 
         #region Snapshot 
         private static void SnapshotManage()
