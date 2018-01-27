@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsulSharp", "ConsulSharp\ConsulSharp.csproj", "{4AA600F5-0295-4889-88B9-F9AF31B24C5D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsulSharpSample", "ConsulSharpSample\ConsulSharpSample.csproj", "{8261AD35-9611-43C6-BF5B-879FAC592BE7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsulSharp.UnitTest", "ConsulSharp.UnitTest\ConsulSharp.UnitTest.csproj", "{B6F1AF54-2CCE-4D61-92E0-40BC5A0602B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{8261AD35-9611-43C6-BF5B-879FAC592BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8261AD35-9611-43C6-BF5B-879FAC592BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8261AD35-9611-43C6-BF5B-879FAC592BE7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6F1AF54-2CCE-4D61-92E0-40BC5A0602B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6F1AF54-2CCE-4D61-92E0-40BC5A0602B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6F1AF54-2CCE-4D61-92E0-40BC5A0602B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6F1AF54-2CCE-4D61-92E0-40BC5A0602B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

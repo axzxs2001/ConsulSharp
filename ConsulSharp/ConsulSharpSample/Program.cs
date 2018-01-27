@@ -28,7 +28,7 @@ namespace ConsulSharpSample
     {
         static void Main(string[] args)
         {
-            ListRaftPeers();
+
             while (true)
             {
                 Console.WriteLine("1、ACL  2、Agent 3、Catalog  4、Coordinates  5、Event  6、Health  7、KV Store 8、Operator  9、Prepared Query  10、Session  11、Snapshot  12、Status  13、Transaction  按e退出");
@@ -1013,7 +1013,7 @@ namespace ConsulSharpSample
         private static void ReadKey()
         {
             var kvGovern = new KVGovern();
-            var result = kvGovern.ReadKey(new ReadKeyParmeter { Key = "testkey" }).GetAwaiter().GetResult();
+            var result = kvGovern.ReadKey(new ReadKeyParmeter { Key = "lisconnectionstring" }).GetAwaiter().GetResult();
             Console.WriteLine(EntityToString(result));
         }
         /// <summary>
