@@ -38,7 +38,7 @@ namespace ConsulSharp
         /// <param name="url">request url</param>
         /// <param name="dataCenter">datacenter</param>
         /// <returns></returns>
-        protected async Task<T> Get<T>(string url, string dataCenter = null)
+        public async Task<T> Get<T>(string url, string dataCenter = null)
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri($"{_baseAddress}{(!string.IsNullOrEmpty(dataCenter) ? $"?dc={dataCenter}" : "")}");
@@ -69,7 +69,7 @@ namespace ConsulSharp
         /// <param name="url">put url</param>
         /// <param name="inEntity">in entity</param>
         /// <returns></returns>
-        protected async Task<T> Get<T, W>(string url, W inEntity) where W : class, new()
+        public async Task<T> Get<T, W>(string url, W inEntity) where W : class, new()
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri($"{_baseAddress}");
@@ -124,7 +124,7 @@ namespace ConsulSharp
         /// <param name="entity">register entity</param>
         /// <param name="url">put url</param>
         /// <returns></returns>
-        protected async Task<(bool result, string backJson)> Put<T>(T entity, string url)
+        public async Task<(bool result, string backJson)> Put<T>(T entity, string url)
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri(_baseAddress);
@@ -140,7 +140,7 @@ namespace ConsulSharp
         /// </summary>
         /// <param name="url">put url</param>
         /// <returns></returns>
-        protected async Task<(bool result, string backJson)> Put(string url)
+        public async Task<(bool result, string backJson)> Put(string url)
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri(_baseAddress);
@@ -156,7 +156,7 @@ namespace ConsulSharp
         /// <param name="entity">register entity</param>
         /// <param name="url">put url</param>
         /// <returns></returns>
-        protected async Task<(bool result, string backJson)> Post<T>(T entity, string url)
+        public async Task<(bool result, string backJson)> Post<T>(T entity, string url)
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri(_baseAddress);
@@ -176,7 +176,7 @@ namespace ConsulSharp
         /// <param name="entity">in entity</param>
         /// <param name="url">put url</param>
         /// <returns></returns>
-        protected async Task<(bool result, W backEntity)> Post<T, W>(T entity, string url)
+        public async Task<(bool result, W backEntity)> Post<T, W>(T entity, string url)
         {
             var backResult = await Post(entity, url);
             if (!backResult.result)
@@ -196,7 +196,7 @@ namespace ConsulSharp
         /// <param name="entity">in entity</param>
         /// <param name="url">put url</param>
         /// <returns></returns>
-        protected async Task<(bool result, W backEntity)> Put<T, W>(T entity, string url)
+        public async Task<(bool result, W backEntity)> Put<T, W>(T entity, string url)
         {
             var backResult = await Put(entity, url);
             if (!backResult.result)
@@ -215,7 +215,7 @@ namespace ConsulSharp
         /// <param name="value">value</param>
         /// <param name="url">put url</param>
         /// <returns></returns>
-        protected async Task<(bool result, W backEntity)> Put<T, W>(T entity, object value, string url) where T : class, new()
+        public async Task<(bool result, W backEntity)> Put<T, W>(T entity, object value, string url) where T : class, new()
         {
 
             var parString = GetUrlParmeter<T>(entity);
@@ -239,7 +239,7 @@ namespace ConsulSharp
         /// <param name="entity">in entity</param>
         /// <param name="url">delete url</param>
         /// <returns></returns>
-        protected async Task<(bool result, W backEntity)> Delete<T, W>(T entity, string url) where T : class, new()
+        public async Task<(bool result, W backEntity)> Delete<T, W>(T entity, string url) where T : class, new()
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri(_baseAddress);

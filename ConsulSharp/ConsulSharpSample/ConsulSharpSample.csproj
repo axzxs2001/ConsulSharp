@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConsulSharp\ConsulSharp.csproj" />
+    <PackageReference Include="ConsulSharp" Version="0.1.2" />
   </ItemGroup>
 
 </Project>
