@@ -113,7 +113,7 @@ namespace ConsulSharp.Agent
         /// <returns></returns>    
         public async Task<(bool result, string backJson)> JoinAgent(JoinAgentParmeter joinAgentParmeter)
         {
-            return await Put(joinAgentParmeter, $"/agent/join");
+            return await Put(joinAgentParmeter, $"/agent/join/{joinAgentParmeter.Address}");
         }
 
         /// <summary>
