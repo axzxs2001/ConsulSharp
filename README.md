@@ -5,7 +5,7 @@ consul http api:https://www.consul.io/api/index.html
 
 ![](https://github.com/axzxs2001/ConsulSharp/blob/master/ConsulSharp/ConsulSharp/ConsulSharp.png)
 
-Package Manager
+### Usage:
 
 Install-Package ConsulSharp -Version 0.1.1 
 
