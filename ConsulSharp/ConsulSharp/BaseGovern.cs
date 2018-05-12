@@ -14,6 +14,8 @@ namespace ConsulSharp
     /// </summary>
     public class Govern
     {
+        HttpClient client;
+      
         /// <summary>
         /// url prefix
         /// </summary>
@@ -29,6 +31,7 @@ namespace ConsulSharp
         public Govern(string baseAddress = "http://127.0.0.1:8500")
         {
             _baseAddress = baseAddress;
+            client = new HttpClient();
         }
         #region base method
         /// <summary>
@@ -39,8 +42,7 @@ namespace ConsulSharp
         /// <param name="dataCenter">datacenter</param>
         /// <returns></returns>
         public async Task<T> Get<T>(string url, string dataCenter = null)
-        {
-            var client = new HttpClient();
+        {         
             client.BaseAddress = new Uri($"{_baseAddress}{(!string.IsNullOrEmpty(dataCenter) ? $"?dc={dataCenter}" : "")}");
             var response = await client.GetAsync($"/{urlPrefix}/{url}");
             var json = await response.Content.ReadAsStringAsync();
@@ -71,7 +73,7 @@ namespace ConsulSharp
         /// <returns></returns>
         public async Task<T> Get<T, W>(string url, W inEntity) where W : class, new()
         {
-            var client = new HttpClient();
+       
             client.BaseAddress = new Uri($"{_baseAddress}");
             var parString = GetUrlParmeter<W>(inEntity);
             if (!string.IsNullOrEmpty(parString))
@@ -125,8 +127,7 @@ namespace ConsulSharp
         /// <param name="url">put url</param>
         /// <returns></returns>
         public async Task<(bool result, string backJson)> Put<T>(T entity, string url)
-        {
-            var client = new HttpClient();
+        {          
             client.BaseAddress = new Uri(_baseAddress);
             var json = JsonConvert.SerializeObject(entity);
             var stream = new MemoryStream(Encoding.Default.GetBytes(json));
@@ -158,7 +159,7 @@ namespace ConsulSharp
         /// <returns></returns>
         public async Task<(bool result, string backJson)> Post<T>(T entity, string url)
         {
-            var client = new HttpClient();
+          
             client.BaseAddress = new Uri(_baseAddress);
             var json = JsonConvert.SerializeObject(entity);
             var stream = new MemoryStream(Encoding.Default.GetBytes(json));
@@ -240,8 +241,7 @@ namespace ConsulSharp
         /// <param name="url">delete url</param>
         /// <returns></returns>
         public async Task<(bool result, W backEntity)> Delete<T, W>(T entity, string url) where T : class, new()
-        {
-            var client = new HttpClient();
+        {            
             client.BaseAddress = new Uri(_baseAddress);
             var parString = GetUrlParmeter<T>(entity);
             if (!string.IsNullOrEmpty(parString))
